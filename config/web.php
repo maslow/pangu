@@ -37,7 +37,7 @@ $config = [
                 ],
             ],
         ],
-        'db' => require(__DIR__ . '/db.php'),
+        'db' => YII_ENV_DEV? require(__DIR__ . '/db-local.php'):require(__DIR__ . '/db.php'),
     ],
     'params' => $params,
 ];
@@ -45,10 +45,12 @@ $config = [
 if (YII_ENV_DEV) {
     // configuration adjustments for 'dev' environment
     $config['bootstrap'][] = 'debug';
-    $config['modules']['debug'] = 'yii\debug\Module';
+    $config['modules']['debug']['class'] = 'yii\debug\Module';
+    $config['modules']['debug']['allowedIPs'] =['*'];
 
     $config['bootstrap'][] = 'gii';
-    $config['modules']['gii'] = 'yii\gii\Module';
+    $config['modules']['gii']['class'] = 'yii\gii\Module';
+    $config['modules']['gii']['allowedIPs'] =['*'];
 }
 
 return $config;
