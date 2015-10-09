@@ -1,6 +1,6 @@
 <?php
 
-if (file_exists(__DIR__ . '/../config/db-local.php')) {
+if (file_exists(__DIR__ . '/../config/dev.lock')) {
     defined('YII_DEBUG') or define('YII_DEBUG', true);
     defined('YII_ENV') or define('YII_ENV', 'dev');
 } else {

@@ -37,7 +37,7 @@ $config = [
                 ],
             ],
         ],
-        'db' => YII_ENV_DEV? require(__DIR__ . '/db-local.php'):require(__DIR__ . '/db.php'),
+        'db' => require(__DIR__ . '/db.php'),
     ],
     'params' => $params,
 ];
