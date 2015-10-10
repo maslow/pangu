@@ -54,11 +54,20 @@ if (YII_ENV_DEV) {
     // configuration adjustments for 'dev' environment
     $config['bootstrap'][] = 'debug';
     $config['modules']['debug']['class'] = 'yii\debug\Module';
-    $config['modules']['debug']['allowedIPs'] =['*'];
+    $config['modules']['debug']['allowedIPs'] = ['*'];
 
     $config['bootstrap'][] = 'gii';
     $config['modules']['gii']['class'] = 'yii\gii\Module';
-    $config['modules']['gii']['allowedIPs'] =['*'];
+    $config['modules']['gii']['allowedIPs'] = ['*'];
 }
 
+require_once(__DIR__ . '/../modules/ModuleManager.php');
+$modulesConfig = file_get_contents(__DIR__ . '/modules.php');
+$modules = unserialize($modulesConfig);
+foreach ($modules as $m) {
+    if ($m->bootstrap === true) {
+        $config['bootstrap'][] = $m->id;
+    }
+    $config['modules'][$m->id]['class'] = $m->class;
+}
 return $config;
