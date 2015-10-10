@@ -2,6 +2,7 @@
 
 namespace app\commands;
 
+use app\modules\ModuleManager;
 use yii\console\Controller;
 
 
@@ -29,5 +30,12 @@ class InstallController extends Controller
         } else {
             file_put_contents($index, file_get_contents($indexProd)) ? print($index . " to Prod Evn. \n") : print('error!');
         }
+
+        echo "Update the modules' config...";
+        $mm = new ModuleManager();
+        $modules = $mm->getModules();
+        $content = serialize($modules);
+        file_put_contents(\Yii::getAlias('@app/config/modules.php'),$content);
+        echo "Done!\n";
     }
 }
