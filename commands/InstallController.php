@@ -15,9 +15,11 @@ class InstallController extends Controller
         $dbPath = $configPath . '/db.php';
 
         $webroot = \Yii::getAlias('@app/web');
-        $indexDev = $webroot . '/../index-dev.php';
-        $indexProd = $webroot . '/../index-prod.php';
         $index = $webroot . '/index.php';
+
+        $envRoot = \Yii::getAlias('@app/environments');
+        $indexDev = $envRoot . '/index-dev.php';
+        $indexProd = $envRoot . '/index-prod.php';
 
         echo "Clear Env...";
         file_exists($dbPath) ? unlink($dbPath) : print('x..');
