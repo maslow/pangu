@@ -9,10 +9,7 @@
 namespace app\modules;
 
 
-use yii\base\Component;
-use yii\base\Object;
-
-class Module extends Object{
+class Module {
     public $id;
     public $version;
     public $description;
@@ -34,7 +31,7 @@ class Module extends Object{
     }
 }
 
-class ModuleManager extends Component
+class ModuleManager
 {
 
     public $moduleRoot = '@app/modules';

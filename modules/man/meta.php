@@ -12,7 +12,7 @@ return [
     'version'=>'1.0',
     'description'=>'应用管理控制台模块。',
 
-    'admin_route'=>'manager',
+    'admin_route'=>null,
     'bootstrap'=>false,
     'deps'=>[]
 ];

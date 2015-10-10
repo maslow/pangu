@@ -33,6 +33,16 @@ class InstallController extends Controller
             file_put_contents($index, file_get_contents($indexProd)) ? print($index . " to Prod Evn. \n") : print('error!');
         }
 
+        $this->installModules();
+    }
+
+    public function actionModule($opt = 'install'){
+        if($opt =='install'){
+            $this->installModules();
+        }
+    }
+
+    protected function installModules(){
         echo "Update the modules' config...";
         $mm = new ModuleManager();
         $modules = $mm->getModules();
