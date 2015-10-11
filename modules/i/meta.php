@@ -8,7 +8,6 @@
 
 
 return [
-    'id'=>'i',
     'version'=>'1.0',
     'description'=>'用户模块，用户认证、编辑、管理。',
 

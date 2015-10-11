@@ -10,18 +10,20 @@ namespace app\modules;
 
 
 use yii\base\Component;
+use yii\base\ErrorException;
 
 
 class ModuleManager extends Component
 {
 
     public $moduleRoot = '@app/modules';
-    public $moduleNamespace = 'app\\modules';
+    public $moduleNamespace = '\\app\\modules';
     public $defaultClassName = 'Module';
 
     /**
      * 获取所有模块(meta,描述信息)
      * @return array 所获取的模块列表
+     * @throws ErrorException
      */
     public function getModules()
     {
@@ -29,8 +31,8 @@ class ModuleManager extends Component
         $list = $this->listDir(\Yii::getAlias($this->moduleRoot));
         foreach ($list as $id) {
             $m = $this->getModule($id);
-            if($m ==false) continue;
-            array_push($modules, [$id => $m]);
+            if($m ==false) throw new ErrorException("module ($id) is not exist");
+            $modules[$id] =$m;
         }
         return $modules;
     }
@@ -51,6 +53,15 @@ class ModuleManager extends Component
     }
 
     /**
+     * 判断模块是否存在数据迁移
+     * @param $id
+     * @return boolean
+     */
+    public function hasMigration($id){
+        return file_exists($this->getPath($id).'/migrations');
+    }
+
+    /**
      * 判断指定模块是否存在
      * @param $id string 指定模块的id
      * @return bool 返回true，存在；false，不存在
@@ -58,9 +69,6 @@ class ModuleManager extends Component
     public function isExist($id)
     {
         if(!$this->getMetaFile($id)){
-            return false;
-        }
-        if(class_exists($this->getClass($id))){
             return false;
         }
         return true;

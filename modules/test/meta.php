@@ -9,9 +9,9 @@
 
 return [
     'version'=>'1.0',
-    'description'=>'应用管理控制台模块。',
+    'description'=>'用户模块，用户认证、编辑、管理。',
 
-    'admin_route'=>null,
-    'bootstrap'=>false,
+    'admin_route'=>'manager',
+    'bootstrap'=>true,
     'deps'=>[]
 ];

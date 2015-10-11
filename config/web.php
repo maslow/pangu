@@ -64,7 +64,7 @@ if (YII_ENV_DEV) {
 $modulesConfig = file_get_contents(__DIR__ . '/modules.php');
 $modules = unserialize($modulesConfig);
 foreach ($modules as $id=>$m) {
-    if ($m->bootstrap === true) {
+    if ($m['bootstrap'] == true) {
         $config['bootstrap'][] = $id;
     }
     $config['modules'][$id]['class'] = $m['class'];

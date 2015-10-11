@@ -43,29 +43,5 @@ class InstallController extends Controller
         } else {
             file_put_contents($index, file_get_contents($indexProd)) ? print($index . " to Prod Evn. \n") : print('error!');
         }
-
-        $this->installModules();
-    }
-
-    /**
-     * 模块管理命令
-     * @param string $opt
-     */
-    public function actionModule($opt = 'install'){
-        if($opt =='install'){
-            $this->installModules();
-        }
-    }
-
-    /**
-     * 安装模块
-     */
-    protected function installModules(){
-        echo "Update the modules' config...";
-        $mm = \Yii::$app->moduleManager;
-        $modules = $mm->getModules();
-        $content = serialize($modules);
-        file_put_contents(\Yii::getAlias('@app/config/modules.php'),$content);
-        echo "Done!\n";
     }
 }
