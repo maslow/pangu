@@ -40,14 +40,6 @@ $config = [
         ],
         'db' => require(__DIR__ . '/db.php'),
     ],
-    'modules' => [
-        'man' => [
-            'class' => 'app\modules\man\Module',
-        ],
-        'i' => [
-            'class' => 'app\modules\i\Module',
-        ],
-    ],
     'params' => $params,
 ];
 
