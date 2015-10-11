@@ -4,7 +4,6 @@ namespace app\commands;
 
 use yii\console\Controller;
 
-
 class InitController extends Controller
 {
     /**
@@ -21,23 +20,23 @@ class InitController extends Controller
      */
     public function actionIndex($env = 'dev')
     {
-        $configPath = \Yii::getAlias('@app/config');
-        $dbExample = $configPath . '/db-example.php';
-        $dbPath = $configPath . '/db.php';
+        $envRoot = \Yii::getAlias('@app/environments');
+        $indexDev = $envRoot . '/index-dev.php';
+        $indexProd = $envRoot . '/index-prod.php';
+        $dbExample = $envRoot . '/db-example.php';
+
+        $configRoot = \Yii::getAlias('@app/config');
+        $dbFile = $configRoot . '/db.php';
 
         $webroot = \Yii::getAlias('@app/web');
         $index = $webroot . '/index.php';
 
-        $envRoot = \Yii::getAlias('@app/environments');
-        $indexDev = $envRoot . '/index-dev.php';
-        $indexProd = $envRoot . '/index-prod.php';
-
         echo "Clear Env...";
-        file_exists($dbPath) ? unlink($dbPath) : print('x..');
+        file_exists($dbFile) ? unlink($dbFile) : print('x..');
         file_exists($index) ? unlink($index) : print('x..');
         echo "Done!\n";
 
-        file_put_contents($dbPath, file_get_contents($dbExample)) ? print($dbPath . "\n") : print("error!");
+        file_put_contents($dbFile, file_get_contents($dbExample)) ? print($dbFile . "\n") : print("error!");
         if ($env == 'dev') {
             file_put_contents($index, file_get_contents($indexDev)) ? print($index . " to Dev Evn. \n") : print('error!');
         } else {

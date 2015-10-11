@@ -33,12 +33,4 @@ class SiteController extends Controller
         return $this->render('index');
     }
 
-    /**
-     * 关于我们页面
-     * @return string
-     */
-    public function actionAbout()
-    {
-        return $this->render('about');
-    }
 }
