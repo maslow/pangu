@@ -5,16 +5,16 @@ namespace app\commands;
 use yii\console\Controller;
 
 
-class InstallController extends Controller
+class InitController extends Controller
 {
     /**
      * 系统安装命令
      * ```
-     * php yii install
+     * php yii init
      * #equal to
-     * php yii install dev
+     * php yii init dev
      * #or
-     * php yii install prod
+     * php yii init prod
      *
      * ```
      * @param string $env 'dev'或'prod' 分别表示安装系统为开发环境或生产环境
