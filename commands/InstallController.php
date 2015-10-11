@@ -2,12 +2,23 @@
 
 namespace app\commands;
 
-use app\modules\ModuleManager;
 use yii\console\Controller;
 
 
 class InstallController extends Controller
 {
+    /**
+     * 系统安装命令
+     * ```
+     * php yii install
+     * #equal to
+     * php yii install dev
+     * #or
+     * php yii install prod
+     *
+     * ```
+     * @param string $env 'dev'或'prod' 分别表示安装系统为开发环境或生产环境
+     */
     public function actionIndex($env = 'dev')
     {
         $configPath = \Yii::getAlias('@app/config');
@@ -36,15 +47,22 @@ class InstallController extends Controller
         $this->installModules();
     }
 
+    /**
+     * 模块管理命令
+     * @param string $opt
+     */
     public function actionModule($opt = 'install'){
         if($opt =='install'){
             $this->installModules();
         }
     }
 
+    /**
+     * 安装模块
+     */
     protected function installModules(){
         echo "Update the modules' config...";
-        $mm = new ModuleManager();
+        $mm = \Yii::$app->moduleManager;
         $modules = $mm->getModules();
         $content = serialize($modules);
         file_put_contents(\Yii::getAlias('@app/config/modules.php'),$content);

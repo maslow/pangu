@@ -9,72 +9,109 @@
 namespace app\modules;
 
 
-class Module {
-    public $id;
-    public $version;
-    public $description;
+use yii\base\Component;
 
-    public $admin_route;
-    public $bootstrap;
-    public $deps;
 
-    public $class;
-
-    public function load($meta){
-        $this->id = $meta['id'];
-        $this->version = $meta['version'];
-        $this->description = $meta['description'];
-        $this->admin_route = $meta['admin_route'];
-        $this->bootstrap = $meta['bootstrap'];
-        $this->deps = $meta['deps'];
-        $this->class = 'app\\modules\\'.$this->id.'\\Module';
-    }
-}
-
-class ModuleManager
+class ModuleManager extends Component
 {
 
     public $moduleRoot = '@app/modules';
+    public $moduleNamespace = 'app\\modules';
     public $defaultClassName = 'Module';
 
+    /**
+     * 获取所有模块(meta,描述信息)
+     * @return array 所获取的模块列表
+     */
     public function getModules()
     {
         $modules = array();
-        $list = self::listDir(\Yii::getAlias($this->moduleRoot));
-        foreach($list as $id){
+        $list = $this->listDir(\Yii::getAlias($this->moduleRoot));
+        foreach ($list as $id) {
             $m = $this->getModule($id);
-            array_push($modules,$m);
+            if($m ==false) continue;
+            array_push($modules, [$id => $m]);
         }
         return $modules;
     }
 
+    /**
+     * 莸取指定模块(meta，描述信息)
+     * @param $id string 指定模块的id
+     * @return array|false 模块描述信息; 如果模块不存在，返回false
+     */
     public function getModule($id)
     {
+        if(!$this->isExist($id)){
+            return false;
+        }
         $meta = require($this->getMetaFile($id));
-        $m = new Module();
-        $m->load($meta);
-        return $m;
+        $meta['class'] = $this->getClass($id);
+        return $meta;
     }
 
-    public function isExist($id){
+    /**
+     * 判断指定模块是否存在
+     * @param $id string 指定模块的id
+     * @return bool 返回true，存在；false，不存在
+     */
+    public function isExist($id)
+    {
+        if(!$this->getMetaFile($id)){
+            return false;
+        }
+        if(class_exists($this->getClass($id))){
+            return false;
+        }
         return true;
     }
 
-    protected function getPath($id){
-        return \Yii::getAlias($this->moduleRoot).'/'.$id;
+    /**
+     * 获取指定模块的类名（包括名字空间）
+     * @param $id string 指定模块的id
+     * @return string 类名（包括名字空间）
+     */
+    public function getClass($id){
+        return  $this->moduleNamespace . '\\' . $id . '\\' . $this->defaultClassName;
     }
 
-    protected function getMetaFile($id){
-        return $this->getPath($id).'/meta.php';
+    /**
+     * 获取指定模块的目录路径
+     * @param $id string 指定模块的id
+     * @return string|false 该模块目录路径; 如果目录不存在，返回false
+     */
+    public function getPath($id)
+    {
+        $path = \Yii::getAlias($this->moduleRoot) . '/' . $id;
+        return file_exists($path) ? $path : false;
     }
 
-    protected static  function listDir($directory)
+    /**
+     * 莸取指定模块的配置信息文件(meta.php)路径
+     * @param $id string 指定模块的id
+     * @return string|false 该模块meta文件路径，如果文件不存在，返回false
+     */
+    public function getMetaFile($id)
+    {
+        if ($path = $this->getPath($id)) {
+            $file = $path . '/meta.php';
+            return file_exists($file) ? $file : false;
+        }
+        return false;
+    }
+
+    /**
+     * 遍历模块根目录，返回所有模块目录名(即模块ID)
+     * @param $directory string 模块根目录
+     * @return array 所有模块目录名(即模块ID)
+     */
+    protected function listDir($directory)
     {
         $dirs = array();
         $dir = dir($directory);
         while ($file = $dir->read()) {
             if ((is_dir("$directory/$file")) AND ($file != ".") AND ($file != "..")) {
-                array_push($dirs,$file);
+                array_push($dirs, $file);
             }
         }
         $dir->close();

@@ -61,13 +61,12 @@ if (YII_ENV_DEV) {
     $config['modules']['gii']['allowedIPs'] = ['*'];
 }
 
-require_once(__DIR__ . '/../modules/ModuleManager.php');
 $modulesConfig = file_get_contents(__DIR__ . '/modules.php');
 $modules = unserialize($modulesConfig);
-foreach ($modules as $m) {
+foreach ($modules as $id=>$m) {
     if ($m->bootstrap === true) {
-        $config['bootstrap'][] = $m->id;
+        $config['bootstrap'][] = $id;
     }
-    $config['modules'][$m->id]['class'] = $m->class;
+    $config['modules'][$id]['class'] = $m['class'];
 }
 return $config;
