@@ -12,6 +12,6 @@ return [
     'description'=>'用户模块，用户认证、编辑、管理。',
 
     'admin_route'=>'manager',
-    'bootstrap'=>false,
+    'bootstrap'=>true,
     'deps'=>[]
 ];

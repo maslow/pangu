@@ -59,7 +59,7 @@ class ModuleController extends Controller
         $mm = $this->getModuleManager();
         echo "正在卸载模块{$id} ...";
         $migrationPath = $mm->moduleRoot."/{$id}/migrations";
-        $cmd = "php yii migrate/down --interactive=0 --migrationPath={$migrationPath}";
+        $cmd = "php yii migrate/to 0 --interactive=0 --migrationPath={$migrationPath}";
         exec($cmd);
         echo "完成！\n";
         if($this->confirm("是否删除该模块目录？")){
