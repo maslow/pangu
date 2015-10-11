@@ -48,7 +48,7 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             'id' => 'ID',
             'username' => 'Username',
-            'password_hash' =>  'Password Hash',
+            'password_hash' => 'Password Hash',
             'auth_key' => 'Auth Key',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
@@ -78,7 +78,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        return static::findOne(['auth_key'=>$token]);
+        return static::findOne(['auth_key' => $token]);
     }
 
     /**

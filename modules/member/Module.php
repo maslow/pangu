@@ -31,6 +31,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
         \Yii::$app->urlManager->addRules([
             'site/login'=>'member/default/login',
             'site/logout'=>'member/default/logout',
+            'site/signup'=>'member/default/signup',
         ],false);
     }
 }

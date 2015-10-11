@@ -6,8 +6,13 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model app\modules\member\models\LoginForm */
 /* @var $form ActiveForm */
+$this->title = 'Login';
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="default-login">
+    <h1><?= Html::encode($this->title) ?></h1>
+    <p>Please fill the form to login.</p>
+    <hr/>
     <?php $form = ActiveForm::begin([
         'id' => 'login-form',
         'options' => ['class' => 'form-horizontal'],
@@ -26,5 +31,5 @@ use yii\widgets\ActiveForm;
         </div>
     </div>
     <?php ActiveForm::end(); ?>
-
+<hr/>
 </div><!-- default-login -->
