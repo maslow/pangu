@@ -2,7 +2,7 @@
 
 namespace app\modules\man;
 
-class Module extends \app\base\Module
+class Module extends \yii\base\Module
 {
     public $controllerNamespace = 'app\modules\man\controllers';
 

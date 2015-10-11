@@ -1,8 +1,9 @@
 <?php
 
-namespace app\modules\i\models;
+namespace app\modules\member\models;
 
 use Yii;
+use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 
 /**
@@ -15,7 +16,7 @@ use yii\web\IdentityInterface;
  * @property integer $created_at
  * @property integer $updated_at
  */
-class User extends \yii\db\ActiveRecord implements IdentityInterface
+class User extends ActiveRecord implements IdentityInterface
 {
     /**
      * @inheritdoc
@@ -45,12 +46,12 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app\modules\i', 'ID'),
-            'username' => Yii::t('app\modules\i', 'Username'),
-            'password_hash' => Yii::t('app\modules\i', 'Password Hash'),
-            'auth_key' => Yii::t('app\modules\i', 'Auth Key'),
-            'created_at' => Yii::t('app\modules\i', 'Created At'),
-            'updated_at' => Yii::t('app\modules\i', 'Updated At'),
+            'id' => 'ID',
+            'username' => 'Username',
+            'password_hash' =>  'Password Hash',
+            'auth_key' => 'Auth Key',
+            'created_at' => 'Created At',
+            'updated_at' => 'Updated At',
         ];
     }
 

@@ -1,18 +1,18 @@
 <?php
 
-namespace app\modules\i;
+namespace app\modules\member;
 
 use yii\base\Application;
 use yii\base\BootstrapInterface;
 
-class Module extends \app\base\Module implements BootstrapInterface
+class Module extends \yii\base\Module implements BootstrapInterface
 {
-    public $controllerNamespace = 'app\modules\i\controllers';
+    public $controllerNamespace = 'app\modules\member\controllers';
 
     public function init()
     {
         parent::init();
-
+        \Yii::configure($this,require(__DIR__.'/config.php'));
         // custom initialization code goes here
     }
 
@@ -24,8 +24,13 @@ class Module extends \app\base\Module implements BootstrapInterface
     {
         \Yii::$app->set('user',[
             'class'=>'\yii\web\User',
-            'identityClass' => 'app\modules\i\models\User',
+            'identityClass' => 'app\modules\member\models\User',
             'enableAutoLogin' => true,
         ]);
+
+        \Yii::$app->urlManager->addRules([
+            'site/login'=>'member/default/login',
+            'site/logout'=>'member/default/logout',
+        ],false);
     }
 }
