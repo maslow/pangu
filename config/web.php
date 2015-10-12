@@ -28,7 +28,20 @@ $config = [
             // send all mails to a file by default. You have to set
             // 'useFileTransport' to false and configure a transport
             // for the mailer to send real emails.
-            'useFileTransport' => true,
+            'useFileTransport' => false,
+            'transport' => [
+                'class' => 'Swift_SmtpTransport',
+                'host' => 'smtp.126.com',
+                'username' => 'sender@126.com',
+                'password' => 'your password',
+                'port' => '25',
+                'encryption' => 'tls',
+            ],
+            'messageConfig'=>[
+                'charset' => 'UTF-8',
+                'from' => 'sender@vip-design.com',
+                'bcc' => 'developer@mydomain.com',
+            ]
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
