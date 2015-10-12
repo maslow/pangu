@@ -9,7 +9,7 @@
 
 return [
     'version'=>'1.0',
-    'description'=>'应用管理控制台模块。',
+    'description'=>'权限控制模块。',
 
     'man'=>false,
     'bootstrap'=>false,
