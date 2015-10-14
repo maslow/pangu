@@ -9,7 +9,7 @@
 
 return [
     'version'=>'1.0',
-    'description'=>'应用管理控制台模块。',
+    'description'=>'中央控制台模块。',
 
     'man'=>false,
     'bootstrap'=>false,
