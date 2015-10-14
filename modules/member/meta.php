@@ -14,22 +14,22 @@ return [
     'bootstrap'=>true,
     'man'=>[
         'main'=>[
-            'url'=>'manager/list',
+            'url'=>'manager/index',
             'name'=>'用户管理',
             'permission'=>'member_list'
         ],
         'sub'=>[
             '添加用户'=>[
-                'url'=>'manager/insert',
-                'permission'=>'member_insert'
+                'url'=>'manager/create',
+                'permission'=>'member_create'
             ],
             '管理用户'=>[
-                'url'=>'manager/list',
+                'url'=>'manager/index',
                 'permission'=>'member_list'
             ],
         ],
         'permissions'=>[
-            'member_insert'=>'添加用户',
+            'member_create'=>'添加用户',
             'member_list'=>'管理用户',
             'member_edit'=>'编辑用户',
             'member_delete'=>'删除用户',
