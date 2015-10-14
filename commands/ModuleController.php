@@ -33,6 +33,10 @@ class ModuleController extends Controller
     }
 
 
+    /**
+     * 配置并安装所有模块
+     * @throws \yii\base\ErrorException
+     */
     protected function installModules(){
         $mm = $this->getModuleManager();
         $modules = $mm->getModules();

@@ -16,8 +16,7 @@ NavBar::begin([
         'class' => 'navbar-inverse navbar-fixed-top',
     ],
 ]);
-$navItems = [
-];
+$navItems = [];
 // 生成导航链接数据 $navItems
 foreach ($menu as $id => $man) {
     $sub = [];
