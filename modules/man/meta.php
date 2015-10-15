@@ -12,6 +12,6 @@ return [
     'description'=>'中央控制台模块。',
 
     'man'=>false,
-    'bootstrap'=>false,
+    'bootstrap'=>true,
     'deps'=>[]
 ];

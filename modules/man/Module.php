@@ -2,7 +2,11 @@
 
 namespace app\modules\man;
 
-class Module extends \yii\base\Module
+use app\modules\man\models\Manager;
+use yii\base\Application;
+use yii\base\BootstrapInterface;
+
+class Module extends \yii\base\Module implements BootstrapInterface
 {
     public $controllerNamespace = 'app\modules\man\controllers';
 
@@ -11,5 +15,23 @@ class Module extends \yii\base\Module
         parent::init();
         \Yii::configure($this, require(__DIR__ . '/config.php'));
         // custom initialization code goes here
+    }
+
+    /**
+     * Bootstrap method to be called during application bootstrap stage.
+     * @param Application $app the application currently running
+     */
+    public function bootstrap($app)
+    {
+        \Yii::$app->set('manager',[
+            'class'=>'\yii\web\User',
+            'identityClass'=>Manager::className(),
+            'enableAutoLogin' => false,
+            'idParam' => "__{$this->id}__id",
+            'identityCookie' =>[
+                'name' => "__{$this->id}__identity",
+                'httpOnly' =>true
+            ],
+        ]);
     }
 }

@@ -26,6 +26,11 @@ class Module extends \yii\base\Module implements BootstrapInterface
             'class'=>'\yii\web\User',
             'identityClass' => 'app\modules\member\models\User',
             'enableAutoLogin' => true,
+            'idParam' => "__{$this->id}__id",
+            'identityCookie' =>[
+                'name' => "__{$this->id}__identity",
+                'httpOnly' =>true
+            ],
         ]);
 
         \Yii::$app->urlManager->addRules([
