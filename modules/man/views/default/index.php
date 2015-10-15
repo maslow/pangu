@@ -6,6 +6,8 @@
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 
+/* @var $manager \yii\web\User */
+$manager = Yii::$app->manager;
 ?>
 
 <?php
@@ -34,6 +36,12 @@ foreach ($menu as $id => $man) {
         'url' => $man['main']['url'],
         'linkOptions' => ['target' => 'sub-container'],
         'items' => $sub,
+    ];
+}
+if(!$manager->isGuest){
+    $navItems[] = [
+        'label'=> "安全退出({$manager->identity->username})",
+        'url' => ['default/logout'],
     ];
 }
 echo Nav::widget([

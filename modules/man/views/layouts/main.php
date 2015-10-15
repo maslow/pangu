@@ -6,8 +6,6 @@ use app\assets\AppAsset;
 /* @var $content string */
 
 AppAsset::register($this);
-
-
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -31,8 +29,8 @@ AppAsset::register($this);
 
     <footer class="footer">
         <div class="container">
-            <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
-            <p class="pull-right"><?= Yii::powered() ?></p>
+            <p class="pull-left">&copy; vip-design.net <?= date('Y') ?></p>
+            <p class="pull-right"> Powerred by EY2B</p>
         </div>
     </footer>
 
