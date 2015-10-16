@@ -2,5 +2,5 @@
 
 return [
     'adminEmail' => 'admin@example.com',
-    'flashMessageParam' => 'flashMessage',
+    'flashMessageParam' => '__flash_message',
 ];

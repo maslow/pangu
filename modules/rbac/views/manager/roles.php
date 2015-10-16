@@ -1,9 +1,34 @@
 <?php
 /* @var $this yii\web\View */
-?>
-<h1>manager/roles</h1>
+/* @var $roles yii\rbac\Role[] */
+use \yii\helpers\Html;
+use yii\helpers\Url;
 
-<p>
-    You may change the content of this page by modifying
-    the file <code><?= __FILE__; ?></code>.
-</p>
+$this->title = '角色管理';
+$this->params['breadcrumbs'][] = $this->title;
+?>
+
+<div class="panel panel-default">
+    <div class="panel-heading"><?= Html::encode($this->title) ?></div>
+    <div class="panel-body">
+        <a href="<?=Url::to(['manager/create-role'])?>" class="btn btn-default">新建角色</a>
+    </div>
+
+    <!-- Table -->
+    <table class="table .table-hover">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($roles as $role): ?>
+            <tr>
+                <td><?= $role->name ?></td>
+                <td><?= $role->description ?></td>
+            </tr>
+        <?php endforeach ?>
+        </tbody>
+    </table>
+</div>
