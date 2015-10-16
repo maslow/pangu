@@ -20,15 +20,17 @@ class DefaultController extends Controller
             return $this->redirect(['default/login']);
         }
 
-        /* 获取所有模块man配置信息 */
+        /* 根据所有模块权限，获取所有模块man配置信息 */
         $modules = Module::getInstance()->moduleManager->getModules();
         $menu = [];
         foreach ($modules as $id => $m) {
-            if ($m['man'] !== false) {
+            if ($m['man'] !== false && $this->getManager()->can($m['man']['main']['permission'])) {
                 if (isset($m['man']['sub'])) {
                     // 转换sub下url格式
                     foreach ($m['man']['sub'] as $name => $v) {
                         $m['man']['sub'][$name]['url'] = ["/$id/{$v['url']}"];
+                        if(!$this->getManager()->can($m['man']['sub'][$name]['permission']))
+                            unset($m['man']['sub'][$name]);
                     }
                 }
                 // 转换url格式
@@ -63,6 +65,14 @@ class DefaultController extends Controller
         $this->getManager()->logout();
 
         return $this->redirect(['default/login']);
+    }
+
+    /**
+     * 进入中控台后默认页面
+     * @return string
+     */
+    public function actionInfo(){
+        return $this->render('info');
     }
 
     /**
