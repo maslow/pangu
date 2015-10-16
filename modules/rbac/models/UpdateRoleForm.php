@@ -12,16 +12,18 @@ namespace app\modules\rbac\models;
 use yii\base\Model;
 use yii\rbac\Role;
 
-class CreateRoleForm extends Model
+class UpdateRoleForm extends Model
 {
     public $name;
     public $description;
     public $data;
+    public $permissions = [];
+
 
     public function rules()
     {
         return [
-            [['name', 'description'], 'required'],
+            [['name', 'description','permissions'], 'required'],
             ['name', 'string', 'min' => 3, 'max' => 16],
             ['description', 'string', 'min' => 3, 'max' => 16],
             ['data', 'string']
@@ -33,23 +35,29 @@ class CreateRoleForm extends Model
         return [
             'name' => 'ID',
             'description' => "名称",
-            'data' => "备注"
+            'data' => "备注",
+            'permissions' =>'权限'
         ];
     }
 
     /**
-     * 验证表单并执行角色创建操作
+     * 验证表单并执行角色更新操作
      * @return bool
      */
-    public function create()
+    public function update()
     {
         if ($this->validate()) {
-            $role = new Role();
-            // TODO 判断$role->name是否已存在
-            $role->name = $this->name;
+            $role = $this->getAuth()->getRole($this->name);
+            // TODO 判断$role是否合法
             $role->description = $this->description;
             $role->data = $this->data;
-            $this->getAuth()->add($role);
+
+            $this->getAuth()->removeChildren($role);
+            foreach($this->permissions as $name){
+                $p = $this->getAuth()->getPermission($name);
+                $this->getAuth()->addChild($role,$p);
+            }
+            $this->getAuth()->update($role->name,$role);
             return true;
         } else {
             return false;

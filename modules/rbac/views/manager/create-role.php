@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ]); ?>
 <?= $form->field($model, 'name') ?>
 <?= $form->field($model, 'description') ?>
-<?= $form->field($model, 'data') ?>
+<?= $form->field($model, 'data')->textarea() ?>
     <div class="form-group">
         <div class="col-sm-offset-1 col-sm-11">
             <?= Html::submitButton('创建', ['class' => 'btn btn-primary', 'name' => 'create-role']) ?>

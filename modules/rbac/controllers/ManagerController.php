@@ -3,10 +3,12 @@
 namespace app\modules\rbac\controllers;
 
 use app\modules\rbac\models\CreateRoleForm;
+use app\modules\rbac\models\UpdateRoleForm;
 
 class ManagerController extends \yii\web\Controller
 {
     public $layout = 'manager';
+
     public function actionIndex()
     {
         return $this->render('index');
@@ -17,32 +19,71 @@ class ManagerController extends \yii\web\Controller
      */
     public function actionRoles()
     {
-        return $this->render('roles',['roles'=>$this->getAuth()->getRoles()]);
+        return $this->render('roles', ['roles' => $this->getAuth()->getRoles()]);
     }
 
     /**
+     * 新建一个角色
      * @return string|\yii\web\Response
      */
-    public function actionCreateRole(){
+    public function actionCreateRole()
+    {
         $model = new CreateRoleForm();
-        if($model->load(\Yii::$app->request->post()) && $model->create()){
+        if ($model->load(\Yii::$app->request->post()) && $model->create()) {
             return $this->redirect(['roles']);
         }
-        return $this->render('create-role',['model'=>$model]);
+        return $this->render('create-role', ['model' => $model]);
     }
 
     /**
-     * @param $id
+     * 更新指定角色
+     * @param $name string 指定角色的name
+     * @return string|\yii\web\Response
+     */
+    public function actionUpdateRole($name)
+    {
+        $role = $this->getAuth()->getRole($name);
+        // TODO  判断$role是否合法
+
+        $model = new UpdateRoleForm();
+
+        if (!\Yii::$app->request->isPost) {
+            $model->name = $role->name;
+            $model->description = $role->name;
+            $model->data = $role->data;
+
+        }
+
+        $permissionObjects = $this->getAuth()->getPermissions();
+        $permissions = [];
+        foreach ($permissionObjects as $permission) {
+            $permissions[$permission->name] = $permission->description;
+            if ($this->getAuth()->hasChild($role, $permission)) {
+                $model->permissions[] = $permission->name;
+            }
+        }
+
+        if ($model->load(\Yii::$app->request->post()) && $model->update()) {
+            return $this->redirect(['roles']);
+        }
+        
+        return $this->render('update-role', ['model' => $model, 'permissions' => $permissions]);
+    }
+
+    /**
+     * @param $name string
      * @return \yii\web\Response
      */
-    public function actionDeleteRole($id){
+    public function actionDeleteRole($name)
+    {
         return $this->redirect(['roles']);
     }
 
     /**
      * @return \yii\rbac\ManagerInterface
      */
-    protected function getAuth(){
+    protected function getAuth()
+    {
         return \Yii::$app->authManager;
     }
 }

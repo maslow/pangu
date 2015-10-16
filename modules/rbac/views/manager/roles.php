@@ -18,15 +18,17 @@ $this->params['breadcrumbs'][] = $this->title;
     <table class="table .table-hover">
         <thead>
         <tr>
-            <th>ID</th>
             <th>Name</th>
+            <th>ID</th>
+            <th>Operation</th>
         </tr>
         </thead>
         <tbody>
         <?php foreach ($roles as $role): ?>
             <tr>
-                <td><?= $role->name ?></td>
                 <td><?= $role->description ?></td>
+                <td><?= $role->name ?></td>
+                <td><?= Html::a('Update',['manager/update-role','name'=>$role->name],['class'=>'btn']) ?></td>
             </tr>
         <?php endforeach ?>
         </tbody>
