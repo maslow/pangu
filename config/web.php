@@ -6,7 +6,7 @@ $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
-    'language'=>'zh-cn',
+    'language' => 'zh-cn',
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
@@ -16,6 +16,9 @@ $config = [
             'enablePrettyUrl' => true,
             'rules' => [
             ],
+        ],
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -37,7 +40,7 @@ $config = [
                 'port' => '25',
                 'encryption' => 'tls',
             ],
-            'messageConfig'=>[
+            'messageConfig' => [
                 'charset' => 'UTF-8',
                 'from' => 'sender@vip-design.com',
                 //'bcc' => 'developer@mydomain.com',
@@ -68,9 +71,10 @@ if (YII_ENV_DEV) {
     $config['modules']['gii']['allowedIPs'] = ['*'];
 }
 
+//加载模块配置文件
 $modulesConfig = file_get_contents(__DIR__ . '/modules.php');
 $modules = unserialize($modulesConfig);
-foreach ($modules as $id=>$m) {
+foreach ($modules as $id => $m) {
     if ($m['bootstrap'] == true) {
         $config['bootstrap'][] = $id;
     }

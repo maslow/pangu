@@ -19,6 +19,9 @@ return [
         'moduleManager'=>[
             'class'=>'app\modules\ModuleManager',
         ],
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
+        ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
