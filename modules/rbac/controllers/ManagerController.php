@@ -47,26 +47,26 @@ class ManagerController extends \yii\web\Controller
 
         $model = new UpdateRoleForm();
 
+        if ($model->load(\Yii::$app->request->post()) && $model->update()) {
+            return $this->redirect(['roles']);
+        }
+
         if (!\Yii::$app->request->isPost) {
             $model->name = $role->name;
             $model->description = $role->name;
             $model->data = $role->data;
-
         }
 
+        // 生成权限列表数组，供checkboxList做为参数使用
         $permissionObjects = $this->getAuth()->getPermissions();
         $permissions = [];
         foreach ($permissionObjects as $permission) {
             $permissions[$permission->name] = $permission->description;
-            if ($this->getAuth()->hasChild($role, $permission)) {
+            // 如果是Get请求，生成$model->permissions的值
+            if (\Yii::$app->request->isGet && $this->getAuth()->hasChild($role, $permission)) {
                 $model->permissions[] = $permission->name;
             }
         }
-
-        if ($model->load(\Yii::$app->request->post()) && $model->update()) {
-            return $this->redirect(['roles']);
-        }
-        
         return $this->render('update-role', ['model' => $model, 'permissions' => $permissions]);
     }
 
