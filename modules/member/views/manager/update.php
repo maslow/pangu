@@ -1,17 +1,36 @@
 <?php
 
 use yii\helpers\Html;
+use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\modules\member\models\User */
+/* @var $model app\modules\member\models\UpdateUserForm */
+/* @var $user app\modules\member\models\User */
 
-$this->title = '编辑用户: ' . ' ' . $model->username;
+$this->title = '编辑用户';
 $this->params['breadcrumbs'][] = ['label' => '用户', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->username, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = '编辑用户  ';
+$this->params['breadcrumbs'][] = ['label' => $model->username, 'url' => ['view', 'id' => $user->id]];
+$this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="user-update">
+    <h1>
+        <?= Html::encode($this->title) ?>
+    </h1>
+    <hr/>
+<?php $form = ActiveForm::begin([
+    'id' => 'update-user',
+    'options' => ['class' => 'form-horizontal'],
+    'fieldConfig' => [
+        'template' => "{label}\n<div class=\"col-sm-3\">{input}</div>\n<div class=\"col-sm-8\">{error}</div>",
+        'labelOptions' => ['class' => 'col-sm-1 control-label'],
+    ]
+]); ?>
+<?= $form->field($model, 'username',['options'=>['style'=>'display:none']])->hiddenInput() ?>
+<?= $form->field($model, 'password')->passwordInput() ?>
+<?= $form->field($model, 'password_confirm')->passwordInput() ?>
 
-    <h1><?= Html::encode($this->title) ?>: TBD</h1>
-
-</div>
+    <div class="form-group">
+        <div class="col-sm-offset-1 col-sm-11">
+            <?= Html::submitButton('创建', ['class' => 'btn btn-primary', 'name' => 'update-user']) ?>
+        </div>
+    </div>
+<?php ActiveForm::end(); ?>

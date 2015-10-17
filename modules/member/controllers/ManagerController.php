@@ -2,6 +2,8 @@
 
 namespace app\modules\member\controllers;
 
+use app\modules\member\models\CreateUserForm;
+use app\modules\member\models\UpdateUserForm;
 use Yii;
 use app\modules\member\models\User;
 use yii\data\ActiveDataProvider;
@@ -77,10 +79,10 @@ class ManagerController extends Controller
             return $this->goNotAllowed();
         }
 
-        $model = new User();
+        $model = new CreateUserForm();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post()) && $model->create()) {
+            return $this->redirect(['index']);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -100,13 +102,16 @@ class ManagerController extends Controller
         if (!$this->checkAccess('member.users.update')) {
             return $this->goNotAllowed();
         }
-        $model = $this->findModel($id);
+        $user = $this->findModel($id);
+        $model = new UpdateUserForm();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post()) && $model->update()) {
+            return $this->redirect(['index']);
         } else {
+            $model->username = $user->username;
             return $this->render('update', [
                 'model' => $model,
+                'user' => $user
             ]);
         }
     }
