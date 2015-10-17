@@ -12,10 +12,6 @@ $this->params['breadcrumbs'][] = '编辑用户  ';
 ?>
 <div class="user-update">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
+    <h1><?= Html::encode($this->title) ?>: TBD</h1>
 
 </div>
