@@ -52,7 +52,7 @@ class DefaultController extends Controller
      * @return \yii\web\Response
      */
     public function actionLogout(){
-        $this->getManager()->logout();
+        $this->getManager()->logout(false);
 
         return $this->redirect(['default/login']);
     }
