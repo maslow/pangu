@@ -63,5 +63,10 @@ php yii module/update
 php yii init/admin
 ```
 
+其它
+---
+
+后台中控台地址:  http://localhost/ey2b/web/index.php/man
+
   
  
