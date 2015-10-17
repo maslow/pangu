@@ -27,7 +27,7 @@ class ManagerController extends Controller
     public function actionList()
     {
         if(!$this->checkAccess('man.managers.list')){
-            return $this->redirect(['/man/default/info']);
+            return $this->goNotAllowed();
         }
 
         $data = new ActiveDataProvider([
@@ -44,7 +44,7 @@ class ManagerController extends Controller
     public function actionCreate()
     {
         if(!$this->checkAccess('man.managers.create')){
-            return $this->redirect(['/man/default/info']);
+            return $this->goNotAllowed();
         }
 
         return $this->render('create');
@@ -60,7 +60,7 @@ class ManagerController extends Controller
     public function actionUpdate($id)
     {
         if(!$this->checkAccess('man.managers.update')){
-            return $this->redirect(['/man/default/info']);
+            return $this->goNotAllowed();
         }
 
         $manager = Manager::findOne($id);
@@ -96,7 +96,7 @@ class ManagerController extends Controller
     public function actionDelete($id)
     {
         if(!$this->checkAccess('man.managers.delete')){
-            return $this->redirect(['/man/default/info']);
+            return $this->goNotAllowed();
         }
 
         /* @var $manager \app\modules\man\models\Manager */
@@ -130,5 +130,14 @@ class ManagerController extends Controller
             return false;
         }
         return true;
+    }
+
+    /**
+     * 用户无权限访问请求时，跳转到指定页面
+     * @return \yii\web\Response
+     */
+    protected function goNotAllowed()
+    {
+        return $this->redirect(\Yii::$app->params['route.not.allowed']);
     }
 }

@@ -4,30 +4,38 @@ namespace app\modules\rbac\controllers;
 
 use app\modules\rbac\models\CreateRoleForm;
 use app\modules\rbac\models\UpdateRoleForm;
+use yii\web\NotFoundHttpException;
 
 class ManagerController extends \yii\web\Controller
 {
     public $layout = 'manager';
 
-    public function actionIndex()
-    {
-        return $this->render('index');
-    }
 
     /**
+     * 显示角色列表
      * @return string
+     * @permission rbac.roles.list
      */
     public function actionRoles()
     {
+        if(!$this->checkAccess('rbac.roles.list')){
+            return $this->goNotAllowed();
+        }
+
         return $this->render('roles', ['roles' => $this->getAuth()->getRoles()]);
     }
 
     /**
      * 新建一个角色
      * @return string|\yii\web\Response
+     * @permission rbac.roles.create
      */
     public function actionCreateRole()
     {
+        if(!$this->checkAccess('rbac.roles.create')){
+            return $this->goNotAllowed();
+        }
+
         $model = new CreateRoleForm();
         if ($model->load(\Yii::$app->request->post()) && $model->create()) {
             return $this->redirect(['roles']);
@@ -39,11 +47,19 @@ class ManagerController extends \yii\web\Controller
      * 更新指定角色
      * @param $name string 指定角色的name
      * @return string|\yii\web\Response
+     * @throws NotFoundHttpException
+     * @permission rbac.roles.update
      */
     public function actionUpdateRole($name)
     {
+        if(!$this->checkAccess('rbac.roles.update')){
+            return $this->goNotAllowed();
+        }
+
         $role = $this->getAuth()->getRole($name);
-        // TODO  判断$role是否合法
+        if(!$role){
+            throw new NotFoundHttpException("不存在名称为{$name}的角色!");
+        }
 
         $model = new UpdateRoleForm();
 
@@ -73,19 +89,50 @@ class ManagerController extends \yii\web\Controller
     /**
      * @param $name string
      * @return \yii\web\Response
+     * @permission rbac.roles.delete
      */
     public function actionDeleteRole($name)
     {
+        if(!$this->checkAccess('rbac.roles.delete')){
+            return $this->goNotAllowed();
+        }
+
         $role = $this->getAuth()->getRole($name);
         $this->getAuth()->remove($role);
         return $this->redirect(['roles']);
     }
 
     /**
+     * 返回应用权限管理组件对象
      * @return \yii\rbac\ManagerInterface
      */
     protected function getAuth()
     {
         return \Yii::$app->authManager;
+    }
+
+    /**
+     * 判断当前登录管理员是否满足指定权限
+     * @param $permission string 指定权限名
+     * @return boolean
+     */
+    protected function checkAccess($permission)
+    {
+        /* @var $manager \yii\web\User */
+        $manager = \Yii::$app->manager;
+        if (!$manager->can($permission)) {
+            \Yii::$app->session->setFlash(\Yii::$app->params['flashMessageParam'], "您没有进行该操作的权限({$permission})!");
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 用户无权限访问请求时，跳转到指定页面
+     * @return \yii\web\Response
+     */
+    protected function goNotAllowed()
+    {
+        return $this->redirect(\Yii::$app->params['route.not.allowed']);
     }
 }

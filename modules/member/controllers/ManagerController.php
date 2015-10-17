@@ -35,8 +35,8 @@ class ManagerController extends Controller
      */
     public function actionIndex()
     {
-        if(!$this->checkAccess('member.users.list')){
-            return $this->redirect(['/man/default/info']);
+        if (!$this->checkAccess('member.users.list')) {
+            return $this->goNotAllowed();
         }
 
         $dataProvider = new ActiveDataProvider([
@@ -56,8 +56,8 @@ class ManagerController extends Controller
      */
     public function actionView($id)
     {
-        if(!$this->checkAccess('member.users.view')){
-            return $this->redirect(['/man/default/info']);
+        if (!$this->checkAccess('member.users.view')) {
+            return $this->goNotAllowed();
         }
 
         return $this->render('view', [
@@ -73,8 +73,8 @@ class ManagerController extends Controller
      */
     public function actionCreate()
     {
-        if(!$this->checkAccess('member.users.create')){
-            return $this->redirect(['/man/default/info']);
+        if (!$this->checkAccess('member.users.create')) {
+            return $this->goNotAllowed();
         }
 
         $model = new User();
@@ -98,7 +98,7 @@ class ManagerController extends Controller
     public function actionUpdate($id)
     {
         if (!$this->checkAccess('member.users.update')) {
-            return $this->redirect(['/man/default/info']);
+            return $this->goNotAllowed();
         }
         $model = $this->findModel($id);
 
@@ -121,7 +121,7 @@ class ManagerController extends Controller
     public function actionDelete($id)
     {
         if (!$this->checkAccess('member.users.delete')) {
-            return $this->redirect(['/man/default/info']);
+            return $this->goNotAllowed();
         }
         $this->findModel($id)->delete();
 
@@ -160,4 +160,12 @@ class ManagerController extends Controller
         return true;
     }
 
+    /**
+     * 用户无权限访问请求时，跳转到指定页面
+     * @return \yii\web\Response
+     */
+    protected function goNotAllowed()
+    {
+        return $this->redirect(Yii::$app->params['route.not.allowed']);
+    }
 }
