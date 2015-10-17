@@ -29,7 +29,7 @@ return [
         ],
         'permissions' => [
             'member.users.create' => '添加用户',
-            'member.users.list' => '管理用户',
+            'member.users.list' => '浏览用户',
             'member.users.update' => '更新用户',
             'member.users.delete' => '删除用户',
             'member.users.view' => '查看用户',

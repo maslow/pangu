@@ -30,7 +30,7 @@ return [
         ],
         'permissions'=>[
             'man.managers.create' => '创建管理员',
-            'man.managers.list' => '管理员管理',
+            'man.managers.list' => '浏览管理员',
             'man.managers.update' => '更新管理员',
             'man.managers.delete' => '删除管理员',
         ]
