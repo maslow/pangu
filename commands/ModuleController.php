@@ -12,7 +12,8 @@ class ModuleController extends Controller
     /**
      * 模块管理命令
      */
-    public function actionUpdate(){
+    public function actionUpdate()
+    {
         $this->stdout("更新所有模块信息...");
         $this->installModules();
         $this->stdout("\n更新模块信息完成!\n");
@@ -22,12 +23,13 @@ class ModuleController extends Controller
      * 卸载指定模块命令
      * @param $id string 指定模块的id
      */
-    public function actionUninstall($id){
+    public function actionUninstall($id)
+    {
         /** @var \app\modules\ModuleManager $mm */
         $mm = \Yii::$app->moduleManager;
-        if($mm->isExist($id)){
+        if ($mm->isExist($id)) {
             $this->uninstallModule($id);
-        }else{
+        } else {
             $this->stdout("模块({$id})不存在!\n");
         }
     }
@@ -37,49 +39,59 @@ class ModuleController extends Controller
      * 配置并安装所有模块
      * @throws \yii\base\ErrorException
      */
-    protected function installModules(){
+    protected function installModules()
+    {
         $mm = $this->getModuleManager();
         $modules = $mm->getModules();
-        foreach($modules as $id=>$m){
-            $this->stdout("\n..模块({$id})");
-            if($mm->hasMigration($id)){
+        $modulesArr = [];
+        foreach ($modules as $id => $m) {
+            $this->stdout("\n..检测到模块({$id})");
+            if ($mm->hasMigration($id)) {
                 $this->installModule($id);
             }
+            $modulesArr[$id] = [
+                'class' => $m['class'],
+                'bootstrap' => $m['bootstrap'],
+            ];
         }
-        $content = serialize($modules);
-        file_put_contents(\Yii::getAlias('@app/config/modules.php'),$content);
+        $content = serialize($modulesArr);
+        $this->stdout("正在生成模块配置文件@app/config/modules.php ...");
+        file_put_contents(\Yii::getAlias('@app/config/modules.php'), $content);
+        $this->stdout("完成！\n");
     }
 
     /**
      * 安装指定模块, 执行migrations操作.
      * @param $id string 指定模块id
      */
-    protected function installModule($id){
+    protected function installModule($id)
+    {
         $this->stdout("\n....正在安装模块({$id}) ...");
         $migrationPath = $this->getMigrationPath($id);
         $migrationTable = $this->getMigrationTableName($id);
         $cmd = "php yii migrate/up --interactive=0 --migrationPath={$migrationPath} --migrationTable={$migrationTable}";
         system($cmd);
-        $this->stdout("....完成!");
+        $this->stdout("....模块{$id}安装完成!\n");
     }
 
     /**
      * 卸载指定模块, 执行migrations清除操作
      * @param $id string 指定模块的id
      */
-    protected function uninstallModule($id){
+    protected function uninstallModule($id)
+    {
         $this->stdout("正在卸载模块{$id} ...");
         $migrationPath = $this->getMigrationPath($id);
         $migrationTable = $this->getMigrationTableName($id);
         $cmd = "php yii migrate/to 0 --interactive=0 --migrationPath={$migrationPath} --migrationTable={$migrationTable}";
         system($cmd);
         $this->stdout("完成！\n");
-        if($this->confirm("是否删除该模块目录？")){
+        if ($this->confirm("是否删除该模块目录？")) {
             $path = $this->getModuleManager()->getPath($id);
             FileHelper::removeDirectory($path);
-            $this->stdout("已删除`{$id}`模块目录{$path}！",Console::FG_GREEN);
-        }else{
-            $this->stdout("未删除`{$id}`模块目录，请手动删除!\n",Console::FG_YELLOW);
+            $this->stdout("已删除`{$id}`模块目录{$path}！", Console::FG_GREEN);
+        } else {
+            $this->stdout("未删除`{$id}`模块目录，请手动删除!\n", Console::FG_YELLOW);
         }
     }
 
@@ -87,7 +99,8 @@ class ModuleController extends Controller
      * 获取模块管理组件
      * @return \app\modules\ModuleManager
      */
-    protected function getModuleManager(){
+    protected function getModuleManager()
+    {
         return \Yii::$app->moduleManager;
     }
 
@@ -96,7 +109,8 @@ class ModuleController extends Controller
      * @param $id string 模块id
      * @return string
      */
-    protected function getMigrationTableName($id){
+    protected function getMigrationTableName($id)
+    {
         return "{{%migration_{$id}}}";
     }
 
@@ -105,7 +119,8 @@ class ModuleController extends Controller
      * @param $id string 模块id
      * @return string
      */
-    protected function getMigrationPath($id){
-        return $this->getModuleManager()->moduleRoot."/{$id}/migrations";
+    protected function getMigrationPath($id)
+    {
+        return $this->getModuleManager()->moduleRoot . "/{$id}/migrations";
     }
 }
