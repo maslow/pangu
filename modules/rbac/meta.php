@@ -29,9 +29,10 @@ return [
             ],
         ],
         'permissions' => [
-            'rbac.roles.create-role' => '创建系统角色',
-            'rbac.roles.update-role' => '更新系统角色',
-            'rbac.roles.delete-role' => '删除系统角色',
+            'rbac.roles.create' => '创建系统角色',
+            'rbac.roles.update' => '更新系统角色',
+            'rbac.roles.delete' => '删除系统角色',
+            'rbac.roles.list' => '管理系统角色',
         ],
     ],
 ];

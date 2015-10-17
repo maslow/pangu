@@ -15,25 +15,38 @@ use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
-class ManagerController extends Controller{
+class ManagerController extends Controller
+{
     public $layout = "manager";
 
     /**
      * 显示管理员列表
      * @return string
+     * @permission man.managers.list
      */
-    public function actionList(){
+    public function actionList()
+    {
+        if(!$this->checkAccess('man.managers.list')){
+            return $this->redirect(['/man/default/info']);
+        }
+
         $data = new ActiveDataProvider([
-            'query'=>Manager::find(),
+            'query' => Manager::find(),
         ]);
-        return $this->render('list',['dataProvider'=>$data]);
+        return $this->render('list', ['dataProvider' => $data]);
     }
 
     /**
      * 创建管理员
      * @return string
+     * @permission man.managers.create
      */
-    public function actionCreate(){
+    public function actionCreate()
+    {
+        if(!$this->checkAccess('man.managers.create')){
+            return $this->redirect(['/man/default/info']);
+        }
+
         return $this->render('create');
     }
 
@@ -42,34 +55,80 @@ class ManagerController extends Controller{
      * @param $id integer 指定管理员id
      * @return string
      * @throws NotFoundHttpException
+     * @permission man.managers.update
      */
-    public function actionUpdate($id){
+    public function actionUpdate($id)
+    {
+        if(!$this->checkAccess('man.managers.update')){
+            return $this->redirect(['/man/default/info']);
+        }
+
         $manager = Manager::findOne($id);
-        if(!$manager){
+        if (!$manager) {
             throw new NotFoundHttpException("管理员:$id 不存在!");
         }
 
         $model = new UpdateForm();
-        if($model->load(\Yii::$app->request->post()) && $model->update()){
+        if ($model->load(\Yii::$app->request->post()) && $model->update()) {
             return $this->redirect(['list']);
         }
 
-        if(\Yii::$app->request->isGet){
+        if (\Yii::$app->request->isGet) {
             $model->id = $id;
             $model->username = $manager->username;
             $roles = $this->getAuth()->getRolesByUser($id);
-            if($role = current($roles)){
+            if ($role = current($roles)) {
                 $model->role = $role->name;
             }
         }
 
-        return $this->render('update',['model'=>$model]);
+        return $this->render('update', ['model' => $model]);
+    }
+
+    /**
+     * 删除指定管理员
+     * @param $id integer 指管理员id
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException
+     * @throws \Exception
+     * @permission man.managers.delete
+     */
+    public function actionDelete($id)
+    {
+        if(!$this->checkAccess('man.managers.delete')){
+            return $this->redirect(['/man/default/info']);
+        }
+
+        /* @var $manager \app\modules\man\models\Manager */
+        $manager = Manager::findOne($id);
+        if (!$manager) {
+            throw new NotFoundHttpException("管理员:$id 不存在!");
+        }
+        $manager->delete();
+        return $this->redirect(['list']);
     }
 
     /**
      * @return \yii\rbac\ManagerInterface
      */
-    protected function getAuth(){
+    protected function getAuth()
+    {
         return \Yii::$app->authManager;
+    }
+
+    /**
+     * 判断当前登录管理员是否满足指定权限
+     * @param $permission string 指定权限名
+     * @return boolean
+     */
+    protected function checkAccess($permission)
+    {
+        /* @var $manager \yii\web\User */
+        $manager = \Yii::$app->manager;
+        if (!$manager->can($permission)) {
+            \Yii::$app->session->setFlash(\Yii::$app->params['flashMessageParam'], "您没有进行该操作的权限({$permission})!");
+            return false;
+        }
+        return true;
     }
 }

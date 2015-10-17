@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="panel-heading"><?= Html::encode($this->title) ?></div>
     <div class="panel-body">
-        <?= Html::a('创建用户', ['create'], ['class' => 'btn btn-default']) ?>
+        <?= Html::a('创建管理员', ['create'], ['class' => 'btn btn-default']) ?>
     </div>
 
     <?= GridView::widget([

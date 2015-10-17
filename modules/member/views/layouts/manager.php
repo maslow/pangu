@@ -23,6 +23,16 @@ AppAsset::register($this);
 
 <?php $this->beginBody() ?>
     <div class="wrap">
+        <?php
+        if(Yii::$app->session->hasFlash(Yii::$app->params['flashMessageParam'])){
+            echo \yii\bootstrap\Alert::widget([
+                'options'=>[
+                    'class'=>'alert-warning',
+                ],
+                'body'=>Yii::$app->session->getFlash(Yii::$app->params['flashMessageParam']),
+            ]);
+        }
+        ?>
         <?= Breadcrumbs::widget([
             'homeLink'=>['label'=>'用户管理','url'=>\yii\helpers\Url::to('index')],
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],

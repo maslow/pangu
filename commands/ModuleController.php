@@ -50,6 +50,10 @@ class ModuleController extends Controller
         file_put_contents(\Yii::getAlias('@app/config/modules.php'),$content);
     }
 
+    /**
+     * 安装指定模块, 执行migrations操作.
+     * @param $id string 指定模块id
+     */
     protected function installModule($id){
         $this->stdout("\n....正在安装模块({$id}) ...");
         $migrationPath = $this->getMigrationPath($id);
@@ -59,6 +63,10 @@ class ModuleController extends Controller
         $this->stdout("....完成!");
     }
 
+    /**
+     * 卸载指定模块, 执行migrations清除操作
+     * @param $id string 指定模块的id
+     */
     protected function uninstallModule($id){
         $this->stdout("正在卸载模块{$id} ...");
         $migrationPath = $this->getMigrationPath($id);
