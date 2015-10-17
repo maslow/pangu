@@ -3,15 +3,15 @@
 namespace app\modules\man\models;
 
 use Yii;
+use yii\base\InvalidParamException;
 use yii\base\Model;
 
 /**
- * Class UpdateForm
+ * Class CreateForm
  * @package app\modules\man\models
  */
-class UpdateForm extends Model
+class CreateForm extends Model
 {
-    public $id;
     public $username;
     public $password;
     public $password_confirm;
@@ -23,12 +23,11 @@ class UpdateForm extends Model
     public function rules()
     {
         return [
-            [['id','username','role'], 'required'],
+            [['username', 'role', 'password', 'password_confirm'], 'required'],
             [['username', 'password'], 'string', 'min' => 3, 'max' => 32],
             ['role', 'string', 'max' => 32],
-            [['username'], 'exist', 'targetClass' => Manager::className()],
-            [['id'], 'exist', 'targetClass' => Manager::className()],
-            ['password_confirm','compare','compareAttribute'=>'password']
+            [['username'], 'unique', 'targetClass' => Manager::className()],
+            ['password_confirm', 'compare', 'compareAttribute' => 'password']
         ];
     }
 
@@ -49,25 +48,30 @@ class UpdateForm extends Model
      * 验证表单，并执行保存操作
      * @return bool
      */
-    public function update()
+    public function create()
     {
         if ($this->validate()) {
-            /* @var Manager $manager */
-            $manager = Manager::findOne($this->id);
+            $manager = new Manager();
             try {
-                if($this->password){
-                    $manager->password_hash = Yii::$app->security->generatePasswordHash($this->password);
-                }
+                $manager->username = $this->username;
+                $manager->password_hash = Yii::$app->security->generatePasswordHash($this->password);
                 $manager->updated_at = time();
+                $manager->created_at = time();
+                $manager->auth_key = Yii::$app->security->generateRandomString();
+                $manager->created_ip = Yii::$app->request->getUserIP();
+                $manager->created_by = Yii::$app->manager->identity->id;
+                $manager->locked = 0;
 
-                if($manager->save()){
+                if ($manager->save()) {
                     $role = $this->getAuth()->getRole($this->role);
-                    $this->getAuth()->revokeAll($manager->id);
-                    $this->getAuth()->assign($role,$manager->id);
+                    $this->getAuth()->assign($role, $manager->id);
                     return true;
+                }else{
+                    throw new InvalidParamException();
                 }
             } catch (\Exception $e) {
-                $this->addError('username', '该用户异常!');
+                Yii::error($manager->getErrors());
+                $this->addError('username', '写入数据异常!');
                 return false;
             }
         }
@@ -77,7 +81,8 @@ class UpdateForm extends Model
     /**
      * @return \yii\rbac\ManagerInterface
      */
-    protected function getAuth(){
+    protected function getAuth()
+    {
         return Yii::$app->authManager;
     }
 }

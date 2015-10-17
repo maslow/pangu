@@ -9,6 +9,7 @@
 namespace app\modules\man\controllers;
 
 
+use app\modules\man\models\CreateForm;
 use app\modules\man\models\Manager;
 use app\modules\man\models\UpdateForm;
 use yii\data\ActiveDataProvider;
@@ -47,7 +48,12 @@ class ManagerController extends Controller
             return $this->goNotAllowed();
         }
 
-        return $this->render('create');
+        $model = new CreateForm();
+        if($model->load(\Yii::$app->request->post()) && $model->create()){
+            return $this->redirect(['list']);
+        }
+
+        return $this->render('create',['model'=>$model]);
     }
 
     /**

@@ -28,7 +28,7 @@ class m151014_130657_create_table_manager extends Migration
             'updated_at' => time(),
             'created_at' => time(),
             'created_ip' => '127.0.0.1',
-            'created_by' => 0
+            'created_by' => 1
         ]);
     }
 

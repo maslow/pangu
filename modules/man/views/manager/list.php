@@ -22,19 +22,30 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'username',
             [
-                'value'=>function($row){
+                'value' => function ($row) {
                     $roles = Yii::$app->authManager->getRolesByUser($row->id);
-                    if($role = current($roles)) {
+                    if ($role = current($roles)) {
                         return $role->description;
-                    }else {
+                    } else {
                         return '-';
                     }
                 },
-                'label'=>'角色'
+                'label' => '角色'
             ],
+            [
+                'attribute' => 'created_by',
+                'value' => function ($row) {
+                    $c = \app\modules\man\models\Manager::findOne($row->created_by);
+                    return $c->username;
+                },
+            ],
+            'created_ip',
             'created_at:datetime',
             'updated_at:datetime',
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => '\yii\grid\ActionColumn',
+                'template' => '{update} {delete}',
+            ],
         ],
     ]); ?>
 

@@ -50,14 +50,14 @@ class Manager extends \yii\db\ActiveRecord implements IdentityInterface
     {
         return [
             'id' => 'ID',
-            'username' => 'Username',
+            'username' => '用户名',
             'password_hash' => 'Password Hash',
             'auth_key' => 'Auth Key',
             'locked' => 'Locked',
-            'updated_at' => 'Updated At',
-            'created_at' => 'Created At',
-            'created_ip' => 'Created Ip',
-            'created_by' => 'Created By',
+            'updated_at' => '更新时间',
+            'created_at' => '创建时间',
+            'created_ip' => '创建IP',
+            'created_by' => '创建者',
         ];
     }
 
