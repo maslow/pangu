@@ -36,6 +36,7 @@ AppAsset::register($this);
                 'options' => ['class' => 'navbar-nav navbar-right'],
                 'items' => [
                     ['label' => '首页', 'url' => ['/site/index']],
+                    ['label' => '注册', 'url' => ['/site/signup']],
                     Yii::$app->user->isGuest ?
                         ['label' => '登录', 'url' => ['/site/login']] :
                         ['label' => '退出 (' . Yii::$app->user->identity->username . ')',

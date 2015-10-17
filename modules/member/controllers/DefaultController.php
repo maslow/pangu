@@ -50,6 +50,7 @@ class DefaultController extends Controller
     public function actionSignup()
     {
         if (!\Yii::$app->user->isGuest) {
+            $this->sendFlashMessage("请退出当前登录才能进行注册！");
             return $this->goHome();
         }
 
