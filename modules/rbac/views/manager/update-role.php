@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'labelOptions' => ['class' => 'col-sm-1 control-label'],
     ]
 ]); ?>
-<?= $form->field($model, 'name')->hiddenInput() ?>
+<?= $form->field($model, 'name',['options'=>['style'=>'display:none;']])->hiddenInput() ?>
 <?= $form->field($model, 'description') ?>
 <?= $form->field($model, 'data')->textarea() ?>
 <?= $form->field($model, 'permissions')->checkboxList($permissions) ?>

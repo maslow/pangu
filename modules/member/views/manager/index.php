@@ -9,13 +9,12 @@ use yii\grid\GridView;
 $this->title = '用户列表';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="user-index">
+<div class="panel panel-default">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('创建用户', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    <div class="panel-heading"><?= Html::encode($this->title) ?></div>
+    <div class="panel-body">
+        <?= Html::a('创建用户', ['create'], ['class' => 'btn btn-default']) ?>
+    </div>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,

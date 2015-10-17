@@ -31,8 +31,8 @@ class CreateRoleForm extends Model
     public function attributeLabels()
     {
         return [
-            'name' => 'ID',
-            'description' => "名称",
+            'name' => "标识",
+            'description' => "标题",
             'data' => "备注"
         ];
     }

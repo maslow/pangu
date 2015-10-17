@@ -18,9 +18,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <table class="table .table-hover">
         <thead>
         <tr>
-            <th>Name</th>
-            <th>ID</th>
-            <th>Operation</th>
+            <th>角色名</th>
+            <th>标识</th>
+            <th>备注</th>
+            <th>权限</th>
+            <th>操作</th>
         </tr>
         </thead>
         <tbody>
@@ -28,7 +30,20 @@ $this->params['breadcrumbs'][] = $this->title;
             <tr>
                 <td><?= $role->description ?></td>
                 <td><?= $role->name ?></td>
-                <td><?= Html::a('Update',['manager/update-role','name'=>$role->name],['class'=>'btn']) ?></td>
+                <td><span class="text-muted"><?= $role->data?$role->data:'\\－'?></span></td>
+                <td>
+                    <?php $ps = Yii::$app->authManager->getPermissionsByRole($role->name);
+                    foreach($ps as $p): ?>
+                        <span class="label label-default" style="margin-top: 2px;"><?=$p->description?></span>
+                    <?php endforeach?>
+                </td>
+                <td>
+                    <a href="<?=Url::to(['manager/update-role','name'=>$role->name])?>"><span class="glyphicon glyphicon-pencil"></span></a>
+                    <a href="<?=Url::to(['manager/delete-role','name'=>$role->name])?>" data-confirm="您确定要删除此项吗？" data-method="post" data-pjax="0">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </a>
+
+                </td>
             </tr>
         <?php endforeach ?>
         </tbody>

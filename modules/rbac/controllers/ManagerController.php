@@ -53,7 +53,7 @@ class ManagerController extends \yii\web\Controller
 
         if (!\Yii::$app->request->isPost) {
             $model->name = $role->name;
-            $model->description = $role->name;
+            $model->description = $role->description;
             $model->data = $role->data;
         }
 
@@ -76,6 +76,8 @@ class ManagerController extends \yii\web\Controller
      */
     public function actionDeleteRole($name)
     {
+        $role = $this->getAuth()->getRole($name);
+        $this->getAuth()->remove($role);
         return $this->redirect(['roles']);
     }
 
