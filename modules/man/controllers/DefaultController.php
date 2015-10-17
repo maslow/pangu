@@ -17,6 +17,7 @@ class DefaultController extends Controller
     public function actionIndex()
     {
         if ($this->getManager()->isGuest) {
+            $this->sendFlashMessage("请登录后再进行操作或者您的登录已过期！");
             return $this->redirect(['default/login']);
         }
 
@@ -53,7 +54,7 @@ class DefaultController extends Controller
      */
     public function actionLogout(){
         $this->getManager()->logout(false);
-
+        $this->sendFlashMessage("您已安全退出，再见！");
         return $this->redirect(['default/login']);
     }
 
@@ -72,5 +73,13 @@ class DefaultController extends Controller
     protected function getManager()
     {
         return \Yii::$app->manager;
+    }
+
+    /**
+     * 发送通知信息到下一个请求页面
+     * @param $message string 要发送的信息
+     */
+    protected function sendFlashMessage($message){
+        \Yii::$app->session->setFlash(\Yii::$app->params['flashMessageParam'], $message);
     }
 }

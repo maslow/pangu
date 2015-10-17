@@ -6,9 +6,13 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model app\modules\member\models\SignupForm */
 /* @var $form ActiveForm */
+$this->title = "注册";
+$this->params['breadcrumbs'][] =$this->title;
 ?>
 <div class="default-signup">
-
+    <h1><?= Html::encode($this->title) ?></h1>
+    <p>Please fill the form to signup.</p>
+    <hr/>
     <?php $form = ActiveForm::begin([
         'id'=>'signup-form',
         'options'=>['class'=>'form-horizontal'],
@@ -24,7 +28,7 @@ use yii\widgets\ActiveForm;
     
         <div class="form-group">
             <div class="col-lg-offset-1 col-lg-11">
-                <?= Html::submitButton('Submit', ['class' => 'btn btn-primary']) ?>
+                <?= Html::submitButton('注册', ['class' => 'btn btn-primary']) ?>
             </div>
         </div>
     <?php ActiveForm::end(); ?>

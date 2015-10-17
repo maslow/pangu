@@ -6,7 +6,7 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model app\modules\member\models\LoginForm */
 /* @var $form ActiveForm */
-$this->title = 'Login';
+$this->title = '登录';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="default-login">
@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="form-group">
         <div class="col-lg-offset-1 col-lg-11">
-            <?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+            <?= Html::submitButton('登录', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
         </div>
     </div>
     <?php ActiveForm::end(); ?>

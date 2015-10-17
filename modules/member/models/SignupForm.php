@@ -34,9 +34,9 @@ class SignupForm extends Model
 
     public function attributeLabels(){
         return [
-            'username'=>'Username',
-            'password'=>'Password',
-            'password_confirm'=>'Confirm Password',
+            'username'=>'用户名',
+            'password'=>'密码',
+            'password_confirm'=>'重复密码',
         ];
     }
 

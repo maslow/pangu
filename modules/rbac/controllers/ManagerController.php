@@ -38,6 +38,7 @@ class ManagerController extends \yii\web\Controller
 
         $model = new CreateRoleForm();
         if ($model->load(\Yii::$app->request->post()) && $model->create()) {
+            $this->sendFlashMessage("创建角色成功！");
             return $this->redirect(['roles']);
         }
         return $this->render('create-role', ['model' => $model]);
@@ -64,6 +65,7 @@ class ManagerController extends \yii\web\Controller
         $model = new UpdateRoleForm();
 
         if ($model->load(\Yii::$app->request->post()) && $model->update()) {
+            $this->sendFlashMessage("更新角色成功！");
             return $this->redirect(['roles']);
         }
 
@@ -87,8 +89,10 @@ class ManagerController extends \yii\web\Controller
     }
 
     /**
-     * @param $name string
+     * 删除指定角色
+     * @param $name string 指定角色标识
      * @return \yii\web\Response
+     * @throws NotFoundHttpException
      * @permission rbac.roles.delete
      */
     public function actionDeleteRole($name)
@@ -98,7 +102,14 @@ class ManagerController extends \yii\web\Controller
         }
 
         $role = $this->getAuth()->getRole($name);
-        $this->getAuth()->remove($role);
+        if(!$role){
+            throw new NotFoundHttpException("要删除的角色不存在！");
+        }
+        if($this->getAuth()->remove($role)){
+            $this->sendFlashMessage("删除角色成功！");
+        }else{
+            $this->sendFlashMessage("删除角色失败！");
+        }
         return $this->redirect(['roles']);
     }
 
@@ -121,7 +132,7 @@ class ManagerController extends \yii\web\Controller
         /* @var $manager \yii\web\User */
         $manager = \Yii::$app->manager;
         if (!$manager->can($permission)) {
-            \Yii::$app->session->setFlash(\Yii::$app->params['flashMessageParam'], "您没有进行该操作的权限({$permission})!");
+            $this->sendFlashMessage("您没有进行该操作的权限({$permission})!");
             return false;
         }
         return true;
@@ -134,5 +145,13 @@ class ManagerController extends \yii\web\Controller
     protected function goNotAllowed()
     {
         return $this->redirect(\Yii::$app->params['route.not.allowed']);
+    }
+
+    /**
+     * 发送通知信息到下一个请求页面
+     * @param $message string 要发送的信息
+     */
+    protected function sendFlashMessage($message){
+        \Yii::$app->session->setFlash(\Yii::$app->params['flashMessageParam'], $message);
     }
 }

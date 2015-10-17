@@ -50,6 +50,7 @@ class ManagerController extends Controller
 
         $model = new CreateForm();
         if($model->load(\Yii::$app->request->post()) && $model->create()){
+            $this->sendFlashMessage("创建管理员成功！");
             return $this->redirect(['list']);
         }
 
@@ -76,6 +77,7 @@ class ManagerController extends Controller
 
         $model = new UpdateForm();
         if ($model->load(\Yii::$app->request->post()) && $model->update()) {
+            $this->sendFlashMessage("更新管理员信息成功！");
             return $this->redirect(['list']);
         }
 
@@ -110,7 +112,11 @@ class ManagerController extends Controller
         if (!$manager) {
             throw new NotFoundHttpException("管理员:$id 不存在!");
         }
-        $manager->delete();
+        if($manager->delete()){
+            $this->sendFlashMessage("删除管理员成功！");
+        }else{
+            $this->sendFlashMessage("删除管理员失败！");
+        }
         return $this->redirect(['list']);
     }
 
@@ -132,7 +138,7 @@ class ManagerController extends Controller
         /* @var $manager \yii\web\User */
         $manager = \Yii::$app->manager;
         if (!$manager->can($permission)) {
-            \Yii::$app->session->setFlash(\Yii::$app->params['flashMessageParam'], "您没有进行该操作的权限({$permission})!");
+            $this->sendFlashMessage("您没有进行该操作的权限({$permission})!");
             return false;
         }
         return true;
@@ -145,5 +151,13 @@ class ManagerController extends Controller
     protected function goNotAllowed()
     {
         return $this->redirect(\Yii::$app->params['route.not.allowed']);
+    }
+
+    /**
+     * 发送通知信息到下一个请求页面
+     * @param $message string 要发送的信息
+     */
+    protected function sendFlashMessage($message){
+        \Yii::$app->session->setFlash(\Yii::$app->params['flashMessageParam'], $message);
     }
 }

@@ -6,7 +6,7 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model app\modules\man\models\LoginForm */
 /* @var $form ActiveForm */
-$this->title = 'Login';
+$this->title = '登录';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="default-login">

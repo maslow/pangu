@@ -82,6 +82,7 @@ class ManagerController extends Controller
         $model = new CreateUserForm();
 
         if ($model->load(Yii::$app->request->post()) && $model->create()) {
+            $this->sendFlashMessage('创建用户成功！');
             return $this->redirect(['index']);
         } else {
             return $this->render('create', [
@@ -106,6 +107,7 @@ class ManagerController extends Controller
         $model = new UpdateUserForm();
 
         if ($model->load(Yii::$app->request->post()) && $model->update()) {
+            $this->sendFlashMessage('用户更新成功！');
             return $this->redirect(['index']);
         } else {
             $model->username = $user->username;
@@ -128,8 +130,11 @@ class ManagerController extends Controller
         if (!$this->checkAccess('member.users.delete')) {
             return $this->goNotAllowed();
         }
-        $this->findModel($id)->delete();
-
+        if($this->findModel($id)->delete()){
+            $this->sendFlashMessage("删除用户成功！");
+        }else{
+            $this->sendFlashMessage("删除用户失败！");
+        }
         return $this->redirect(['index']);
     }
 
@@ -159,7 +164,7 @@ class ManagerController extends Controller
         /* @var $manager \yii\web\User */
         $manager = \Yii::$app->manager;
         if (!$manager->can($permission)) {
-            \Yii::$app->session->setFlash(\Yii::$app->params['flashMessageParam'], "您没有进行该操作的权限({$permission})!");
+            $this->sendFlashMessage("您没有进行该操作的权限({$permission})!");
             return false;
         }
         return true;
@@ -172,5 +177,13 @@ class ManagerController extends Controller
     protected function goNotAllowed()
     {
         return $this->redirect(Yii::$app->params['route.not.allowed']);
+    }
+
+    /**
+     * 发送通知信息到下一个请求页面
+     * @param $message string 要发送的信息
+     */
+    protected function sendFlashMessage($message){
+        \Yii::$app->session->setFlash(\Yii::$app->params['flashMessageParam'], $message);
     }
 }
