@@ -32,7 +32,11 @@ php yii init
 
 ### 数据库
 
-1､ 创建数据库，编码utf8;
+1､ 创建数据库，编码utf8:
+
+```sql
+create database ey2b CHARACTER SET utf8 COLLATE utf8_unicode_ci; 
+```
 
 2、编辑 `config/db.php` 填写数据库连接配置：
 
@@ -53,6 +57,11 @@ return [
 php yii module/update
 ```
 
+### 初始化第一个超级管理员
+
+```command
+php yii init/admin
+```
 
   
  

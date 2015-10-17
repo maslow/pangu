@@ -3,6 +3,7 @@
 namespace app\commands;
 
 use yii\console\Controller;
+use yii\rbac\Role;
 
 class InitController extends Controller
 {
@@ -42,5 +43,27 @@ class InitController extends Controller
         } else {
             file_put_contents($index, file_get_contents($indexProd)) ? print($index . " to Prod Evn. \n") : print('error!');
         }
+    }
+
+    public function actionAdmin($user_id = 1){
+
+        $auth = \Yii::$app->authManager;
+        $role = new Role();
+        $role->name = 'super-admin';
+        $role->description = '超级管理员';
+
+        $this->stdout("..创建角色:{$role->description},正在初始化角色权限 ");
+        $auth->add($role);
+
+        $permissions = $auth->getPermissions();
+        foreach($permissions as $p){
+            $auth->addChild($role,$p);
+            $this->stdout('.');
+        }
+        $this->stdout("完成！\n");
+
+        $this->stdout("..初始化用户ID:{{$user_id}}为{$role->description}.\n");
+        $auth->assign($role,$user_id);
+        $this->stdout("..完成！\n");
     }
 }
