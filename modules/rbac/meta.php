@@ -8,31 +8,30 @@
 
 
 return [
-    'version'=>'1.0',
-    'description'=>'权限控制模块。',
+    'version' => '1.0',
+    'description' => '权限控制模块。',
 
-    'bootstrap'=>false,
-    'deps'=>[],
-    'man'=>[
-        'main'=>[
-            'url'=>'manager/index',
-            'name'=>'角色权限控制',
-            'permission'=>'rbac_index'
+    'bootstrap' => false,
+    'deps' => [],
+    'man' => [
+        'main' => [
+            'name' => '角色控制',
+            'url' => ['/rbac/manager/roles'],
         ],
-        'sub'=>[
-            '角色管理'=>[
-                'url'=>'manager/roles',
-                'permission'=>'rbac_roles'
+        'sub' => [
+            [
+                'name' => '管理系统角色',
+                'url' => ['/rbac/manager/roles'],
             ],
-            '权限管理'=>[
-                'url'=>'manager/permissions',
-                'permission'=>'rbac_permissions'
+            [
+                'name' => '创建系统角色',
+                'url' => ['/rbac/manager/create-role'],
             ],
         ],
-        'permissions'=>[
-            'rbac_index'=>'角色权限控制',
-            'rbac_roles'=>'角色管理',
-            'rbac_permissions'=>'权限管理',
+        'permissions' => [
+            'rbac.roles.create-role' => '创建系统角色',
+            'rbac.roles.update-role' => '更新系统角色',
+            'rbac.roles.delete-role' => '删除系统角色',
         ],
     ],
 ];

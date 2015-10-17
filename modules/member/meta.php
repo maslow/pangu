@@ -14,26 +14,27 @@ return [
     'bootstrap' => true,
     'man' => [
         'main' => [
-            'url' => 'manager/index',
             'name' => '用户管理',
-            'permission' => 'member_list'
+            'url' => ['/member/manager/index'],
         ],
         'sub' => [
-            '添加用户' => [
-                'url' => 'manager/create',
-                'permission' => 'member_create'
+            [
+                'name' => '管理用户',
+                'url' => ['/member/manager/index'],
             ],
-            '管理用户' => [
-                'url' => 'manager/index',
-                'permission' => 'member_list'
+            [
+                'name' => '添加用户',
+                'url' => ['/member/manager/create'],
             ],
         ],
         'permissions' => [
-            'member_create' => '添加用户',
-            'member_list' => '管理用户',
-            'member_edit' => '编辑用户',
-            'member_delete' => '删除用户',
+            'member.create' => '添加用户',
+            'member.list' => '管理用户',
+            'member.update' => '更新用户',
+            'member.delete' => '删除用户',
         ],
     ],
-    'deps' => []
+    'deps' => [
+
+    ]
 ];

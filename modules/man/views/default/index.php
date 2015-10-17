@@ -21,12 +21,12 @@ NavBar::begin([
 $navItems = [];
 // 生成导航链接数据 $navItems
 foreach ($menu as $id => $man) {
-    $sub = [];
+    $subs = [];
     if (isset($man['sub'])) {
-        foreach ($man['sub'] as $name => $value) {
-            $sub [] = [
-                'label' => $name,
-                'url' => $value['url'],
+        foreach ($man['sub'] as $s) {
+            $subs [] = [
+                'label' => $s['name'],
+                'url' => $s['url'],
                 'linkOptions' => ['target' => 'sub-container']
             ];
         }
@@ -35,7 +35,7 @@ foreach ($menu as $id => $man) {
         'label' => $man['main']['name'],
         'url' => $man['main']['url'],
         'linkOptions' => ['target' => 'sub-container'],
-        'items' => $sub,
+        'items' => $subs,
     ];
 }
 if(!$manager->isGuest){

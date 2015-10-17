@@ -20,21 +20,11 @@ class DefaultController extends Controller
             return $this->redirect(['default/login']);
         }
 
-        /* 根据所有模块权限，获取所有模块man配置信息 */
+        /* 获取所有模块man配置信息 */
         $modules = Module::getInstance()->moduleManager->getModules();
         $menu = [];
         foreach ($modules as $id => $m) {
-            if ($m['man'] !== false && $this->getManager()->can($m['man']['main']['permission'])) {
-                if (isset($m['man']['sub'])) {
-                    // 转换sub下url格式
-                    foreach ($m['man']['sub'] as $name => $v) {
-                        $m['man']['sub'][$name]['url'] = ["/$id/{$v['url']}"];
-                        if(!$this->getManager()->can($m['man']['sub'][$name]['permission']))
-                            unset($m['man']['sub'][$name]);
-                    }
-                }
-                // 转换url格式
-                $m['man']['main']['url'] = ["/$id/{$m['man']['main']['url']}"];
+            if ($m['man'] !== false) {
                 $menu[$id] = $m['man'];
             }
         }
