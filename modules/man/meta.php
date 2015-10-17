@@ -11,7 +11,22 @@ return [
     'version'=>'1.0',
     'description'=>'中央控制台模块。',
 
-    'man'=>false,
     'bootstrap'=>true,
-    'deps'=>[]
+    'deps'=>[],
+    'man'=>[
+        'main'=>[
+            'name'=>'管理员控制',
+            'url'=>['/man/manager/list']
+        ],
+        'sub'=>[
+            [
+                'name'=>'管理员管理',
+                'url'=>['/man/manager/list']
+            ],
+            [
+                'name'=>'创建管理员',
+                'url'=>['/man/manager/create']
+            ],
+        ]
+    ],
 ];

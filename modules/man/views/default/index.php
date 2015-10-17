@@ -50,7 +50,7 @@ echo Nav::widget([
 ]);
 NavBar::end();
 ?>
-<iframe src="<?= \yii\helpers\Url::to(['/rbac/manager/roles']) ?>" name="sub-container" id="iframepage"
+<iframe src="<?= \yii\helpers\Url::to(['/man/default/info']) ?>" name="sub-container" id="iframepage"
         frameborder="0" scrolling="no" style="width: 100%;min-height: 500px;" onLoad="iFrameHeight()">
 </iframe>
 
