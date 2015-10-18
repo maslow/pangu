@@ -8,6 +8,10 @@ use yii\base\BootstrapInterface;
 
 class Module extends \yii\base\Module implements BootstrapInterface
 {
+
+    const EVENT_LOGIN_FAIL = 'login.fail';
+    const EVENT_LOGIN_SUCCESS = 'login.success';
+
     public $controllerNamespace = 'app\modules\man\controllers';
 
     public function init()

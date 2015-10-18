@@ -4,6 +4,7 @@ namespace app\modules\man\models;
 
 use app\modules\man\Module;
 use Yii;
+use yii\base\Event;
 use yii\base\Model;
 
 /**
@@ -44,22 +45,25 @@ class LoginForm extends Model
      */
     public function login()
     {
+        $event = new LoginEvent();
+        $event->form = $this;
         if ($this->validate()) {
             /* @var Manager $manager */
             $manager = Manager::findOne(['username' => $this->username]);
             try {
                 if ($manager && Yii::$app->security->validatePassword($this->password, $manager->password_hash)) {
                     $this->getManager()->login($manager);
+                    Event::trigger(Module::className(),Module::EVENT_LOGIN_SUCCESS,$event);
                     return true;
                 } else {
                     $this->addError('username', '用户名密码不匹配');
-                    return false;
                 }
             } catch (\Exception $e) {
+                Yii::error($e->getMessage());
                 $this->addError('username', '该用户异常!');
-                return false;
             }
         }
+        Event::trigger(Module::className(),Module::EVENT_LOGIN_FAIL,$event);
         return false;
     }
 
@@ -70,4 +74,12 @@ class LoginForm extends Model
     protected function getManager(){
         return Yii::$app->manager;
     }
+}
+
+/**
+ * Class LoginEvent
+ * @package app\modules\man\models
+ */
+class LoginEvent extends Event{
+    public $form;
 }
