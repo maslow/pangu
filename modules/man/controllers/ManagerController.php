@@ -12,6 +12,8 @@ namespace app\modules\man\controllers;
 use app\modules\man\models\CreateForm;
 use app\modules\man\models\Manager;
 use app\modules\man\models\UpdateForm;
+use app\modules\man\Module;
+use yii\base\Event;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -27,7 +29,7 @@ class ManagerController extends Controller
      */
     public function actionList()
     {
-        if(!$this->checkAccess('man.managers.list')){
+        if (!$this->checkAccess('man.managers.list')) {
             return $this->goNotAllowed();
         }
 
@@ -44,17 +46,16 @@ class ManagerController extends Controller
      */
     public function actionCreate()
     {
-        if(!$this->checkAccess('man.managers.create')){
+        if (!$this->checkAccess('man.managers.create')) {
             return $this->goNotAllowed();
         }
 
         $model = new CreateForm();
-        if($model->load(\Yii::$app->request->post()) && $model->create()){
-            $this->sendFlashMessage("创建管理员成功！");
+        if ($model->load(\Yii::$app->request->post()) && $model->create()) {
             return $this->redirect(['list']);
         }
 
-        return $this->render('create',['model'=>$model]);
+        return $this->render('create', ['model' => $model]);
     }
 
     /**
@@ -66,7 +67,7 @@ class ManagerController extends Controller
      */
     public function actionUpdate($id)
     {
-        if(!$this->checkAccess('man.managers.update')){
+        if (!$this->checkAccess('man.managers.update')) {
             return $this->goNotAllowed();
         }
 
@@ -77,7 +78,6 @@ class ManagerController extends Controller
 
         $model = new UpdateForm();
         if ($model->load(\Yii::$app->request->post()) && $model->update()) {
-            $this->sendFlashMessage("更新管理员信息成功！");
             return $this->redirect(['list']);
         }
 
@@ -103,20 +103,24 @@ class ManagerController extends Controller
      */
     public function actionDelete($id)
     {
-        if(!$this->checkAccess('man.managers.delete')){
+        if (!$this->checkAccess('man.managers.delete')) {
             return $this->goNotAllowed();
         }
 
         /* @var $manager \app\modules\man\models\Manager */
         $manager = Manager::findOne($id);
+        $event = new DeleteManagerEvent(['manager' => $manager]);
+
         if (!$manager) {
             throw new NotFoundHttpException("管理员:$id 不存在!");
         }
-        if($manager->delete()){
-            $this->sendFlashMessage("删除管理员成功！");
-        }else{
-            $this->sendFlashMessage("删除管理员失败！");
+
+        if ($manager->delete()) {
+            Event::trigger(Module::className(), Module::EVENT_DELETE_MANAGER_SUCCESS, $event);
+        } else {
+            Event::trigger(Module::className(), Module::EVENT_DELETE_MANAGER_FAIL, $event);
         }
+
         return $this->redirect(['list']);
     }
 
@@ -137,10 +141,14 @@ class ManagerController extends Controller
     {
         /* @var $manager \yii\web\User */
         $manager = \Yii::$app->manager;
+
         if (!$manager->can($permission)) {
-            $this->sendFlashMessage("您没有进行该操作的权限({$permission})!");
+            $e = new PermissionRequiredEvent();
+            $e->permission = $permission;
+            Event::trigger(Module::className(), Module::EVENT_PERMISSION_REQUIRED, $e);
             return false;
         }
+
         return true;
     }
 
@@ -153,11 +161,23 @@ class ManagerController extends Controller
         return $this->redirect(\Yii::$app->params['route.not.allowed']);
     }
 
-    /**
-     * 发送通知信息到下一个请求页面
-     * @param $message string 要发送的信息
-     */
-    protected function sendFlashMessage($message){
-        \Yii::$app->session->setFlash(\Yii::$app->params['flashMessageParam'], $message);
-    }
+
+}
+
+/**
+ * Class PermissionRequiredEvent
+ * @package app\modules\man\controllers
+ */
+class PermissionRequiredEvent extends Event
+{
+    public $permission;
+}
+
+/**
+ * Class DeleteManagerEvent
+ * @package app\modules\man\controllers
+ */
+class DeleteManagerEvent extends Event
+{
+    public $manager;
 }

@@ -2,7 +2,9 @@
 
 namespace app\modules\man\models;
 
+use app\modules\man\Module;
 use Yii;
+use yii\base\Event;
 use yii\base\Model;
 
 /**
@@ -23,12 +25,12 @@ class UpdateForm extends Model
     public function rules()
     {
         return [
-            [['id','username','role'], 'required'],
+            [['id', 'username', 'role'], 'required'],
             [['username', 'password'], 'string', 'min' => 3, 'max' => 32],
             ['role', 'string', 'max' => 32],
             [['username'], 'exist', 'targetClass' => Manager::className()],
             [['id'], 'exist', 'targetClass' => Manager::className()],
-            ['password_confirm','compare','compareAttribute'=>'password']
+            ['password_confirm', 'compare', 'compareAttribute' => 'password']
         ];
     }
 
@@ -51,33 +53,51 @@ class UpdateForm extends Model
      */
     public function update()
     {
+        $event = new UpdateEvent(['model' => $this]);
         if ($this->validate()) {
             /* @var Manager $manager */
             $manager = Manager::findOne($this->id);
             try {
-                if($this->password){
+                if ($this->password) {
                     $manager->password_hash = Yii::$app->security->generatePasswordHash($this->password);
                 }
                 $manager->updated_at = time();
 
-                if($manager->save()){
+                if ($manager->save()) {
                     $role = $this->getAuth()->getRole($this->role);
+                    if (!$role) {
+                        throw new \InvalidArgumentException("角色不存在.");
+                    }
                     $this->getAuth()->revokeAll($manager->id);
-                    $this->getAuth()->assign($role,$manager->id);
+                    $this->getAuth()->assign($role, $manager->id);
+                    Event::trigger(Module::className(), Module::EVENT_UPDATE_MANAGER_SUCCESS, $event);
                     return true;
+                } else {
+                    Yii::error($this->getErrors());
                 }
             } catch (\Exception $e) {
+                Yii::error($e->getMessage());
                 $this->addError('username', '该用户异常!');
-                return false;
             }
         }
+        Event::trigger(Module::className(),Module::EVENT_UPDATE_MANAGER_FAIL,$event);
         return false;
     }
 
     /**
      * @return \yii\rbac\ManagerInterface
      */
-    protected function getAuth(){
+    protected function getAuth()
+    {
         return Yii::$app->authManager;
     }
+}
+
+/**
+ * Class UpdateEvent
+ * @package app\modules\man\models
+ */
+class UpdateEvent extends Event
+{
+    public $model;
 }

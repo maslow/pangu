@@ -9,7 +9,7 @@
 
 return [
     'version' => '1.0',
-    'description' => '测试插件模块。',
+    'description' => 'FlashMessage插件，将消息发送到下一个请求的页面。',
 
     'bootstrap' => true,
     'man' => false,

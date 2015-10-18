@@ -45,8 +45,7 @@ class LoginForm extends Model
      */
     public function login()
     {
-        $event = new LoginEvent();
-        $event->form = $this;
+        $event = new LoginEvent(['model'=>$this]);
         if ($this->validate()) {
             /* @var Manager $manager */
             $manager = Manager::findOne(['username' => $this->username]);
@@ -81,5 +80,5 @@ class LoginForm extends Model
  * @package app\modules\man\models
  */
 class LoginEvent extends Event{
-    public $form;
+    public $model;
 }

@@ -4,6 +4,7 @@ namespace app\modules\man\controllers;
 
 use app\modules\man\models\LoginForm;
 use app\modules\man\Module;
+use yii\base\Event;
 use yii\web\Controller;
 
 class DefaultController extends Controller
@@ -17,6 +18,7 @@ class DefaultController extends Controller
     public function actionIndex()
     {
         if ($this->getManager()->isGuest) {
+            Event::trigger(Module::className(),Module::EVENT_LOGIN_REQUIRED);
             $this->sendFlashMessage("请登录后再进行操作或者您的登录已过期！");
             return $this->redirect(['default/login']);
         }
@@ -53,8 +55,10 @@ class DefaultController extends Controller
      * @return \yii\web\Response
      */
     public function actionLogout(){
+        Event::trigger(Module::className(),Module::EVENT_BEFORE_LOGOUT);
         $this->getManager()->logout(false);
         $this->sendFlashMessage("您已安全退出，再见！");
+        Event::trigger(Module::className(),Module::EVENT_AFTER_LOGOUT);
         return $this->redirect(['default/login']);
     }
 
@@ -63,6 +67,11 @@ class DefaultController extends Controller
      * @return string
      */
     public function actionInfo(){
+        if ($this->getManager()->isGuest) {
+            Event::trigger(Module::className(),Module::EVENT_LOGIN_REQUIRED);
+            $this->sendFlashMessage("请登录后再进行操作或者您的登录已过期！");
+            return $this->redirect(['default/login']);
+        }
         return $this->render('info');
     }
 
@@ -80,6 +89,6 @@ class DefaultController extends Controller
      * @param $message string 要发送的信息
      */
     protected function sendFlashMessage($message){
-        \Yii::$app->session->setFlash(\Yii::$app->params['flashMessageParam'], $message);
+        //\Yii::$app->session->setFlash(\Yii::$app->params['flashMessageParam'], $message);
     }
 }

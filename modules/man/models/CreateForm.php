@@ -2,7 +2,9 @@
 
 namespace app\modules\man\models;
 
+use app\modules\man\Module;
 use Yii;
+use yii\base\Event;
 use yii\base\InvalidParamException;
 use yii\base\Model;
 
@@ -50,6 +52,7 @@ class CreateForm extends Model
      */
     public function create()
     {
+        $event = new CreateEvent(['model'=>$this]);
         if ($this->validate()) {
             $manager = new Manager();
             try {
@@ -64,17 +67,22 @@ class CreateForm extends Model
 
                 if ($manager->save()) {
                     $role = $this->getAuth()->getRole($this->role);
+                    if(!$role){
+                        throw new \InvalidArgumentException("角色不存在.");
+                    }
                     $this->getAuth()->assign($role, $manager->id);
+                    Event::trigger(Module::className(),Module::EVENT_CREATE_MANAGER_SUCCESS,$event);
                     return true;
                 }else{
                     throw new InvalidParamException();
                 }
             } catch (\Exception $e) {
                 Yii::error($manager->getErrors());
+                Yii::error($e->getMessage());
                 $this->addError('username', '写入数据异常!');
-                return false;
             }
         }
+        Event::trigger(Module::className(),Module::EVENT_CREATE_MANAGER_FAIL,$event);
         return false;
     }
 
@@ -85,4 +93,8 @@ class CreateForm extends Model
     {
         return Yii::$app->authManager;
     }
+}
+
+class CreateEvent extends Event{
+    public $model;
 }
