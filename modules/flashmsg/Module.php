@@ -27,8 +27,6 @@ class Module extends \yii\base\Module implements BootstrapInterface
         $handler = [$this, 'sendFlashMessage'];
         Event::on(ManModule::className(), ManModule::EVENT_LOGIN_FAIL, $handler, "登录失败，请重试！");
 
-        Event::on(ManModule::className(), ManModule::EVENT_LOGIN_SUCCESS, $handler, "登录成功！");
-
         Event::on(ManModule::className(), ManModule::EVENT_LOGIN_REQUIRED, $handler, "请登录后再进行操作或者您的登录已过期!");
 
         Event::on(ManModule::className(), ManModule::EVENT_AFTER_LOGOUT, $handler, "您已安全退出，再见!");
