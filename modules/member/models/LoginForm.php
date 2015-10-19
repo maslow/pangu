@@ -2,7 +2,9 @@
 
 namespace app\modules\member\models;
 
+use app\modules\member\Module;
 use Yii;
+use yii\base\Event;
 use yii\base\Model;
 
 /**
@@ -49,16 +51,24 @@ class LoginForm extends Model
             try {
                 if ($user && Yii::$app->security->validatePassword($this->password, $user->password_hash)) {
                     Yii::$app->user->login($user);
+                    Event::trigger(Module::className(),Module::EVENT_LOGIN_SUCCESS,new LoginEvent(['model'=>$this]));
                     return true;
                 } else {
                     $this->addError('username', '用户名密码不匹配');
-                    return false;
                 }
             } catch (\Exception $e) {
                 $this->addError('username', '该用户异常!');
-                return false;
             }
         }
+        Event::trigger(Module::className(),Module::EVENT_LOGIN_FAIL,new LoginEvent(['model'=>$this]));
         return false;
     }
+}
+
+/**
+ * Class LoginEvent
+ * @package app\modules\member\models
+ */
+class LoginEvent extends Event{
+    public $model;
 }

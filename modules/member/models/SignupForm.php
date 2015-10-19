@@ -9,7 +9,9 @@
 namespace app\modules\member\models;
 
 
+use app\modules\member\Module;
 use yii\base\ErrorException;
+use yii\base\Event;
 use yii\base\Model;
 
 /**
@@ -56,17 +58,26 @@ class SignupForm extends Model
             $user->created_at = time();
             try {
                 if ($user->save()) {
+                    Event::trigger(Module::className(),Module::EVENT_SIGNUP_SUCCESS,new SignupEvent(['model'=>$this]));
                     return true;
                 }else{
-                    \Yii::error(var_export($user->getFirstErrors(),true),__METHOD__);
+                    \Yii::error($user->getErrors(),__METHOD__);
                     throw new ErrorException('写入数据异常!');
                 }
             }catch (\Exception $e){
+                \Yii::error($e->getMessage(),__METHOD__);
                 $this->addError('username','系统异常!');
-                return false;
             }
-        }else{
-            return false;
         }
+        Event::trigger(Module::className(),Module::EVENT_SIGNUP_FAIL,new SignupEvent(['model'=>$this]));
+        return false;
     }
+}
+
+/**
+ * Class SignupEvent
+ * @package app\modules\member\models
+ */
+class SignupEvent extends Event{
+    public $model;
 }

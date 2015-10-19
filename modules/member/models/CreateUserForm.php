@@ -2,7 +2,9 @@
 
 namespace app\modules\member\models;
 
+use app\modules\member\Module;
 use Yii;
+use yii\base\Event;
 use yii\base\InvalidParamException;
 use yii\base\Model;
 
@@ -58,16 +60,26 @@ class CreateUserForm extends Model
                 $user->auth_key = Yii::$app->security->generateRandomString();
 
                 if ($user->save()) {
+                    Event::trigger(Module::className(), Module::EVENT_CREATE_USER_SUCCESS, new CreateUserEvent(['model' => $this]));
                     return true;
-                }else{
+                } else {
+                    Yii::error($user->getErrors(), __METHOD__);
                     throw new InvalidParamException();
                 }
             } catch (\Exception $e) {
-                Yii::error($user->getErrors());
                 $this->addError('username', '写入数据异常!');
-                return false;
             }
         }
+        Event::trigger(Module::className(), Module::EVENT_CREATE_USER_FAIL, new CreateUserEvent(['model' => $this]));
         return false;
     }
+}
+
+/**
+ * Class CreateUserEvent
+ * @package app\modules\member\models
+ */
+class CreateUserEvent extends Event
+{
+    public $model;
 }

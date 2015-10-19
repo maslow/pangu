@@ -9,6 +9,7 @@ use yii\base\BootstrapInterface;
 class Module extends \yii\base\Module implements BootstrapInterface
 {
 
+    const EVENT_BEFORE_LOGIN = 'beforeLogin';
     const EVENT_LOGIN_FAIL = 'loginFail';
     const EVENT_LOGIN_SUCCESS = 'loginSuccess';
 

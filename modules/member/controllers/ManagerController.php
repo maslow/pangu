@@ -4,8 +4,10 @@ namespace app\modules\member\controllers;
 
 use app\modules\member\models\CreateUserForm;
 use app\modules\member\models\UpdateUserForm;
-use Yii;
+use app\modules\member\Module;
 use app\modules\member\models\User;
+use Yii;
+use yii\base\Event;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -79,10 +81,10 @@ class ManagerController extends Controller
             return $this->goNotAllowed();
         }
 
-        $model = new CreateUserForm();
+        Event::trigger(Module::className(), Module::EVENT_BEFORE_CREATE_USER);
 
+        $model = new CreateUserForm();
         if ($model->load(Yii::$app->request->post()) && $model->create()) {
-            $this->sendFlashMessage('创建用户成功！');
             return $this->redirect(['index']);
         } else {
             return $this->render('create', [
@@ -103,11 +105,13 @@ class ManagerController extends Controller
         if (!$this->checkAccess('member.users.update')) {
             return $this->goNotAllowed();
         }
+
+        Event::trigger(Module::className(), Module::EVENT_BEFORE_UPDATE_USER);
+
         $user = $this->findModel($id);
         $model = new UpdateUserForm();
 
         if ($model->load(Yii::$app->request->post()) && $model->update()) {
-            $this->sendFlashMessage('用户更新成功！');
             return $this->redirect(['index']);
         } else {
             $model->username = $user->username;
@@ -130,10 +134,13 @@ class ManagerController extends Controller
         if (!$this->checkAccess('member.users.delete')) {
             return $this->goNotAllowed();
         }
-        if($this->findModel($id)->delete()){
-            $this->sendFlashMessage("删除用户成功！");
-        }else{
-            $this->sendFlashMessage("删除用户失败！");
+
+        Event::trigger(Module::className(), Module::EVENT_BEFORE_DELETE_USER);
+        $user = $this->findModel($id);
+        if ($user->delete()) {
+            Event::trigger(Module::className(),Module::EVENT_DELETE_USER_SUCCESS,new DeleteUserEvent(['model'=>$user]));
+        } else {
+            Event::trigger(Module::className(),Module::EVENT_DELETE_USER_FAIL,new DeleteUserEvent(['model'=>$user]));
         }
         return $this->redirect(['index']);
     }
@@ -164,7 +171,7 @@ class ManagerController extends Controller
         /* @var $manager \yii\web\User */
         $manager = \Yii::$app->manager;
         if (!$manager->can($permission)) {
-            $this->sendFlashMessage("您没有进行该操作的权限({$permission})!");
+            Event::trigger(Module::className(),Module::EVENT_PERMISSION_REQUIRED,new PermissionEvent(['permission'=>$permission]));
             return false;
         }
         return true;
@@ -179,11 +186,18 @@ class ManagerController extends Controller
         return $this->redirect(Yii::$app->params['route.not.allowed']);
     }
 
-    /**
-     * 发送通知信息到下一个请求页面
-     * @param $message string 要发送的信息
-     */
-    protected function sendFlashMessage($message){
-        \Yii::$app->session->setFlash(\Yii::$app->params['flashMessageParam'], $message);
-    }
+}
+
+/**
+ * Class PermissionEvent
+ * @package app\modules\member\controllers
+ */
+class PermissionEvent extends Event
+{
+    public $permission;
+}
+
+class DeleteUserEvent extends Event
+{
+    public $model;
 }

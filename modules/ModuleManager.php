@@ -13,6 +13,10 @@ use yii\base\Component;
 use yii\base\ErrorException;
 
 
+/**
+ * Class ModuleManager
+ * @package app\modules
+ */
 class ModuleManager extends Component
 {
 

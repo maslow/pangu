@@ -2,7 +2,9 @@
 
 namespace app\modules\member\models;
 
+use app\modules\member\Module;
 use Yii;
+use yii\base\Event;
 use yii\base\InvalidParamException;
 use yii\base\Model;
 
@@ -50,25 +52,34 @@ class UpdateUserForm extends Model
     {
         if ($this->validate()) {
             /* @var $user User */
-            $user = User::findOne(['username'=>$this->username]);
+            $user = User::findOne(['username' => $this->username]);
             try {
-                if($this->password){
+                if ($this->password) {
                     $user->password_hash = Yii::$app->security->generatePasswordHash($this->password);
                 }
                 $user->updated_at = time();
                 $user->auth_key = Yii::$app->security->generateRandomString();
 
                 if ($user->save()) {
+                    Event::trigger(Module::className(), Module::EVENT_UPDATE_USER_SUCCESS);
                     return true;
-                }else{
+                } else {
+                    Yii::error($user->getErrors(), __METHOD__);
                     throw new InvalidParamException();
                 }
             } catch (\Exception $e) {
-                Yii::error($user->getErrors());
                 $this->addError('username', '写入数据异常!');
-                return false;
             }
         }
         return false;
     }
+}
+
+/**
+ * Class UpdateUserEvent
+ * @package app\modules\member\models
+ */
+class UpdateUserEvent extends Event
+{
+    public $model;
 }

@@ -81,10 +81,12 @@ class ModuleController extends Controller
     protected function uninstallModule($id)
     {
         $this->stdout("正在卸载模块{$id} ...");
-        $migrationPath = $this->getMigrationPath($id);
-        $migrationTable = $this->getMigrationTableName($id);
-        $cmd = "php yii migrate/to 0 --interactive=0 --migrationPath={$migrationPath} --migrationTable={$migrationTable}";
-        system($cmd);
+        if($this->getModuleManager()->hasMigration($id)){
+            $migrationPath = $this->getMigrationPath($id);
+            $migrationTable = $this->getMigrationTableName($id);
+            $cmd = "php yii migrate/to 0 --interactive=0 --migrationPath={$migrationPath} --migrationTable={$migrationTable}";
+            system($cmd);
+        }
         $this->stdout("完成！\n");
         if ($this->confirm("是否删除该模块目录？")) {
             $path = $this->getModuleManager()->getPath($id);
