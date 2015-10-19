@@ -45,7 +45,11 @@ class CreateRoleForm extends Model
     {
         if ($this->validate()) {
             $role = new Role();
-            // TODO 判断$role->name是否已存在
+            // 判断角色名是否已存在
+            if($this->getAuth()->getRole($this->name)){
+                $this->addError('name',"角色名已存在！");
+                return false;
+            }
             $role->name = $this->name;
             $role->description = $this->description;
             $role->data = $this->data;
