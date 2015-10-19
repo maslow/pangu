@@ -20,16 +20,6 @@ class m151014_130657_create_table_manager extends Migration
             'created_ip' => $this->string(16)->notNull(),
             'created_by' => $this->integer()->notNull()
         ], $this->tableOptions);
-        $this->insert('{{%manager}}', [
-            'username' => 'ey2b',
-            'password_hash' => Yii::$app->security->generatePasswordHash('vip-design.net'),
-            'auth_key' => Yii::$app->security->generateRandomString(),
-            'locked' => false,
-            'updated_at' => time(),
-            'created_at' => time(),
-            'created_ip' => '127.0.0.1',
-            'created_by' => 1
-        ]);
     }
 
     public function safeDown()
