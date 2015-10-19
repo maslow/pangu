@@ -14,6 +14,7 @@ return [
     'bootstrap' => true,
     'man' => false,
     'deps' => [
-        'man'
+        'man',
+        'member',
     ],
 ];
