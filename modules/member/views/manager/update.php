@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="form-group">
         <div class="col-sm-offset-1 col-sm-11">
-            <?= Html::submitButton('创建', ['class' => 'btn btn-primary', 'name' => 'update-user']) ?>
+            <?= Html::submitButton('更新', ['class' => 'btn btn-primary', 'name' => 'update-user']) ?>
         </div>
     </div>
 <?php ActiveForm::end(); ?>
