@@ -16,5 +16,6 @@ return [
     'deps' => [
         'man',
         'member',
+        'rbac',
     ],
 ];
