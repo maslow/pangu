@@ -9,6 +9,8 @@
 namespace app\modules\rbac\models;
 
 
+use app\modules\rbac\Module;
+use yii\base\Event;
 use yii\base\Model;
 use yii\rbac\Role;
 
@@ -23,7 +25,7 @@ class UpdateRoleForm extends Model
     public function rules()
     {
         return [
-            [['name', 'description','permissions'], 'required'],
+            [['name', 'description', 'permissions'], 'required'],
             ['name', 'string', 'min' => 3, 'max' => 16],
             ['description', 'string', 'min' => 3, 'max' => 16],
             ['data', 'string']
@@ -36,7 +38,7 @@ class UpdateRoleForm extends Model
             'name' => '标识',
             'description' => "标题",
             'data' => "备注",
-            'permissions' =>'权限'
+            'permissions' => '权限'
         ];
     }
 
@@ -48,27 +50,41 @@ class UpdateRoleForm extends Model
     {
         if ($this->validate()) {
             $role = $this->getAuth()->getRole($this->name);
-            // TODO 判断$role是否合法
-            $role->description = $this->description;
-            $role->data = $this->data;
+            if($role){
+                $role->description = $this->description;
+                $role->data = $this->data;
 
-            $this->getAuth()->removeChildren($role);
-            foreach($this->permissions as $name){
-                $p = $this->getAuth()->getPermission($name);
-                $this->getAuth()->addChild($role,$p);
+                $this->getAuth()->removeChildren($role);
+                foreach ($this->permissions as $name) {
+                    $p = $this->getAuth()->getPermission($name);
+                    $this->getAuth()->addChild($role, $p);
+                }
+                $this->getAuth()->update($role->name, $role);
+                Event::trigger(Module::className(),Module::EVENT_UPDATE_ROLE_SUCCESS,new UpdateRoleEvent(['model'=>$this]));
+                return true;
+            }else{
+                $this->addError('name','角色不存在！');
             }
-            $this->getAuth()->update($role->name,$role);
-            return true;
-        } else {
-            return false;
         }
+        Event::trigger(Module::className(),Module::EVENT_UPDATE_ROLE_FAIL,new UpdateRoleEvent(['model'=>$this]));
+        return false;
     }
 
     /**
      * 莸取authManager组件
      * @return \yii\rbac\ManagerInterface
      */
-    protected function getAuth(){
+    protected function getAuth()
+    {
         return \Yii::$app->authManager;
     }
+}
+
+/**
+ * Class UpdateRoleEvent
+ * @package app\modules\rbac\models
+ */
+class UpdateRoleEvent extends Event
+{
+    public $model;
 }

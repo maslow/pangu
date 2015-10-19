@@ -4,6 +4,8 @@ namespace app\modules\rbac\controllers;
 
 use app\modules\rbac\models\CreateRoleForm;
 use app\modules\rbac\models\UpdateRoleForm;
+use app\modules\rbac\Module;
+use yii\base\Event;
 use yii\web\NotFoundHttpException;
 
 class ManagerController extends \yii\web\Controller
@@ -18,7 +20,7 @@ class ManagerController extends \yii\web\Controller
      */
     public function actionRoles()
     {
-        if(!$this->checkAccess('rbac.roles.list')){
+        if (!$this->checkAccess('rbac.roles.list')) {
             return $this->goNotAllowed();
         }
 
@@ -32,13 +34,14 @@ class ManagerController extends \yii\web\Controller
      */
     public function actionCreateRole()
     {
-        if(!$this->checkAccess('rbac.roles.create')){
+        if (!$this->checkAccess('rbac.roles.create')) {
             return $this->goNotAllowed();
         }
 
+        Event::trigger(Module::className(),Module::EVENT_BEFORE_CREATE_ROLE);
+
         $model = new CreateRoleForm();
         if ($model->load(\Yii::$app->request->post()) && $model->create()) {
-            $this->sendFlashMessage("创建角色成功！");
             return $this->redirect(['roles']);
         }
         return $this->render('create-role', ['model' => $model]);
@@ -53,23 +56,24 @@ class ManagerController extends \yii\web\Controller
      */
     public function actionUpdateRole($name)
     {
-        if(!$this->checkAccess('rbac.roles.update')){
+        if (!$this->checkAccess('rbac.roles.update')) {
             return $this->goNotAllowed();
         }
 
+        Event::trigger(Module::className(),Module::EVENT_BEFORE_UPDATE_ROLE);
+
         $role = $this->getAuth()->getRole($name);
-        if(!$role){
+        if (!$role) {
             throw new NotFoundHttpException("不存在名称为{$name}的角色!");
         }
 
         $model = new UpdateRoleForm();
 
         if ($model->load(\Yii::$app->request->post()) && $model->update()) {
-            $this->sendFlashMessage("更新角色成功！");
             return $this->redirect(['roles']);
         }
 
-        if (!\Yii::$app->request->isPost) {
+        if (\Yii::$app->request->isGet) {
             $model->name = $role->name;
             $model->description = $role->description;
             $model->data = $role->data;
@@ -97,18 +101,19 @@ class ManagerController extends \yii\web\Controller
      */
     public function actionDeleteRole($name)
     {
-        if(!$this->checkAccess('rbac.roles.delete')){
+        if (!$this->checkAccess('rbac.roles.delete')) {
             return $this->goNotAllowed();
         }
-
+        Event::trigger(Module::className(), Module::EVENT_BEFORE_DELETE_ROLE);
         $role = $this->getAuth()->getRole($name);
-        if(!$role){
+        if (!$role) {
             throw new NotFoundHttpException("要删除的角色不存在！");
         }
-        if($this->getAuth()->remove($role)){
-            $this->sendFlashMessage("删除角色成功！");
-        }else{
-            $this->sendFlashMessage("删除角色失败！");
+
+        if ($this->getAuth()->remove($role)) {
+            Event::trigger(Module::className(), Module::EVENT_DELETE_ROLE_SUCCESS,new DeleteRoleEvent(['role'=>$role]));
+        } else {
+            Event::trigger(Module::className(), Module::EVENT_DELETE_ROLE_FAIL,new DeleteRoleEvent(['role'=>$role]));
         }
         return $this->redirect(['roles']);
     }
@@ -132,7 +137,7 @@ class ManagerController extends \yii\web\Controller
         /* @var $manager \yii\web\User */
         $manager = \Yii::$app->manager;
         if (!$manager->can($permission)) {
-            $this->sendFlashMessage("您没有进行该操作的权限({$permission})!");
+            Event::trigger(Module::className(), Module::EVENT_PERMISSION_REQUIRED, new PermissionEvent(['permission' => $permission]));
             return false;
         }
         return true;
@@ -146,12 +151,22 @@ class ManagerController extends \yii\web\Controller
     {
         return $this->redirect(\Yii::$app->params['route.not.allowed']);
     }
+}
 
-    /**
-     * 发送通知信息到下一个请求页面
-     * @param $message string 要发送的信息
-     */
-    protected function sendFlashMessage($message){
-        \Yii::$app->session->setFlash(\Yii::$app->params['flashMessageParam'], $message);
-    }
+/**
+ * Class PermissionEvent
+ * @package app\modules\rbac\controllers
+ */
+class PermissionEvent extends Event
+{
+    public $permission;
+}
+
+/**
+ * Class DeleteRoleEvent
+ * @package app\modules\rbac\controllers
+ */
+class DeleteRoleEvent extends Event
+{
+    public $role;
 }
