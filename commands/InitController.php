@@ -34,11 +34,13 @@ class InitController extends Controller
         $index = $webroot . '/index.php';
 
         echo "清除环境...";
-        file_exists($dbFile) ? unlink($dbFile) : print('x..');
         file_exists($index) ? unlink($index) : print('x..');
         echo "完成!\n";
 
-        file_put_contents($dbFile, file_get_contents($dbExample)) ? print($dbFile . "\n") : print("error!");
+        if(!file_exists($dbFile)){
+            file_put_contents($dbFile, file_get_contents($dbExample)) ? print($dbFile . "\n") : print("error!");
+        }
+
         if ($env == 'dev') {
             file_put_contents($index, file_get_contents($indexDev)) ? print($index . " to Dev Evn. \n") : print('error!');
         } else {
