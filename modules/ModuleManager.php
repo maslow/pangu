@@ -35,8 +35,8 @@ class ModuleManager extends Component
         $list = $this->listDir(\Yii::getAlias($this->moduleRoot));
         foreach ($list as $id) {
             $m = $this->getModule($id);
-            if($m ==false) throw new ErrorException("module ($id) is not exist");
-            $modules[$id] =$m;
+            if ($m == false) throw new ErrorException("module ($id) is not exist");
+            $modules[$id] = $m;
         }
         return $modules;
     }
@@ -48,21 +48,12 @@ class ModuleManager extends Component
      */
     public function getModule($id)
     {
-        if(!$this->isExist($id)){
+        if (!$this->isExist($id)) {
             return false;
         }
         $meta = require($this->getMetaFile($id));
         $meta['class'] = $this->getClass($id);
         return $meta;
-    }
-
-    /**
-     * 判断模块是否存在数据迁移
-     * @param $id
-     * @return boolean
-     */
-    public function hasMigration($id){
-        return file_exists($this->getPath($id).'/migrations');
     }
 
     /**
@@ -72,7 +63,7 @@ class ModuleManager extends Component
      */
     public function isExist($id)
     {
-        if(!$this->getMetaFile($id)){
+        if (!$this->getMetaFile($id)) {
             return false;
         }
         return true;
@@ -83,8 +74,9 @@ class ModuleManager extends Component
      * @param $id string 指定模块的id
      * @return string 类名（包括名字空间）
      */
-    public function getClass($id){
-        return  $this->moduleNamespace . '\\' . $id . '\\' . $this->defaultClassName;
+    public function getClass($id)
+    {
+        return $this->moduleNamespace . '\\' . $id . '\\' . $this->defaultClassName;
     }
 
     /**
@@ -110,6 +102,66 @@ class ModuleManager extends Component
             return file_exists($file) ? $file : false;
         }
         return false;
+    }
+
+
+    /**
+     * 判断模块是否存在数据迁移
+     * @param $id
+     * @return boolean
+     */
+    public function hasMigration($id)
+    {
+        return file_exists(\Yii::getAlias($this->getMigrationPath($id)));
+    }
+
+    /**
+     * 获取指定模块(module)数据迁移(migration)表名
+     * @param $id string 模块id
+     * @return string
+     */
+    public function getMigrationTableName($id)
+    {
+        return "{{%migration_{$id}}}";
+    }
+
+    /**
+     * 获取指定模块(module)数据迁移(migration)目录(别名)
+     * @param $id string 模块id
+     * @return string
+     */
+    public function getMigrationPath($id)
+    {
+        return $this->moduleRoot . "/{$id}/migrations";
+    }
+
+    /**
+     * 获取所有模块的所有权限
+     * @return array
+     * @throws ErrorException
+     */
+    public function getAllPermissions()
+    {
+        $modules = $this->getModules();
+        $permissions = [];
+        foreach ($modules as $id => $m) {
+            $p = $this->getPermissions($id);
+            if($p){
+                $permissions [$id] = $p;
+            }
+        }
+        return $permissions;
+    }
+
+    /**
+     * 获取指定模块的权限
+     * @param $id string 指定模块的id
+     * @return null|array
+     */
+    public function getPermissions($id)
+    {
+        $m = $this->getModule($id);
+        return isset($m['man']['permissions']) ? $m['man']['permissions'] : null;
     }
 
     /**

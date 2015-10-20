@@ -59,7 +59,7 @@ class InitController extends Controller
         $role->name = 'super-admin';
         $role->description = '超级管理员';
         $auth->add($role);
-        $this->stdout("正在创建创建角色{{$role->description}}并初始化角色权限 ...");
+        $this->stdout("正在创建创建角色{{$role->description}}并初始化角色权限 ");
 
         $permissions = $auth->getPermissions();
         foreach ($permissions as $p) {

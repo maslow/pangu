@@ -2,6 +2,7 @@
 
 namespace app\commands;
 
+use yii\base\InvalidConfigException;
 use yii\console\Controller;
 use yii\helpers\Console;
 use yii\helpers\FileHelper;
@@ -17,6 +18,8 @@ class ModuleController extends Controller
         $this->stdout("更新所有模块信息...");
         $this->installModules();
         $this->stdout("\n更新模块信息完成!\n");
+
+        $this->actionUpdatePermissions();
     }
 
     /**
@@ -25,8 +28,7 @@ class ModuleController extends Controller
      */
     public function actionUninstall($id)
     {
-        /** @var \app\modules\ModuleManager $mm */
-        $mm = \Yii::$app->moduleManager;
+        $mm = $this->getModuleManager();
         if ($mm->isExist($id)) {
             $this->uninstallModule($id);
         } else {
@@ -34,6 +36,37 @@ class ModuleController extends Controller
         }
     }
 
+    /**
+     * 更新所有模块权限
+     */
+    public function actionUpdatePermissions()
+    {
+        $this->stdout("正在更新所有模块权限...");
+        $this->updatePermissions();
+        $this->stdout("完成！\n");
+    }
+
+    /**
+     * 更新所有模块的权限
+     * @throws \yii\base\ErrorException
+     */
+    protected function updatePermissions()
+    {
+        $mm = $this->getModuleManager();
+        $auth = $this->getAuth();
+        $permissions = $mm->getAllPermissions();
+        foreach ($permissions as $id => $permission) {
+            foreach ($permission as $name => $description) {
+                if (!$auth->getPermission($name)) {
+                    $p = $auth->createPermission($name);
+                    $p->description = $description;
+                    if (!$auth->add($p)) {
+                        throw new InvalidConfigException('添加权限错误！' . __METHOD__);
+                    }
+                }
+            }
+        }
+    }
 
     /**
      * 配置并安装所有模块
@@ -66,9 +99,10 @@ class ModuleController extends Controller
      */
     protected function installModule($id)
     {
+        $mm = $this->getModuleManager();
         $this->stdout("\n....正在安装模块({$id}) ...");
-        $migrationPath = $this->getMigrationPath($id);
-        $migrationTable = $this->getMigrationTableName($id);
+        $migrationPath = $mm->getMigrationPath($id);
+        $migrationTable = $mm->getMigrationTableName($id);
         $cmd = "php yii migrate/up --interactive=0 --migrationPath={$migrationPath} --migrationTable={$migrationTable}";
         system($cmd);
         $this->stdout("....模块{$id}安装完成!\n");
@@ -80,10 +114,11 @@ class ModuleController extends Controller
      */
     protected function uninstallModule($id)
     {
+        $mm = $this->getModuleManager();
         $this->stdout("正在卸载模块{$id} ...");
-        if($this->getModuleManager()->hasMigration($id)){
-            $migrationPath = $this->getMigrationPath($id);
-            $migrationTable = $this->getMigrationTableName($id);
+        if ($this->getModuleManager()->hasMigration($id)) {
+            $migrationPath = $mm->getMigrationPath($id);
+            $migrationTable = $mm->getMigrationTableName($id);
             $cmd = "php yii migrate/to 0 --interactive=0 --migrationPath={$migrationPath} --migrationTable={$migrationTable}";
             system($cmd);
         }
@@ -107,22 +142,12 @@ class ModuleController extends Controller
     }
 
     /**
-     * 获取指定模块(module)数据迁移(migration)表名
-     * @param $id string 模块id
-     * @return string
+     * 获取权限管理组件
+     * @return \yii\rbac\ManagerInterface
      */
-    protected function getMigrationTableName($id)
+    protected function getAuth()
     {
-        return "{{%migration_{$id}}}";
+        return \Yii::$app->authManager;
     }
 
-    /**
-     * 获取指定模块(module)数据迁移(migration)目录
-     * @param $id string 模块id
-     * @return string
-     */
-    protected function getMigrationPath($id)
-    {
-        return $this->getModuleManager()->moduleRoot . "/{$id}/migrations";
-    }
 }
