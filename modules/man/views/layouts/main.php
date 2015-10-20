@@ -4,7 +4,6 @@ use app\assets\AppAsset;
 
 /* @var $this \yii\web\View */
 /* @var $content string */
-
 AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
