@@ -161,7 +161,7 @@ class ModuleManager extends Component
     public function getPermissions($id)
     {
         $m = $this->getModule($id);
-        return isset($m['man']['permissions']) ? $m['man']['permissions'] : null;
+        return isset($m['manager']['permissions']) ? $m['manager']['permissions'] : null;
     }
 
     /**

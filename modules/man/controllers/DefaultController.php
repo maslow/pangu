@@ -18,19 +18,26 @@ class DefaultController extends Controller
     public function actionIndex()
     {
         if ($this->getManager()->isGuest) {
-            Event::trigger(Module::className(),Module::EVENT_LOGIN_REQUIRED);
+            Event::trigger(Module::className(), Module::EVENT_LOGIN_REQUIRED);
             return $this->redirect(['default/login']);
         }
 
         /* 获取所有模块man配置信息 */
         $modules = Module::getInstance()->moduleManager->getModules();
-        $menu = [];
+        $menus = [];
         foreach ($modules as $id => $m) {
-            if ($m['man'] !== false) {
-                $menu[$id] = $m['man'];
+            if ($m['manager'] !== false && isset($m['manager']['menu'])) {
+                foreach ($m['manager']['menu']['items'] as $i => $item) {
+                    if (isset($item['permission']) && !$this->getManager()->can($item['permission'])) {
+                        unset($m['manager']['menu']['items'][$i]);
+                    }
+                }
+                if(count($m['manager']['menu']['items'])){
+                    $menus[$id] = $m['manager']['menu'];
+                }
             }
         }
-        return $this->render('index', ['menu' => $menu]);
+        return $this->render('index', ['menus' => $menus]);
     }
 
     /**
@@ -42,7 +49,7 @@ class DefaultController extends Controller
         if (!$this->getManager()->isGuest) {
             return $this->redirect(['default/index']);
         }
-        Event::trigger(Module::className(),Module::EVENT_BEFORE_LOGIN);
+        Event::trigger(Module::className(), Module::EVENT_BEFORE_LOGIN);
         $model = new LoginForm();
         if ($model->load(\Yii::$app->request->post()) && $model->login()) {
             return $this->redirect(['default/index']);
@@ -54,10 +61,11 @@ class DefaultController extends Controller
      * 退出登录中央控制台
      * @return \yii\web\Response
      */
-    public function actionLogout(){
-        Event::trigger(Module::className(),Module::EVENT_BEFORE_LOGOUT);
+    public function actionLogout()
+    {
+        Event::trigger(Module::className(), Module::EVENT_BEFORE_LOGOUT);
         $this->getManager()->logout(false);
-        Event::trigger(Module::className(),Module::EVENT_AFTER_LOGOUT);
+        Event::trigger(Module::className(), Module::EVENT_AFTER_LOGOUT);
         return $this->redirect(['default/login']);
     }
 
@@ -65,9 +73,10 @@ class DefaultController extends Controller
      * 进入中控台后默认页面
      * @return string
      */
-    public function actionInfo(){
+    public function actionInfo()
+    {
         if ($this->getManager()->isGuest) {
-            Event::trigger(Module::className(),Module::EVENT_LOGIN_REQUIRED);
+            Event::trigger(Module::className(), Module::EVENT_LOGIN_REQUIRED);
             return $this->redirect(['default/login']);
         }
         return $this->render('info');

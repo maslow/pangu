@@ -12,19 +12,21 @@ return [
     'description' => '用户模块，用户认证、编辑、管理。',
 
     'bootstrap' => true,
-    'man' => [
-        'main' => [
-            'name' => '用户管理',
+    'manager' => [
+        'menu' => [
+            'label' => '用户管理',
             'url' => ['/member/manager/index'],
-        ],
-        'sub' => [
-            [
-                'name' => '管理用户',
-                'url' => ['/member/manager/index'],
-            ],
-            [
-                'name' => '添加用户',
-                'url' => ['/member/manager/create'],
+            'items' => [
+                [
+                    'label' => '管理用户',
+                    'url' => ['/member/manager/index'],
+                    'permission'=>'member.users.list',
+                ],
+                [
+                    'label' => '添加用户',
+                    'url' => ['/member/manager/create'],
+                    'permission'=>'member.users.create'
+                ],
             ],
         ],
         'permissions' => [

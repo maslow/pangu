@@ -1,7 +1,7 @@
 <?php
 
 /* @var $this \yii\web\View */
-/* @var $menu array */
+/* @var $menus array */
 
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
@@ -20,22 +20,22 @@ NavBar::begin([
 ]);
 $navItems = [];
 // 生成导航链接数据 $navItems
-foreach ($menu as $id => $man) {
-    $subs = [];
-    if (isset($man['sub'])) {
-        foreach ($man['sub'] as $s) {
-            $subs [] = [
-                'label' => $s['name'],
-                'url' => $s['url'],
+foreach ($menus as $id => $menu) {
+    $items = [];
+    if (isset($menu['items'])) {
+        foreach ($menu['items'] as $item) {
+            $items [] = [
+                'label' => $item['label'],
+                'url' => $item['url'],
                 'linkOptions' => ['target' => 'sub-container']
             ];
         }
     }
     $navItems[] = [
-        'label' => $man['main']['name'],
-        'url' => $man['main']['url'],
+        'label' => $menu['label'],
+        'url' => $menu['url'],
         'linkOptions' => ['target' => 'sub-container'],
-        'items' => $subs,
+        'items' => $items,
     ];
 }
 if(!$manager->isGuest){

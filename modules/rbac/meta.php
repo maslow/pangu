@@ -13,19 +13,21 @@ return [
 
     'bootstrap' => false,
     'deps' => [],
-    'man' => [
-        'main' => [
-            'name' => '角色控制',
+    'manager' => [
+        'menu' => [
+            'label' => '角色控制',
             'url' => ['/rbac/manager/roles'],
-        ],
-        'sub' => [
-            [
-                'name' => '管理系统角色',
-                'url' => ['/rbac/manager/roles'],
-            ],
-            [
-                'name' => '创建系统角色',
-                'url' => ['/rbac/manager/create-role'],
+            'items' => [
+                [
+                    'label' => '管理系统角色',
+                    'url' => ['/rbac/manager/roles'],
+                    'permission' => 'rbac.roles.list'
+                ],
+                [
+                    'label' => '创建系统角色',
+                    'url' => ['/rbac/manager/create-role'],
+                    'permission' => 'rbac.roles.create'
+                ],
             ],
         ],
         'permissions' => [

@@ -45,6 +45,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
 
         Event::on(ManModule::className(), ManModule::EVENT_PERMISSION_REQUIRED, [$this, 'permissionRequired']);
         Event::on(MemberModule::className(), MemberModule::EVENT_PERMISSION_REQUIRED, [$this, 'permissionRequired']);
+        Event::on(RbacModule::className(),RbacModule::EVENT_PERMISSION_REQUIRED,[$this,'permissionRequired']);
     }
 
     /**
