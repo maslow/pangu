@@ -61,7 +61,7 @@ class InitController extends Controller
         $role->name = 'super-admin';
         $role->description = '超级管理员';
         $auth->add($role);
-        $this->stdout("正在创建创建角色{{$role->description}}并初始化角色权限 ");
+        $this->stdout("正在创建角色{{$role->description}}并初始化角色权限 ");
 
         $permissions = $auth->getPermissions();
         foreach ($permissions as $p) {
@@ -74,7 +74,7 @@ class InitController extends Controller
         $manager = new Manager();
         $manager->username = $this->prompt("请输入{$role->description}的用户名:",
             ['default'=>'manager']);
-        $password = $this->prompt("请输入{$role->description}的用户名:",
+        $password = $this->prompt("请输入{$role->description}的密码:",
             ['default'=>'999999']);
 
         $manager->password_hash = \Yii::$app->security->generatePasswordHash($password);
