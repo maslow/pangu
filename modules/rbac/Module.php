@@ -24,5 +24,17 @@ class Module extends \yii\base\Module
         parent::init();
 
         // custom initialization code goes here
+        $this->registerTranslations();
+    }
+
+    protected function registerTranslations()
+    {
+        \Yii::$app->i18n->translations['rbac'] = [
+            'class' => 'yii\i18n\PhpMessageSource',
+            'basePath' => '@app/modules/rbac/messages',
+            'fileMap' => [
+                'rbac' => 'rbac.php',
+            ],
+        ];
     }
 }

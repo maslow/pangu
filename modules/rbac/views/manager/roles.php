@@ -4,7 +4,7 @@
 use \yii\helpers\Html;
 use yii\helpers\Url;
 
-$this->title = '角色管理';
+$this->title = Yii::t('rbac','Roles');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 

@@ -18,6 +18,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
         parent::init();
 
         // custom initialization code goes here
+        $this->registerTranslations();
     }
 
     /**
@@ -96,7 +97,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
     protected function rbacMessages()
     {
         return [
-            RbacModule::EVENT_CREATE_ROLE_SUCCESS => "创建角色成功！",
+            RbacModule::EVENT_CREATE_ROLE_SUCCESS => \Yii::t('flashmsg','Create role successfully!'),
             RbacModule::EVENT_CREATE_ROLE_FAIL => "创建角色失败！",
             RbacModule::EVENT_UPDATE_ROLE_SUCCESS => "更新角色成功！",
             RbacModule::EVENT_UPDATE_ROLE_FAIL => "更新角色失败！",
@@ -121,4 +122,14 @@ class Module extends \yii\base\Module implements BootstrapInterface
         \Yii::$app->session->setFlash(\Yii::$app->params['flashMessageParam'], "您没有进行该操作的权限[{$event->permission}]！");
     }
 
+    protected function registerTranslations()
+    {
+        \Yii::$app->i18n->translations['flashmsg'] = [
+            'class' => 'yii\i18n\PhpMessageSource',
+            'basePath' => '@app/modules/flashmsg/messages',
+            'fileMap' => [
+                'flashmsg' => 'flashmsg.php',
+            ],
+        ];
+    }
 }

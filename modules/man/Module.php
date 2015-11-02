@@ -36,7 +36,8 @@ class Module extends \yii\base\Module implements BootstrapInterface
     {
         parent::init();
         \Yii::configure($this, require(__DIR__ . '/config.php'));
-        // custom initialization code goes here
+
+        $this->registerTranslations();
     }
 
     /**
@@ -55,5 +56,16 @@ class Module extends \yii\base\Module implements BootstrapInterface
                 'httpOnly' =>true
             ],
         ]);
+    }
+
+    protected function registerTranslations()
+    {
+        \Yii::$app->i18n->translations['man'] = [
+            'class' => 'yii\i18n\PhpMessageSource',
+            'basePath' => '@app/modules/man/messages',
+            'fileMap' => [
+                'man' => 'man.php',
+            ],
+        ];
     }
 }
