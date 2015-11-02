@@ -26,7 +26,7 @@ AppAsset::register($this);
     <div class="wrap">
         <?php
             NavBar::begin([
-                'brandLabel' => 'EY2B',
+                'brandLabel' => Yii::t('app',"Pan'gu"),
                 'brandUrl' => Yii::$app->homeUrl,
                 'options' => [
                     'class' => 'navbar-inverse navbar-fixed-top',
@@ -36,10 +36,10 @@ AppAsset::register($this);
                 'options' => ['class' => 'navbar-nav navbar-right'],
                 'items' => [
                     ['label' => Yii::t('app','Home'), 'url' => ['/site/index']],
-                    ['label' => '注册', 'url' => ['/site/signup']],
+                    ['label' => Yii::t('app','Sign up'), 'url' => ['/member/default/signup']],
                     Yii::$app->user->isGuest ?
-                        ['label' => '登录', 'url' => ['/site/login']] :
-                        ['label' => '退出 (' . Yii::$app->user->identity->username . ')',
+                        ['label' => Yii::t('app','Login'), 'url' => ['/member/default/login']] :
+                        ['label' => Yii::t('app','Logout').'(' . Yii::$app->user->identity->username . ')',
                             'url' => ['/site/logout'],
                             'linkOptions' => ['data-method' => 'post']],
                 ],
@@ -68,7 +68,7 @@ AppAsset::register($this);
     <footer class="footer">
         <div class="container">
             <p class="pull-left">&copy; vip-design.net <?= date('Y') ?></p>
-            <p class="pull-right">Powerred by EY2B.</p>
+            <p class="pull-right">Powerred by Pan'gu.</p>
         </div>
     </footer>
 
