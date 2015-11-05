@@ -56,9 +56,9 @@ class Module extends \yii\base\Module implements BootstrapInterface
     protected function manMessages()
     {
         return [
-            ManModule::EVENT_LOGIN_FAIL => \Yii::t('flashmsg', 'Failed to login, please try again.'),
-            ManModule::EVENT_LOGIN_REQUIRED => \Yii::t('flashmsg', 'Please login to continue your operation or your session is timeout.'),
-            ManModule::EVENT_AFTER_LOGOUT => \Yii::t('flashmsg', 'You have been logged-out, bye!'),
+            //ManModule::EVENT_LOGIN_FAIL => \Yii::t('flashmsg', 'Failed to login, please try again.'),
+            //ManModule::EVENT_LOGIN_REQUIRED => \Yii::t('flashmsg', 'Please login to continue your operation or your session is timeout.'),
+            //ManModule::EVENT_AFTER_LOGOUT => \Yii::t('flashmsg', 'You have been logged-out, bye!'),
             ManModule::EVENT_CREATE_MANAGER_SUCCESS => \Yii::t('flashmsg', 'Success to create manager!'),
             ManModule::EVENT_CREATE_MANAGER_FAIL => \Yii::t('flashmsg', 'Failed to create manager!'),
             ManModule::EVENT_UPDATE_MANAGER_SUCCESS => \Yii::t('flashmsg', 'Success to update manager!'),

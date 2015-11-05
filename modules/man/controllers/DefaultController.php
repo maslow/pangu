@@ -24,7 +24,7 @@ class DefaultController extends Controller
 
         /* 获取所有模块man配置信息 */
         $modules = Module::getInstance()->moduleManager->getModules();
-        $menus = [];
+        $menu = [];
         foreach ($modules as $id => $m) {
             if ($m['manager'] !== false && isset($m['manager']['menu'])) {
                 foreach ($m['manager']['menu']['items'] as $i => $item) {
@@ -33,11 +33,11 @@ class DefaultController extends Controller
                     }
                 }
                 if(count($m['manager']['menu']['items'])){
-                    $menus[$id] = $m['manager']['menu'];
+                    $menu[$id] = $m['manager']['menu'];
                 }
             }
         }
-        return $this->render('index', ['menus' => $menus]);
+        return $this->render('index', ['menu' => $menu]);
     }
 
     /**

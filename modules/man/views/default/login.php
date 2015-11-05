@@ -3,13 +3,14 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
+\yii\bootstrap\BootstrapAsset::register($this);
 /* @var $this yii\web\View */
 /* @var $model app\modules\man\models\LoginForm */
 /* @var $form ActiveForm */
 $this->title = Yii::t('man','Login');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="default-login">
+<div class="default-login" style="padding:50px;">
     <h1><?= Html::encode($this->title) ?></h1>
     <p><?= Yii::t('man','Please fill the form to login.')?></p>
     <hr/>
