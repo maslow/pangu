@@ -49,15 +49,15 @@ class Manager extends \yii\db\ActiveRecord implements IdentityInterface
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'username' => '用户名',
+            'id' => Yii::t('man', 'ID'),
+            'username' => Yii::t('man', 'Username'),
             'password_hash' => 'Password Hash',
-            'auth_key' => 'Auth Key',
-            'locked' => 'Locked',
-            'updated_at' => '更新时间',
-            'created_at' => '创建时间',
-            'created_ip' => '创建IP',
-            'created_by' => '创建者',
+            'auth_key' => Yii::t('man', 'Auth Key'),
+            'locked' => Yii::t('man', 'IsLocked'),
+            'updated_at' => Yii::t('man', 'Update Time'),
+            'created_at' => Yii::t('man', 'Create Time'),
+            'created_ip' => Yii::t('man', 'Create IP'),
+            'created_by' => Yii::t('man', 'Creator'),
         ];
     }
 
@@ -84,7 +84,7 @@ class Manager extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        return static::findOne(['auth_key'=>$token]);
+        return static::findOne(['auth_key' => $token]);
     }
 
     /**
@@ -123,6 +123,6 @@ class Manager extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public function validateAuthKey($authKey)
     {
-       return $this->auth_key == $authKey;
+        return $this->auth_key == $authKey;
     }
 }

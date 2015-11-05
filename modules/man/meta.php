@@ -15,16 +15,16 @@ return [
     'deps' => [],
     'manager' => [
         'menu' => [
-            'label' => '管理员控制',
+            'label' => Yii::t('man','Managers'),
             'url' => ['/man/manager/list'],
             'items' => [
                 [
-                    'label' => '管理员管理',
+                    'label' => Yii::t('man','Manager List'),
                     'url' => ['/man/manager/list'],
                     'permission'=>'man.managers.list',
                 ],
                 [
-                    'label' => '创建管理员',
+                    'label' => Yii::t('man','Create Manager'),
                     'url' => ['/man/manager/create'],
                     'permission'=>'man.managers.create',
                 ],

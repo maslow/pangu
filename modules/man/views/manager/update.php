@@ -12,7 +12,7 @@ use yii\helpers\Html;
 /* @var $form \yii\widgets\ActiveForm */
 /* @var $model \app\modules\man\models\UpdateForm */
 
-$this->title = "更新管理员";
+$this->title = Yii::t('man','Update Manager');
 $this->params['breadcrumbs'][] = $model->username;
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -44,7 +44,7 @@ foreach ($roles as $role) {
 <?= $form->field($model, 'role')->radioList($roleList) ?>
     <div class="form-group">
         <div class="col-sm-offset-1 col-sm-11">
-            <?= Html::submitButton('更新', ['class' => 'btn btn-primary', 'name' => 'update-manager']) ?>
+            <?= Html::submitButton(Yii::t('man','Update Manager'), ['class' => 'btn btn-primary', 'name' => 'update-manager']) ?>
         </div>
     </div>
 <?php ActiveForm::end(); ?>

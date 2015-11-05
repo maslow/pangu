@@ -6,14 +6,14 @@ use yii\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = '管理员列表';
+$this->title = Yii::t('man','Manager List');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="panel panel-default">
 
     <div class="panel-heading"><?= Html::encode($this->title) ?></div>
     <div class="panel-body">
-        <?= Html::a('创建管理员', ['create'], ['class' => 'btn btn-default']) ?>
+        <?= Html::a(Yii::t('man','Create Manager'), ['create'], ['class' => 'btn btn-default']) ?>
     </div>
 
     <?= GridView::widget([
@@ -30,11 +30,12 @@ $this->params['breadcrumbs'][] = $this->title;
                         return '-';
                     }
                 },
-                'label' => '角色'
+                'label' => Yii::t('man','Role'),
             ],
             [
                 'attribute' => 'created_by',
                 'value' => function ($row) {
+                    /* @var $c \app\modules\man\models\Manager */
                     $c = \app\modules\man\models\Manager::findOne($row->created_by);
                     return $c->username;
                 },

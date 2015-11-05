@@ -12,7 +12,7 @@ $manager = Yii::$app->manager;
 
 <?php
 NavBar::begin([
-    'brandLabel' => '盘古中央控制台',
+    'brandLabel' => Yii::t('man', "Pan'gu Dashboard"),
     'brandUrl' => \yii\helpers\Url::to(['default/index']),
     'options' => [
         'class' => 'navbar-inverse navbar-fixed-top',
@@ -38,9 +38,9 @@ foreach ($menus as $id => $menu) {
         'items' => $items,
     ];
 }
-if(!$manager->isGuest){
+if (!$manager->isGuest) {
     $navItems[] = [
-        'label'=> "安全退出({$manager->identity->username})",
+        'label' => Yii::t('man', 'Logout') . "({$manager->identity->username})",
         'url' => ['default/logout'],
     ];
 }

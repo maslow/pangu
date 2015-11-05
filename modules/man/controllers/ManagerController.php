@@ -73,7 +73,7 @@ class ManagerController extends Controller
 
         $manager = Manager::findOne($id);
         if (!$manager) {
-            throw new NotFoundHttpException("管理员:$id 不存在!");
+            throw new NotFoundHttpException(\Yii::t('man','The Manager (ID:{id}) is not exist!',['id'=>$id]));
         }
 
         $model = new UpdateForm();
@@ -112,7 +112,7 @@ class ManagerController extends Controller
         $event = new DeleteManagerEvent(['manager' => $manager]);
 
         if (!$manager) {
-            throw new NotFoundHttpException("管理员:$id 不存在!");
+            throw new NotFoundHttpException(\Yii::t('man','The Manager (ID:{id}) is not exist!',['id'=>$id]));
         }
 
         if ($manager->delete()) {

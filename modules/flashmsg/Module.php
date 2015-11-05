@@ -46,7 +46,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
 
         Event::on(ManModule::className(), ManModule::EVENT_PERMISSION_REQUIRED, [$this, 'permissionRequired']);
         Event::on(MemberModule::className(), MemberModule::EVENT_PERMISSION_REQUIRED, [$this, 'permissionRequired']);
-        Event::on(RbacModule::className(),RbacModule::EVENT_PERMISSION_REQUIRED,[$this,'permissionRequired']);
+        Event::on(RbacModule::className(), RbacModule::EVENT_PERMISSION_REQUIRED, [$this, 'permissionRequired']);
     }
 
     /**
@@ -56,15 +56,15 @@ class Module extends \yii\base\Module implements BootstrapInterface
     protected function manMessages()
     {
         return [
-            ManModule::EVENT_LOGIN_FAIL => "登录失败，请重试！",
-            ManModule::EVENT_LOGIN_REQUIRED => "请登录后再进行操作或者您的登录已过期!",
-            ManModule::EVENT_AFTER_LOGOUT => "您已安全退出，再见!",
-            ManModule::EVENT_CREATE_MANAGER_SUCCESS => "创建管理员成功！",
-            ManModule::EVENT_CREATE_MANAGER_FAIL => "创建管理员失败！",
-            ManModule::EVENT_UPDATE_MANAGER_SUCCESS => "更新管理员成功！",
-            ManModule::EVENT_UPDATE_MANAGER_FAIL => "更新管理员失败！",
-            ManModule::EVENT_DELETE_MANAGER_SUCCESS => "删除管理员成功！",
-            ManModule::EVENT_DELETE_MANAGER_FAIL => "删除管理员失败！",
+            ManModule::EVENT_LOGIN_FAIL => \Yii::t('flashmsg', 'Failed to login, please try again.'),
+            ManModule::EVENT_LOGIN_REQUIRED => \Yii::t('flashmsg', 'Please login to continue your operation or your session is timeout.'),
+            ManModule::EVENT_AFTER_LOGOUT => \Yii::t('flashmsg', 'You have been logged-out, bye!'),
+            ManModule::EVENT_CREATE_MANAGER_SUCCESS => \Yii::t('flashmsg', 'Success to create manager!'),
+            ManModule::EVENT_CREATE_MANAGER_FAIL => \Yii::t('flashmsg', 'Failed to create manager!'),
+            ManModule::EVENT_UPDATE_MANAGER_SUCCESS => \Yii::t('flashmsg', 'Success to update manager!'),
+            ManModule::EVENT_UPDATE_MANAGER_FAIL => \Yii::t('flashmsg', 'Failed to update manager!'),
+            ManModule::EVENT_DELETE_MANAGER_SUCCESS => \Yii::t('flashmsg', 'Success to delete manager!'),
+            ManModule::EVENT_DELETE_MANAGER_FAIL => \Yii::t('flashmsg', 'Failed to delete manager!'),
         ];
     }
 
@@ -97,7 +97,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
     protected function rbacMessages()
     {
         return [
-            RbacModule::EVENT_CREATE_ROLE_SUCCESS => \Yii::t('flashmsg','Create role successfully!'),
+            RbacModule::EVENT_CREATE_ROLE_SUCCESS => \Yii::t('flashmsg', 'Create role successfully!'),
             RbacModule::EVENT_CREATE_ROLE_FAIL => "创建角色失败！",
             RbacModule::EVENT_UPDATE_ROLE_SUCCESS => "更新角色成功！",
             RbacModule::EVENT_UPDATE_ROLE_FAIL => "更新角色失败！",
@@ -119,7 +119,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
      */
     public function permissionRequired($event)
     {
-        \Yii::$app->session->setFlash(\Yii::$app->params['flashMessageParam'], "您没有进行该操作的权限[{$event->permission}]！");
+        \Yii::$app->session->setFlash(\Yii::$app->params['flashMessageParam'], \Yii::t('flashmsg', 'You have no permission with the operation : {permission}', ['permission' => $event->permission]));
     }
 
     protected function registerTranslations()

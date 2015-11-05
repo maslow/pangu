@@ -12,7 +12,7 @@ use yii\helpers\Html;
 /* @var $form \yii\widgets\ActiveForm */
 /* @var $model \app\modules\man\models\CreateForm */
 
-$this->title = "创建管理员";
+$this->title = Yii::t('man','Create Manager');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -42,7 +42,7 @@ foreach ($roles as $role) {
 <?= $form->field($model, 'role')->radioList($roleList) ?>
     <div class="form-group">
         <div class="col-sm-offset-1 col-sm-11">
-            <?= Html::submitButton('创建', ['class' => 'btn btn-primary', 'name' => 'create-manager']) ?>
+            <?= Html::submitButton('Create Manager', ['class' => 'btn btn-primary', 'name' => 'create-manager']) ?>
         </div>
     </div>
 <?php ActiveForm::end(); ?>

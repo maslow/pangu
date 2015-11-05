@@ -40,10 +40,10 @@ class UpdateForm extends Model
     public function attributeLabels()
     {
         return [
-            'username' => '用户名',
-            'password' => '密码',
-            'password_confirm' => '重复密码',
-            'role' => '角色',
+            'username' => Yii::t('man', 'Username'),
+            'password' => Yii::t('man', 'Password'),
+            'password_confirm' => Yii::t('man', 'Confirm Password'),
+            'role' => Yii::t('man', 'Role'),
         ];
     }
 
@@ -66,7 +66,7 @@ class UpdateForm extends Model
                 if ($manager->save()) {
                     $role = $this->getAuth()->getRole($this->role);
                     if (!$role) {
-                        throw new \InvalidArgumentException("角色不存在.");
+                        throw new \InvalidArgumentException(Yii::t('man', 'The role is not exist!'));
                     }
                     $this->getAuth()->revokeAll($manager->id);
                     $this->getAuth()->assign($role, $manager->id);
@@ -77,10 +77,10 @@ class UpdateForm extends Model
                 }
             } catch (\Exception $e) {
                 Yii::error($e->getMessage());
-                $this->addError('username', '该用户异常!');
+                $this->addError('username', Yii::t('man','Throw an exception of saving data!'));
             }
         }
-        Event::trigger(Module::className(),Module::EVENT_UPDATE_MANAGER_FAIL,$event);
+        Event::trigger(Module::className(), Module::EVENT_UPDATE_MANAGER_FAIL, $event);
         return false;
     }
 

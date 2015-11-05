@@ -39,10 +39,10 @@ class CreateForm extends Model
     public function attributeLabels()
     {
         return [
-            'username' => '用户名',
-            'password' => '密码',
-            'password_confirm' => '重复密码',
-            'role' => '角色',
+            'username' => Yii::t('man', 'Username'),
+            'password' => Yii::t('man', 'Password'),
+            'password_confirm' => Yii::t('man', 'Confirm Password'),
+            'role' => Yii::t('man', 'Role'),
         ];
     }
 
@@ -52,7 +52,7 @@ class CreateForm extends Model
      */
     public function create()
     {
-        $event = new CreateEvent(['model'=>$this]);
+        $event = new CreateEvent(['model' => $this]);
         if ($this->validate()) {
             $manager = new Manager();
             try {
@@ -67,22 +67,22 @@ class CreateForm extends Model
 
                 if ($manager->save()) {
                     $role = $this->getAuth()->getRole($this->role);
-                    if(!$role){
-                        throw new \InvalidArgumentException("角色不存在.");
+                    if (!$role) {
+                        throw new \InvalidArgumentException('The role is not exist!');
                     }
                     $this->getAuth()->assign($role, $manager->id);
-                    Event::trigger(Module::className(),Module::EVENT_CREATE_MANAGER_SUCCESS,$event);
+                    Event::trigger(Module::className(), Module::EVENT_CREATE_MANAGER_SUCCESS, $event);
                     return true;
-                }else{
+                } else {
                     throw new InvalidParamException();
                 }
             } catch (\Exception $e) {
                 Yii::error($manager->getErrors());
                 Yii::error($e->getMessage());
-                $this->addError('username', '写入数据异常!');
+                $this->addError('username', 'Throw an exception of saving data!');
             }
         }
-        Event::trigger(Module::className(),Module::EVENT_CREATE_MANAGER_FAIL,$event);
+        Event::trigger(Module::className(), Module::EVENT_CREATE_MANAGER_FAIL, $event);
         return false;
     }
 
@@ -95,6 +95,7 @@ class CreateForm extends Model
     }
 }
 
-class CreateEvent extends Event{
+class CreateEvent extends Event
+{
     public $model;
 }

@@ -6,12 +6,12 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model app\modules\man\models\LoginForm */
 /* @var $form ActiveForm */
-$this->title = '登录';
+$this->title = Yii::t('man','Login');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="default-login">
     <h1><?= Html::encode($this->title) ?></h1>
-    <p>Please fill the form to login.</p>
+    <p><?= Yii::t('man','Please fill the form to login.')?></p>
     <hr/>
     <?php $form = ActiveForm::begin([
         'id' => 'login-form',
@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="form-group">
         <div class="col-lg-offset-1 col-lg-11">
-            <?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+            <?= Html::submitButton(Yii::t('man','Login'), ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
         </div>
     </div>
     <?php ActiveForm::end(); ?>
