@@ -67,8 +67,8 @@ AppAsset::register($this);
 
     <footer class="footer">
         <div class="container">
-            <p class="pull-left">&copy; vip-design.net <?= date('Y') ?></p>
-            <p class="pull-right">Powerred by Pan'gu.</p>
+            <p class="pull-left">&copy; PGOS <?= date('Y') ?></p>
+            <p class="pull-right">Powerred by PanguOS.</p>
         </div>
     </footer>
 

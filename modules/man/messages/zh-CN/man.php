@@ -22,7 +22,6 @@ return [
     'The Manager (ID:{id}) is not exist!' => '该管理员(ID:{id})不存在！',
 
     'Managers' => '管理员控制',
-    "Pan'gu" => '盘古',
     'Logout' =>'安全退出',
     'Login' => '登陆',
     'Please fill the form to login.' => '请填写下面表单进行登陆。',

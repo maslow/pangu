@@ -19,9 +19,9 @@ $manager = Yii::$app->manager;
         <!-- Logo -->
         <a href="" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
-            <span class="logo-mini"><b><?= Yii::t('man', "Pan'gu") ?></b></span>
+            <span class="logo-mini"><b>PG</b></span>
             <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg"><b><?= Yii::t('man', "Pan'gu") ?></b></span>
+            <span class="logo-lg"><b>Pangu</b>OS</span>
         </a>
 
         <!-- Header Navbar -->
@@ -120,10 +120,10 @@ $manager = Yii::$app->manager;
     <footer class="main-footer">
         <!-- To the right -->
         <div class="pull-right hidden-xs">
-            Powerred by <?=Yii::t('man',"Pan'gu")?>
+            Powerred by <b>Pangu</b>OS
         </div>
         <!-- Default to the left -->
-        <strong>Copyright &copy; <?= date('Y') ?> <a href="#"><?=Yii::t('man',"Pan'gu")?></a>.</strong> All rights reserved.
+        <strong>Copyright &copy; <?= date('Y') ?> <a href="#">PGOS</a>.</strong> All rights reserved.
     </footer>
 
 </div>

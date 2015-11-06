@@ -1,21 +1,20 @@
 说明
 ===
 
-ey2b - 基于Yii2.0.6 基础模板建立。
+盘古 - 基于Yii2.0.6 基础模板建立。
 
 
 需求
 ---
 
 >=PHP 5.4.0
->=MySQL 5.1
 
 
 安装
 ---
 
 
-git clone https://git.coding.net/maslow/ey2b.git
+git clone https://github.com/Maslow/pangu.git
 
 
 配置
@@ -28,7 +27,12 @@ git clone https://git.coding.net/maslow/ey2b.git
 ```command
 php yii init
 ```
-  
+注：该命令可以指定将程序初始化为｀生产环境｀或｀开发环境｀，默认为｀开发环境｀，可以任意切换：
+```command
+php yii init dev
+#or
+php yii init prod
+```
 
 ### 数据库
 
@@ -66,7 +70,7 @@ php yii init/admin
 其它
 ---
 
-后台中控台地址:  http://localhost/ey2b/web/index.php/man
+后台中控台地址:  http://localhost/pangu/web/index.php/man
 
   
  

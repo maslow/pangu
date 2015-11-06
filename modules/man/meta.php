@@ -9,7 +9,7 @@
 
 return [
     'version' => '1.0',
-    'description' => '中央控制台模块。',
+    'description' => '后台管理中心模块。',
 
     'bootstrap' => true,
     'deps' => [],
