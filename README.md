@@ -39,7 +39,7 @@ php yii init prod
 1､ 创建数据库，编码utf8:
 
 ```sql
-create database ey2b CHARACTER SET utf8 COLLATE utf8_unicode_ci; 
+create database pangu CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 ```
 
 2、编辑 `config/db.php` 填写数据库连接配置：
