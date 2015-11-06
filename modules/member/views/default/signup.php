@@ -6,7 +6,7 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model app\modules\member\models\SignupForm */
 /* @var $form ActiveForm */
-$this->title = "注册";
+$this->title = Yii::t('member', 'Sign up');
 $this->params['breadcrumbs'][] =$this->title;
 ?>
 <div class="default-signup">
@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] =$this->title;
     
         <div class="form-group">
             <div class="col-lg-offset-1 col-lg-11">
-                <?= Html::submitButton('注册', ['class' => 'btn btn-primary']) ?>
+                <?= Html::submitButton(Yii::t('member','Sign up'), ['class' => 'btn btn-primary']) ?>
             </div>
         </div>
     <?php ActiveForm::end(); ?>

@@ -7,7 +7,7 @@ use app\assets\AppAsset;
 /* @var $content string */
 
 \yii\bootstrap\BootstrapAsset::register($this);
-
+\yii\web\YiiAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -34,7 +34,7 @@ use app\assets\AppAsset;
         }
         ?>
         <?= Breadcrumbs::widget([
-            'homeLink'=>['label'=>'用户管理','url'=>\yii\helpers\Url::to('index')],
+            'homeLink'=>['label'=>Yii::t('member','Users'),'url'=>\yii\helpers\Url::to('index')],
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
         <?= $content ?>

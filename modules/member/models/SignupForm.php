@@ -28,17 +28,18 @@ class SignupForm extends Model
     {
         return [
             [['username', 'password'], 'required'],
-            [['username','password'],'string','max'=>32,'min'=>3],
-            ['username','unique','targetClass'=>User::className()],
-            ['password_confirm','compare','compareAttribute'=>'password']
+            [['username', 'password'], 'string', 'max' => 32, 'min' => 3],
+            ['username', 'unique', 'targetClass' => User::className()],
+            ['password_confirm', 'compare', 'compareAttribute' => 'password']
         ];
     }
 
-    public function attributeLabels(){
+    public function attributeLabels()
+    {
         return [
-            'username'=>'用户名',
-            'password'=>'密码',
-            'password_confirm'=>'重复密码',
+            'username' => \Yii::t('member', 'Username'),
+            'password' => \Yii::t('member', 'Password'),
+            'password_confirm' => \Yii::t('member', 'Confirm Password'),
         ];
     }
 
@@ -48,8 +49,9 @@ class SignupForm extends Model
      * @throws \yii\base\Exception
      * @throws \yii\base\InvalidConfigException
      */
-    public function signup(){
-        if($this->validate()){
+    public function signup()
+    {
+        if ($this->validate()) {
             $user = new User();
             $user->username = $this->username;
             $user->password_hash = \Yii::$app->security->generatePasswordHash($this->password);
@@ -58,18 +60,18 @@ class SignupForm extends Model
             $user->created_at = time();
             try {
                 if ($user->save()) {
-                    Event::trigger(Module::className(),Module::EVENT_SIGNUP_SUCCESS,new SignupEvent(['model'=>$this]));
+                    Event::trigger(Module::className(), Module::EVENT_SIGNUP_SUCCESS, new SignupEvent(['model' => $this]));
                     return true;
-                }else{
-                    \Yii::error($user->getErrors(),__METHOD__);
-                    throw new ErrorException('写入数据异常!');
+                } else {
+                    \Yii::error($user->getErrors(), __METHOD__);
+                    throw new ErrorException(\Yii::t('member', 'Throw an exception of saving data!'));
                 }
-            }catch (\Exception $e){
-                \Yii::error($e->getMessage(),__METHOD__);
-                $this->addError('username','系统异常!');
+            } catch (\Exception $e) {
+                \Yii::error($e->getMessage(), __METHOD__);
+                $this->addError('username', \Yii::t('member', 'The user has some exceptions!'));
             }
         }
-        Event::trigger(Module::className(),Module::EVENT_SIGNUP_FAIL,new SignupEvent(['model'=>$this]));
+        Event::trigger(Module::className(), Module::EVENT_SIGNUP_FAIL, new SignupEvent(['model' => $this]));
         return false;
     }
 }
@@ -78,6 +80,7 @@ class SignupForm extends Model
  * Class SignupEvent
  * @package app\modules\member\models
  */
-class SignupEvent extends Event{
+class SignupEvent extends Event
+{
     public $model;
 }

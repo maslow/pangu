@@ -7,8 +7,7 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model app\modules\member\models\CreateUserForm */
 
-$this->title = '新建用户';
-$this->params['breadcrumbs'][] = ['label' => '用户', 'url' => ['index']];
+$this->title = Yii::t('member', 'Create User');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
     <h1>
@@ -30,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="form-group">
         <div class="col-sm-offset-1 col-sm-11">
-            <?= Html::submitButton('创建', ['class' => 'btn btn-primary', 'name' => 'create-user']) ?>
+            <?= Html::submitButton(Yii::t('member', 'Create User'), ['class' => 'btn btn-primary', 'name' => 'create-user']) ?>
         </div>
     </div>
 <?php ActiveForm::end(); ?>

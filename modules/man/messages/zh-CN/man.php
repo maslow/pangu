@@ -31,4 +31,8 @@ return [
     'Manager List' => '管理员列表',
     'Update Manager' => '更新管理员',
 
+    'Update Time' => '更新时间',
+    'Create Time' => '创建时间',
+    'Creator' => '创建人',
+    'Create IP' => '创建IP',
 ];

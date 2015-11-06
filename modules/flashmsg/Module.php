@@ -56,9 +56,6 @@ class Module extends \yii\base\Module implements BootstrapInterface
     protected function manMessages()
     {
         return [
-            //ManModule::EVENT_LOGIN_FAIL => \Yii::t('flashmsg', 'Failed to login, please try again.'),
-            //ManModule::EVENT_LOGIN_REQUIRED => \Yii::t('flashmsg', 'Please login to continue your operation or your session is timeout.'),
-            //ManModule::EVENT_AFTER_LOGOUT => \Yii::t('flashmsg', 'You have been logged-out, bye!'),
             ManModule::EVENT_CREATE_MANAGER_SUCCESS => \Yii::t('flashmsg', 'Success to create manager!'),
             ManModule::EVENT_CREATE_MANAGER_FAIL => \Yii::t('flashmsg', 'Failed to create manager!'),
             ManModule::EVENT_UPDATE_MANAGER_SUCCESS => \Yii::t('flashmsg', 'Success to update manager!'),
@@ -75,18 +72,18 @@ class Module extends \yii\base\Module implements BootstrapInterface
     protected function memberMessages()
     {
         return [
-            MemberModule::EVENT_LOGIN_SUCCESS => "登录成功!",
-            MemberModule::EVENT_LOGIN_FAIL => "登录失败，请重试！",
-            MemberModule::EVENT_AFTER_LOGOUT => "您已安全退出，再见!",
-            MemberModule::EVENT_SIGNUP_SUCCESS => "注册成功!",
-            MemberModule::EVENT_SIGNUP_FAIL => "注册失败!",
+            MemberModule::EVENT_LOGIN_SUCCESS => \Yii::t('flashmsg', 'Success to login!'),
+            MemberModule::EVENT_LOGIN_FAIL => \Yii::t('flashmsg', 'Failed to login, please try again.'),
+            MemberModule::EVENT_AFTER_LOGOUT => \Yii::t('flashmsg', 'You have been logged-out, bye!'),
+            MemberModule::EVENT_SIGNUP_SUCCESS => \Yii::t('flashmsg', 'Success to sign up!'),
+            MemberModule::EVENT_SIGNUP_FAIL => \Yii::t('flashmsg', 'Failed to sign up!'),
 
-            MemberModule::EVENT_CREATE_USER_SUCCESS => "创建用户成功！",
-            MemberModule::EVENT_CREATE_USER_FAIL => "创建用户失败！",
-            MemberModule::EVENT_UPDATE_USER_SUCCESS => "更新用户成功！",
-            MemberModule::EVENT_UPDATE_USER_FAIL => "更新用户失败！",
-            MemberModule::EVENT_DELETE_USER_SUCCESS => "删除用户成功！",
-            MemberModule::EVENT_DELETE_USER_FAIL => "删除用户失败！",
+            MemberModule::EVENT_CREATE_USER_SUCCESS => \Yii::t('flashmsg', 'Success to create user!'),
+            MemberModule::EVENT_CREATE_USER_FAIL => \Yii::t('flashmsg', 'Failed to create user!'),
+            MemberModule::EVENT_UPDATE_USER_SUCCESS => \Yii::t('flashmsg', 'Success to update user!'),
+            MemberModule::EVENT_UPDATE_USER_FAIL => \Yii::t('flashmsg', 'Failed to update user!'),
+            MemberModule::EVENT_DELETE_USER_SUCCESS => \Yii::t('flashmsg', 'Success to delete user!'),
+            MemberModule::EVENT_DELETE_USER_FAIL => \Yii::t('flashmsg', 'Failed to delete user!'),
         ];
     }
 

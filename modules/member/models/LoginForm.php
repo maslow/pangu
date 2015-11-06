@@ -34,8 +34,8 @@ class LoginForm extends Model
     public function attributeLabels()
     {
         return [
-            'username' => '用户名',
-            'password' => '密码',
+            'username' => Yii::t('member', 'Username'),
+            'password' => Yii::t('member', 'Password'),
         ];
     }
 
@@ -51,16 +51,16 @@ class LoginForm extends Model
             try {
                 if ($user && Yii::$app->security->validatePassword($this->password, $user->password_hash)) {
                     Yii::$app->user->login($user);
-                    Event::trigger(Module::className(),Module::EVENT_LOGIN_SUCCESS,new LoginEvent(['model'=>$this]));
+                    Event::trigger(Module::className(), Module::EVENT_LOGIN_SUCCESS, new LoginEvent(['model' => $this]));
                     return true;
                 } else {
-                    $this->addError('username', '用户名密码不匹配');
+                    $this->addError('username', Yii::t('member', 'Username and  password are incorrect!'));
                 }
             } catch (\Exception $e) {
-                $this->addError('username', '该用户异常!');
+                $this->addError('username', Yii::t('member', 'The user has some exceptions!'));
             }
         }
-        Event::trigger(Module::className(),Module::EVENT_LOGIN_FAIL,new LoginEvent(['model'=>$this]));
+        Event::trigger(Module::className(), Module::EVENT_LOGIN_FAIL, new LoginEvent(['model' => $this]));
         return false;
     }
 }
@@ -69,6 +69,7 @@ class LoginForm extends Model
  * Class LoginEvent
  * @package app\modules\member\models
  */
-class LoginEvent extends Event{
+class LoginEvent extends Event
+{
     public $model;
 }

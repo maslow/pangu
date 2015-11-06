@@ -38,9 +38,9 @@ class UpdateUserForm extends Model
     public function attributeLabels()
     {
         return [
-            'username' => '用户名',
-            'password' => '密码',
-            'password_confirm' => '重复密码',
+            'username' => Yii::t('member', 'Username'),
+            'password' => Yii::t('member', 'Password'),
+            'password_confirm' => Yii::t('member', 'Confirm Password'),
         ];
     }
 
@@ -68,7 +68,7 @@ class UpdateUserForm extends Model
                     throw new InvalidParamException();
                 }
             } catch (\Exception $e) {
-                $this->addError('username', '写入数据异常!');
+                $this->addError('username', Yii::t('member', 'Throw an exception of saving data!'));
             }
         }
         return false;

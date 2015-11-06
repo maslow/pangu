@@ -14,18 +14,18 @@ return [
     'bootstrap' => true,
     'manager' => [
         'menu' => [
-            'label' => '用户管理',
+            'label' => Yii::t('member', 'Users'),
             'url' => ['/member/manager/index'],
             'items' => [
                 [
-                    'label' => '管理用户',
+                    'label' => Yii::t('member', 'User List'),
                     'url' => ['/member/manager/index'],
-                    'permission'=>'member.users.list',
+                    'permission' => 'member.users.list',
                 ],
                 [
-                    'label' => '添加用户',
+                    'label' => Yii::t('member', 'Create User'),
                     'url' => ['/member/manager/create'],
-                    'permission'=>'member.users.create'
+                    'permission' => 'member.users.create'
                 ],
             ],
         ],

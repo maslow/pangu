@@ -7,10 +7,10 @@ use yii\widgets\ActiveForm;
 /* @var $model app\modules\member\models\UpdateUserForm */
 /* @var $user app\modules\member\models\User */
 
-$this->title = '编辑用户';
-$this->params['breadcrumbs'][] = ['label' => '用户', 'url' => ['index']];
+$this->title = Yii::t('member', 'Update User');
 $this->params['breadcrumbs'][] = ['label' => $model->username, 'url' => ['view', 'id' => $user->id]];
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
     <h1>
         <?= Html::encode($this->title) ?>
@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="form-group">
         <div class="col-sm-offset-1 col-sm-11">
-            <?= Html::submitButton('更新', ['class' => 'btn btn-primary', 'name' => 'update-user']) ?>
+            <?= Html::submitButton(Yii::t('member', 'Update User'), ['class' => 'btn btn-primary', 'name' => 'update-user']) ?>
         </div>
     </div>
 <?php ActiveForm::end(); ?>

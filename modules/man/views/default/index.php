@@ -37,6 +37,7 @@ $manager = Yii::$app->manager;
                     <li class="dropdown user user-menu">
                         <!-- Menu Toggle Button -->
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="fa fa-user"></i>
                             <!-- hidden-xs hides the username on small devices so only the image appears. -->
                             <span class="hidden-xs"><?= $manager->identity->username ?></span>
                         </a>

@@ -7,7 +7,6 @@ use yii\widgets\DetailView;
 /* @var $model app\modules\member\models\User */
 
 $this->title = $model->username;
-$this->params['breadcrumbs'][] = ['label' => '用户', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-view">
@@ -15,12 +14,13 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('编辑', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('删除', ['delete', 'id' => $model->id], [
+        <?= Html::a(Yii::t('member', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('member', 'Delete'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => Yii::t('member', 'Are you sure you want to delete this item?'),
                 'method' => 'post',
+                'pjax' => '0',
             ],
         ]) ?>
     </p>
