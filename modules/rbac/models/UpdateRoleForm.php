@@ -35,10 +35,10 @@ class UpdateRoleForm extends Model
     public function attributeLabels()
     {
         return [
-            'name' => '标识',
-            'description' => "标题",
-            'data' => "备注",
-            'permissions' => '权限'
+            'name' => \Yii::t('rbac', 'Role ID'),
+            'description' => \Yii::t('rbac', 'Title'),
+            'data' => \Yii::t('rbac', 'Remark'),
+            'permissions' => \Yii::t('rbac', 'Permissions'),
         ];
     }
 
@@ -63,7 +63,7 @@ class UpdateRoleForm extends Model
                 Event::trigger(Module::className(),Module::EVENT_UPDATE_ROLE_SUCCESS,new UpdateRoleEvent(['model'=>$this]));
                 return true;
             }else{
-                $this->addError('name','角色不存在！');
+                $this->addError('name',\Yii::t('rbac', 'The role is not exist!'));
             }
         }
         Event::trigger(Module::className(),Module::EVENT_UPDATE_ROLE_FAIL,new UpdateRoleEvent(['model'=>$this]));

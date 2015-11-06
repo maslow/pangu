@@ -3,26 +3,26 @@
 /* @var $roles yii\rbac\Role[] */
 use \yii\helpers\Html;
 use yii\helpers\Url;
-
-$this->title = Yii::t('rbac','Roles');
+\yii\web\YiiAsset::register($this);
+$this->title = Yii::t('rbac','Role List');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="panel panel-default">
     <div class="panel-heading"><?= Html::encode($this->title) ?></div>
     <div class="panel-body">
-        <a href="<?=Url::to(['manager/create-role'])?>" class="btn btn-default">新建角色</a>
+        <a href="<?=Url::to(['manager/create-role'])?>" class="btn btn-default"><?=Yii::t('rbac','Create Role')?></a>
     </div>
 
     <!-- Table -->
     <table class="table .table-hover">
         <thead>
         <tr>
-            <th>角色名</th>
-            <th>标识</th>
-            <th>权限</th>
-            <th width="5%">备注</th>
-            <th>操作</th>
+            <th><?=Yii::t('rbac','Role')?></th>
+            <th><?=Yii::t('rbac','Role ID')?></th>
+            <th><?=Yii::t('rbac','Permissions')?></th>
+            <th width="5%"><?=Yii::t('rbac','Remark')?></th>
+            <th><?=Yii::t('rbac','Action')?></th>
         </tr>
         </thead>
         <tbody>
@@ -39,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <td><span class="text-muted"><?= $role->data?$role->data:'-'?></span></td>
                 <td>
                     <a href="<?=Url::to(['manager/update-role','name'=>$role->name])?>"><span class="glyphicon glyphicon-pencil"></span></a>
-                    <a href="<?=Url::to(['manager/delete-role','name'=>$role->name])?>" data-confirm="您确定要删除此项吗？" data-method="post" data-pjax="0">
+                    <a href="<?=Url::to(['manager/delete-role','name'=>$role->name])?>" data-confirm="<?=Yii::t('rbac','Are you sure you want to delete this item?')?>" data-method="post" data-pjax="0">
                         <span class="glyphicon glyphicon-trash"></span>
                     </a>
 

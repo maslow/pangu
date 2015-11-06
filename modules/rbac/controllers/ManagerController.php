@@ -64,7 +64,7 @@ class ManagerController extends \yii\web\Controller
 
         $role = $this->getAuth()->getRole($name);
         if (!$role) {
-            throw new NotFoundHttpException("不存在名称为{$name}的角色!");
+            throw new NotFoundHttpException(\Yii::t('rbac', 'The role named "{role}" is not exist!',['role'=>$name]));
         }
 
         $model = new UpdateRoleForm();
@@ -107,7 +107,7 @@ class ManagerController extends \yii\web\Controller
         Event::trigger(Module::className(), Module::EVENT_BEFORE_DELETE_ROLE);
         $role = $this->getAuth()->getRole($name);
         if (!$role) {
-            throw new NotFoundHttpException("要删除的角色不存在！");
+            throw new NotFoundHttpException(\Yii::t('rbac', 'The role is not exist!'));
         }
 
         if ($this->getAuth()->remove($role)) {

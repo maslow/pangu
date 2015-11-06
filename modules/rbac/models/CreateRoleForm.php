@@ -33,9 +33,9 @@ class CreateRoleForm extends Model
     public function attributeLabels()
     {
         return [
-            'name' => "标识",
-            'description' => "标题",
-            'data' => "备注"
+            'name' => \Yii::t('rbac', 'Role ID'),
+            'description' => \Yii::t('rbac', 'Title'),
+            'data' => \Yii::t('rbac', 'Remark'),
         ];
     }
 
@@ -48,18 +48,18 @@ class CreateRoleForm extends Model
         if ($this->validate()) {
             $role = new Role();
             // 判断角色名是否已存在
-            if (!$this->getAuth()->getRole($this->name)){
+            if (!$this->getAuth()->getRole($this->name)) {
                 $role->name = $this->name;
                 $role->description = $this->description;
                 $role->data = $this->data;
                 $this->getAuth()->add($role);
-                Event::trigger(Module::className(),Module::EVENT_CREATE_ROLE_SUCCESS,new CreateRoleEvent(['model'=>$this]));
+                Event::trigger(Module::className(), Module::EVENT_CREATE_ROLE_SUCCESS, new CreateRoleEvent(['model' => $this]));
                 return true;
-            }else {
-                $this->addError('name', "角色名已存在！");
+            } else {
+                $this->addError('name', \Yii::t('rbac', 'The role name has already been exist!'));
             }
         }
-        Event::trigger(Module::className(),Module::EVENT_CREATE_ROLE_FAIL,new CreateRoleEvent(['model'=>$this]));
+        Event::trigger(Module::className(), Module::EVENT_CREATE_ROLE_FAIL, new CreateRoleEvent(['model' => $this]));
         return false;
     }
 

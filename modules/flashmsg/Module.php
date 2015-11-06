@@ -93,11 +93,11 @@ class Module extends \yii\base\Module implements BootstrapInterface
     {
         return [
             RbacModule::EVENT_CREATE_ROLE_SUCCESS => \Yii::t('flashmsg', 'Create role successfully!'),
-            RbacModule::EVENT_CREATE_ROLE_FAIL => "创建角色失败！",
-            RbacModule::EVENT_UPDATE_ROLE_SUCCESS => "更新角色成功！",
-            RbacModule::EVENT_UPDATE_ROLE_FAIL => "更新角色失败！",
-            RbacModule::EVENT_DELETE_ROLE_SUCCESS => "删除角色成功！",
-            RbacModule::EVENT_DELETE_ROLE_FAIL => "删除角色失败！",
+            RbacModule::EVENT_CREATE_ROLE_FAIL => \Yii::t('flashmsg', 'Create role failed!'),
+            RbacModule::EVENT_UPDATE_ROLE_SUCCESS => \Yii::t('flashmsg', 'Update role successfully!'),
+            RbacModule::EVENT_UPDATE_ROLE_FAIL => \Yii::t('flashmsg', 'Update role failed!'),
+            RbacModule::EVENT_DELETE_ROLE_SUCCESS => \Yii::t('flashmsg', 'Delete role successfully!'),
+            RbacModule::EVENT_DELETE_ROLE_FAIL => \Yii::t('flashmsg', 'Delete role failed!'),
         ];
     }
 

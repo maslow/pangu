@@ -7,9 +7,10 @@
  */
 
 return [
-    'Create role successfully!' => '创建角色成功！',
 
     'You have no permission with the operation : {permission}' => '您没有进行该操作的权限：{permission}',
+
+    //Man module
     'Success to create manager!' => '创建管理员成功！',
     'Failed to create manager!' => '创建管理员失败！',
     'Success to update manager!' => '更新管理员成功！',
@@ -31,4 +32,12 @@ return [
     'Success to delete user!' => '删除用户成功！',
     'Failed to delete user!' => '删除用户失败！',
 
+
+    // Rbac module
+    'Create role successfully!' => '创建角色成功！',
+    'Create role failed!' => '创建角色失败！',
+    'Update role successfully!' => '更新角色成功！',
+    'Update role failed!' => '更新角色失败！',
+    'Delete role successfully!' => '删除角色成功！',
+    'Delete role failed!' => '删除角色失败！',
 ];

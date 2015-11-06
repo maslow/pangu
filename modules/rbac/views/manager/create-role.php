@@ -12,7 +12,7 @@ use yii\helpers\Html;
 /* @var $form \yii\widgets\ActiveForm */
 /* @var $model \app\modules\rbac\models\CreateRoleForm */
 
-$this->title = "新建角色";
+$this->title = Yii::t('rbac','Create Role');
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <?= $form->field($model, 'data')->textarea() ?>
     <div class="form-group">
         <div class="col-sm-offset-1 col-sm-11">
-            <?= Html::submitButton('创建', ['class' => 'btn btn-primary', 'name' => 'create-role']) ?>
+            <?= Html::submitButton(Yii::t('rbac','Create Role'), ['class' => 'btn btn-primary', 'name' => 'create-role']) ?>
         </div>
     </div>
 <?php ActiveForm::end(); ?>

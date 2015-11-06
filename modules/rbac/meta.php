@@ -11,20 +11,20 @@ return [
     'version' => '1.0',
     'description' => '权限控制模块。',
 
-    'bootstrap' => true,
+    'bootstrap' => false,
     'deps' => [],
     'manager' => [
         'menu' => [
-            'label' => '角色权限控制',
+            'label' => Yii::t('rbac','Roles'),
             'url' => ['/rbac/manager/roles'],
             'items' => [
                 [
-                    'label' => '管理系统角色',
+                    'label' => Yii::t('rbac', 'Role List'),
                     'url' => ['/rbac/manager/roles'],
                     'permission' => 'rbac.roles.list'
                 ],
                 [
-                    'label' => '创建系统角色',
+                    'label' => Yii::t('rbac', 'Create Role'),
                     'url' => ['/rbac/manager/create-role'],
                     'permission' => 'rbac.roles.create'
                 ],

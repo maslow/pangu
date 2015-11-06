@@ -12,8 +12,8 @@ use yii\helpers\Html;
 /* @var $form \yii\widgets\ActiveForm */
 /* @var $model \app\modules\rbac\models\UpdateRoleForm */
 
-$this->title = "更新角色";
-$this->params['breadcrumbs'][] = $model->description;  // TODO 添加该角色detail url
+$this->title = Yii::t('rbac', 'Update Role');
+$this->params['breadcrumbs'][] = $model->description;
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <?= $form->field($model, 'permissions')->checkboxList($permissions) ?>
     <div class="form-group">
         <div class="col-sm-offset-1 col-sm-11">
-            <?= Html::submitButton('更新', ['class' => 'btn btn-primary', 'name' => 'update-role']) ?>
+            <?= Html::submitButton(Yii::t('rbac', 'Update Role'), ['class' => 'btn btn-primary', 'name' => 'update-role']) ?>
         </div>
     </div>
 <?php ActiveForm::end(); ?>

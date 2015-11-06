@@ -33,7 +33,7 @@ use app\assets\AppAsset;
         }
         ?>
         <?= Breadcrumbs::widget([
-            'homeLink'=>['label'=>'角色权限控制','url'=>\yii\helpers\Url::to('roles')],
+            'homeLink'=>['label'=>Yii::t('rbac','Roles'),'url'=>\yii\helpers\Url::to('roles')],
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
         <?= $content ?>
