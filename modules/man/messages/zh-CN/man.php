@@ -9,6 +9,7 @@
 return [
     'Welcome!' => '欢迎！',
     'Reset Password' => '修改密码',
+    'Captcha' => '验证码',
 
     'Username' => '用户名',
     'Password' => '密码',

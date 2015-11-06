@@ -15,6 +15,7 @@ class LoginForm extends Model
 {
     public $username;
     public $password;
+    public $verifyCode;
 
     /**
      * @inheritdoc
@@ -24,7 +25,8 @@ class LoginForm extends Model
         return [
             [['username', 'password'], 'required'],
             [['username', 'password'], 'string', 'min' => 3, 'max' => 32],
-            [['username'], 'exist', 'targetClass' => Manager::className()]
+            [['username'], 'exist', 'targetClass' => Manager::className()],
+            ['verifyCode', 'captcha']
         ];
     }
 
@@ -36,6 +38,7 @@ class LoginForm extends Model
         return [
             'username' => Yii::t('man', 'Username'),
             'password' => Yii::t('man', 'Password'),
+            'verifyCode' => Yii::t('man', 'Captcha'),
         ];
     }
 
