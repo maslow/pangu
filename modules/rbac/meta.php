@@ -11,11 +11,11 @@ return [
     'version' => '1.0',
     'description' => '权限控制模块。',
 
-    'bootstrap' => false,
+    'bootstrap' => true,
     'deps' => [],
     'manager' => [
         'menu' => [
-            'label' => '角色控制',
+            'label' => '角色权限控制',
             'url' => ['/rbac/manager/roles'],
             'items' => [
                 [

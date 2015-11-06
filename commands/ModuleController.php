@@ -84,7 +84,8 @@ class ModuleController extends Controller
             }
             $modulesArr[$id] = [
                 'class' => $m['class'],
-                'bootstrap' => $m['bootstrap'],
+                'bootstrap' => isset($m['bootstrap']) ? $m['bootstrap'] : false,
+                'i18n' => $m['i18n'],
             ];
         }
         $content = serialize($modulesArr);

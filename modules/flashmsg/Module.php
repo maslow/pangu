@@ -16,9 +16,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
     public function init()
     {
         parent::init();
-
         // custom initialization code goes here
-        $this->registerTranslations();
     }
 
     /**
@@ -117,16 +115,5 @@ class Module extends \yii\base\Module implements BootstrapInterface
     public function permissionRequired($event)
     {
         \Yii::$app->session->setFlash(\Yii::$app->params['flashMessageParam'], \Yii::t('flashmsg', 'You have no permission with the operation : {permission}', ['permission' => $event->permission]));
-    }
-
-    protected function registerTranslations()
-    {
-        \Yii::$app->i18n->translations['flashmsg'] = [
-            'class' => 'yii\i18n\PhpMessageSource',
-            'basePath' => '@app/modules/flashmsg/messages',
-            'fileMap' => [
-                'flashmsg' => 'flashmsg.php',
-            ],
-        ];
     }
 }

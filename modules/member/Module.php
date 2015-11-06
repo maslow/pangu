@@ -40,7 +40,6 @@ class Module extends \yii\base\Module implements BootstrapInterface
         parent::init();
         \Yii::configure($this,require(__DIR__.'/config.php'));
         // custom initialization code goes here
-        $this->registerTranslations();
     }
 
     /**
@@ -65,16 +64,5 @@ class Module extends \yii\base\Module implements BootstrapInterface
             'site/logout'=>'member/default/logout',
             'site/signup'=>'member/default/signup',
         ],false);
-    }
-
-    protected function registerTranslations()
-    {
-        \Yii::$app->i18n->translations['member'] = [
-            'class' => 'yii\i18n\PhpMessageSource',
-            'basePath' => '@app/modules/member/messages',
-            'fileMap' => [
-                'member' => 'member.php',
-            ],
-        ];
     }
 }

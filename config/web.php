@@ -79,5 +79,8 @@ foreach ($modules as $id => $m) {
         $config['bootstrap'][] = $id;
     }
     $config['modules'][$id]['class'] = $m['class'];
+    foreach($m['i18n'] as $transName => $transConfig){
+        $config['components']['i18n']['translations'][$transName] = $transConfig;
+    }
 }
 return $config;

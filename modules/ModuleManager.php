@@ -11,6 +11,7 @@ namespace app\modules;
 
 use yii\base\Component;
 use yii\base\ErrorException;
+use yii\base\InvalidConfigException;
 
 
 /**
@@ -23,6 +24,24 @@ class ModuleManager extends Component
     public $moduleRoot = '@app/modules';
     public $moduleNamespace = '\\app\\modules';
     public $defaultClassName = 'Module';
+
+
+    /**
+     * 获取指定模块的i18n配置
+     * @param $id
+     * @return array
+     * @throws InvalidConfigException
+     */
+    public function getI18n($id){
+        $path = $this->moduleRoot.'/'.$id.'/i18n.php';
+        $path = \Yii::getAlias($path);
+        if(file_exists($path)){
+            $i18n = require($path);
+            return $i18n;
+        }else{
+            throw new InvalidConfigException("Not found file : {$path}");
+        }
+    }
 
     /**
      * 获取所有模块(meta,描述信息)
@@ -51,8 +70,13 @@ class ModuleManager extends Component
         if (!$this->isExist($id)) {
             return false;
         }
+        $i18n = $this->getI18n($id);
+        foreach($i18n as $id => $config){
+            \Yii::$app->i18n->translations[$id] = $config;
+        }
         $meta = require($this->getMetaFile($id));
         $meta['class'] = $this->getClass($id);
+        $meta['i18n'] = $i18n;
         return $meta;
     }
 
