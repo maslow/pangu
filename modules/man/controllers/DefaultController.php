@@ -6,6 +6,7 @@ use app\modules\man\models\LoginForm;
 use app\modules\man\Module;
 use yii\base\Event;
 use yii\web\Controller;
+use yii\web\Cookie;
 
 class DefaultController extends Controller
 {
@@ -32,7 +33,7 @@ class DefaultController extends Controller
                         unset($m['manager']['menu']['items'][$i]);
                     }
                 }
-                if(count($m['manager']['menu']['items'])){
+                if (count($m['manager']['menu']['items'])) {
                     $menu[$id] = $m['manager']['menu'];
                 }
             }
@@ -80,6 +81,21 @@ class DefaultController extends Controller
             return $this->redirect(['default/login']);
         }
         return $this->render('info');
+    }
+
+    /**
+     * 切换系统显示语言
+     * @param $lang
+     * @return \yii\web\Response
+     */
+    public function actionSetLanguage($lang)
+    {
+        \Yii::$app->response->cookies->add(new Cookie([
+            'name' => '__lang',
+            'value' => $lang,
+            'expire' => time() + 3600 * 24,
+        ]));
+        return $this->redirect(['/man']);
     }
 
     /**

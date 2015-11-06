@@ -57,5 +57,9 @@ class Module extends \yii\base\Module implements BootstrapInterface
                 'httpOnly' => true
             ],
         ]);
+
+        if(($lang = \Yii::$app->request->cookies->get('__lang')) != 'en-US'){
+            \Yii::$app->language = $lang;
+        }
     }
 }

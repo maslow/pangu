@@ -33,6 +33,22 @@ $manager = Yii::$app->manager;
             <!-- Navbar Right Menu -->
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
+                    <!-- Language -->
+                    <li class="">
+                        <?php if (($lang = Yii::$app->language) == 'zh-CN'): ?>
+                            <a href="<?= Url::to(['/man/default/set-language','lang' =>'en-US']) ?>"
+                               class="dropdown-toggle" >
+                                <i class="fa fa-gear"></i>
+                                <span class="label label-danger">En</span>
+                            </a>
+                            <?php else: ?>
+                            <a href="<?= Url::to(['/man/default/set-language','lang' => 'zh-CN']) ?>"
+                               class="dropdown-toggle" >
+                                <i class="fa fa-gear"></i>
+                                <span class="label label-danger">中</span>
+                            </a>
+                        <?php endif; ?>
+                    </li>
                     <!-- User Account Menu -->
                     <li class="dropdown user user-menu">
                         <!-- Menu Toggle Button -->
@@ -53,7 +69,8 @@ $manager = Yii::$app->manager;
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <div class="pull-left">
-                                    <a href="<?=Url::to(['/man/manager/reset-password'])?>" target="sub-container" class="btn btn-default btn-flat">
+                                    <a href="<?= Url::to(['/man/manager/reset-password']) ?>" target="sub-container"
+                                       class="btn btn-default btn-flat">
                                         <?= Yii::t('man', 'Reset Password') ?>
                                     </a>
                                 </div>
@@ -141,7 +158,7 @@ $manager = Yii::$app->manager;
     }
     <?php $this->beginBlock('js_ready');?>
     $('.treeview-menu li').click(function () {
-        $('.treeview-menu li').each(function(){
+        $('.treeview-menu li').each(function () {
             $(this).removeClass('active');
         });
         $(this).addClass('active');
