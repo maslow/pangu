@@ -70,7 +70,7 @@ php yii init/admin
 其它
 ---
 
-后台中控台地址:  http://localhost/pangu/web/index.php/man
+后台管理中心地址:  http://localhost/pangu/web/index.php/man
 
   
  
