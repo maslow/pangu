@@ -7,7 +7,7 @@ $this->title = Yii::t('app','My Application in Pan\'gu');
     <div class="jumbotron">
         <h1><?=Yii::t('app','Welcome to come here!')?></h1>
 
-        <p class="lead">You have successfully created your ey2b-powered application.</p>
+        <p class="lead">You have successfully created your Pangu-powered application.</p>
 
         <p><a class="btn btn-lg btn-success" href="<?=\yii\helpers\Url::to(['/man'])?>"><?=Yii::t('app','Getting start!')?></a></p>
     </div>
