@@ -29,6 +29,9 @@ class Module extends \yii\base\Module implements BootstrapInterface
     const EVENT_DELETE_MANAGER_SUCCESS = "deleteManagerSuccess";
     const EVENT_DELETE_MANAGER_FAIL = "deleteManagerFail";
 
+    const EVENT_RESET_PASSWORD_SUCCESS = "resetPasswordSuccess";
+    const EVENT_RESET_PASSWORD_FAIL = "resetPasswordSuccess";
+
 
     public $controllerNamespace = 'app\modules\man\controllers';
 
@@ -44,14 +47,14 @@ class Module extends \yii\base\Module implements BootstrapInterface
      */
     public function bootstrap($app)
     {
-        \Yii::$app->set('manager',[
-            'class'=>'\yii\web\User',
-            'identityClass'=>Manager::className(),
+        \Yii::$app->set('manager', [
+            'class' => '\yii\web\User',
+            'identityClass' => Manager::className(),
             'enableAutoLogin' => false,
             'idParam' => "__{$this->id}__id",
-            'identityCookie' =>[
+            'identityCookie' => [
                 'name' => "__{$this->id}__identity",
-                'httpOnly' =>true
+                'httpOnly' => true
             ],
         ]);
     }

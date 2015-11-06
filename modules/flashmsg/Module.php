@@ -60,6 +60,8 @@ class Module extends \yii\base\Module implements BootstrapInterface
             ManModule::EVENT_UPDATE_MANAGER_FAIL => \Yii::t('flashmsg', 'Failed to update manager!'),
             ManModule::EVENT_DELETE_MANAGER_SUCCESS => \Yii::t('flashmsg', 'Success to delete manager!'),
             ManModule::EVENT_DELETE_MANAGER_FAIL => \Yii::t('flashmsg', 'Failed to delete manager!'),
+            ManModule::EVENT_RESET_PASSWORD_FAIL => \Yii::t('flashmsg', 'Reset password failed!'),
+            ManModule::EVENT_RESET_PASSWORD_SUCCESS => \Yii::t('flashmsg', 'Reset password successfully!'),
         ];
     }
 
@@ -106,9 +108,9 @@ class Module extends \yii\base\Module implements BootstrapInterface
      */
     public function sendFlashMessage($event)
     {
-        if(isset($event->error) && $event->error){
+        if (isset($event->error) && $event->error) {
             \Yii::$app->session->setFlash(\Yii::$app->params['flashMessageParam'], $event->error);
-        }else{
+        } else {
             \Yii::$app->session->setFlash(\Yii::$app->params['flashMessageParam'], $event->data);
         }
     }

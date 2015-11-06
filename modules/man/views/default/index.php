@@ -53,8 +53,9 @@ $manager = Yii::$app->manager;
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <div class="pull-left">
-                                    <a href="#"
-                                       class="btn btn-default btn-flat"><?= Yii::t('man', 'Reset Password') ?></a>
+                                    <a href="<?=Url::to(['/man/manager/reset-password'])?>" target="sub-container" class="btn btn-default btn-flat">
+                                        <?= Yii::t('man', 'Reset Password') ?>
+                                    </a>
                                 </div>
                                 <div class="pull-right">
                                     <a href="<?= Url::to(['/man/default/logout']) ?>"
@@ -75,26 +76,26 @@ $manager = Yii::$app->manager;
             <!-- Sidebar Menu -->
             <ul class="sidebar-menu">
                 <li class="header"></li>
-                <?php foreach($menu as $mid => $item):?>
-                <li class="treeview">
-                    <a href="#">
-                        <i class="fa fa-plus"></i>
-                        <span><?=$item['label']?></span>
-                        <i class="fa fa-angle-left pull-right"></i>
-                    </a>
-                    <ul class="treeview-menu">
-                        <?php foreach($item['items'] as $i):?>
-                        <li>
-                            <a href="<?=Url::to($i['url'])?>" target="sub-container">
-                                <i class="fa fa-eraser"></i>
-                                <?=$i['label']?>
-                                <i class="fa fa-angle-right pull-right"></i>
-                            </a>
-                        </li>
-                        <?php endforeach;?>
-                    </ul>
-                </li>
-                <?php endforeach;?>
+                <?php foreach ($menu as $mid => $item): ?>
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-plus"></i>
+                            <span><?= $item['label'] ?></span>
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                            <?php foreach ($item['items'] as $i): ?>
+                                <li>
+                                    <a href="<?= Url::to($i['url']) ?>" target="sub-container">
+                                        <i class="fa fa-eraser"></i>
+                                        <?= $i['label'] ?>
+                                        <i class="fa fa-angle-right pull-right"></i>
+                                    </a>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </li>
+                <?php endforeach; ?>
             </ul>
             <!-- /.sidebar-menu -->
         </section>
@@ -138,4 +139,13 @@ $manager = Yii::$app->manager;
             ifm.width = subWeb.body.scrollWidth;
         }
     }
+    <?php $this->beginBlock('js_ready');?>
+    $('.treeview-menu li').click(function () {
+        $('.treeview-menu li').each(function(){
+            $(this).removeClass('active');
+        });
+        $(this).addClass('active');
+    });
+    <?php $this->endBlock();$this->registerJs($this->blocks['js_ready']);?>
 </script>
+

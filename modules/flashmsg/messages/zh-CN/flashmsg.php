@@ -17,6 +17,8 @@ return [
     'Failed to update manager!' => '更新管理员失败！',
     'Success to delete manager!' => '删除管理员成功！',
     'Failed to delete manager!' => '删除管理员失败！',
+    'Reset password failed!' => '重置密码失败！',
+    'Reset password successfully!' => '重置密码成功！',
 
     //Member module
     'Success to login!' => '登录成功!',

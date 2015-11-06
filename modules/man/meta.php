@@ -28,6 +28,11 @@ return [
                     'url' => ['/man/manager/create'],
                     'permission'=>'man.managers.create',
                 ],
+                [
+                    'label' => Yii::t('man','Reset Password'),
+                    'url' => ['/man/manager/reset-password'],
+                    'permission'=>'man.managers.reset.password',
+                ],
             ]
         ],
         'permissions' => [
@@ -35,6 +40,7 @@ return [
             'man.managers.list' => '浏览管理员',
             'man.managers.update' => '更新管理员',
             'man.managers.delete' => '删除管理员',
+            'man.managers.reset.password' => '修改自身密码'
         ]
     ],
 ];

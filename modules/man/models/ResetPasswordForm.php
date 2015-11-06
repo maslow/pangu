@@ -9,15 +9,13 @@ use yii\base\InvalidParamException;
 use yii\base\Model;
 
 /**
- * Class CreateForm
+ * Class ResetPasswordForm
  * @package app\modules\man\models
  */
-class CreateForm extends Model
+class ResetPasswordForm extends Model
 {
-    public $username;
     public $password;
     public $password_confirm;
-    public $role;
 
     /**
      * @inheritdoc
@@ -25,10 +23,8 @@ class CreateForm extends Model
     public function rules()
     {
         return [
-            [['username', 'role', 'password', 'password_confirm'], 'required'],
-            [['username', 'password'], 'string', 'min' => 3, 'max' => 32],
-            ['role', 'string', 'max' => 32],
-            [['username'], 'unique', 'targetClass' => Manager::className()],
+            [['password', 'password_confirm'], 'required'],
+            ['password', 'string', 'min' => 6, 'max' => 32],
             ['password_confirm', 'compare', 'compareAttribute' => 'password']
         ];
     }
@@ -39,10 +35,8 @@ class CreateForm extends Model
     public function attributeLabels()
     {
         return [
-            'username' => Yii::t('man', 'Username'),
             'password' => Yii::t('man', 'Password'),
             'password_confirm' => Yii::t('man', 'Confirm Password'),
-            'role' => Yii::t('man', 'Role'),
         ];
     }
 
@@ -50,28 +44,19 @@ class CreateForm extends Model
      * 验证表单，并执行保存操作
      * @return bool
      */
-    public function create()
+    public function save()
     {
-        $event = new CreateEvent(['model' => $this]);
+        $event = new ResetPasswordEvent(['model' => $this]);
         if ($this->validate()) {
-            $manager = new Manager();
+            /* @var $manager Manager */
+            $manager = Yii::$app->manager->identity;
             try {
-                $manager->username = $this->username;
                 $manager->password_hash = Yii::$app->security->generatePasswordHash($this->password);
                 $manager->updated_at = time();
-                $manager->created_at = time();
                 $manager->auth_key = Yii::$app->security->generateRandomString();
-                $manager->created_ip = Yii::$app->request->getUserIP();
-                $manager->created_by = Yii::$app->manager->identity->id;
-                $manager->locked = 0;
 
                 if ($manager->save()) {
-                    $role = $this->getAuth()->getRole($this->role);
-                    if (!$role) {
-                        throw new \InvalidArgumentException('The role is not exist!');
-                    }
-                    $this->getAuth()->assign($role, $manager->id);
-                    Event::trigger(Module::className(), Module::EVENT_CREATE_MANAGER_SUCCESS, $event);
+                    Event::trigger(Module::className(), Module::EVENT_RESET_PASSWORD_SUCCESS, $event);
                     return true;
                 } else {
                     throw new InvalidParamException();
@@ -79,10 +64,10 @@ class CreateForm extends Model
             } catch (\Exception $e) {
                 Yii::error($manager->getErrors());
                 Yii::error($e->getMessage());
-                $this->addError('username', Yii::t('man', 'Throw an exception of saving data!'));
+                $this->addError('password', Yii::t('man', 'Throw an exception of saving data!'));
             }
         }
-        Event::trigger(Module::className(), Module::EVENT_CREATE_MANAGER_FAIL, $event);
+        Event::trigger(Module::className(), Module::EVENT_RESET_PASSWORD_FAIL, $event);
         return false;
     }
 
@@ -95,7 +80,7 @@ class CreateForm extends Model
     }
 }
 
-class CreateEvent extends Event
+class ResetPasswordEvent extends Event
 {
     public $model;
 }

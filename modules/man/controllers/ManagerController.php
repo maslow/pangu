@@ -11,6 +11,7 @@ namespace app\modules\man\controllers;
 
 use app\modules\man\models\CreateForm;
 use app\modules\man\models\Manager;
+use app\modules\man\models\ResetPasswordForm;
 use app\modules\man\models\UpdateForm;
 use app\modules\man\Module;
 use yii\base\Event;
@@ -21,6 +22,21 @@ use yii\web\NotFoundHttpException;
 class ManagerController extends Controller
 {
     public $layout = "manager";
+
+
+    /**
+     * 修改当前管理员密码
+     * @return string|\yii\web\Response
+     * @permission man.managers.reset.password
+     */
+    public function actionResetPassword(){
+
+        $model = new ResetPasswordForm();
+        if($model->load(\Yii::$app->request->post()) && $model->save()){
+            return $this->redirect(['list']);
+        }
+        return $this->render('reset-password',['model'=>$model]);
+    }
 
     /**
      * 显示管理员列表
