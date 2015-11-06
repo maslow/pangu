@@ -2,16 +2,29 @@
 
 namespace app\modules\rbac\controllers;
 
+use app\modules\man\models\Manager;
 use app\modules\rbac\models\CreateRoleForm;
 use app\modules\rbac\models\UpdateRoleForm;
 use app\modules\rbac\Module;
 use yii\base\Event;
+use yii\filters\VerbFilter;
 use yii\web\NotFoundHttpException;
 
 class ManagerController extends \yii\web\Controller
 {
     public $layout = 'manager';
 
+    public function behaviors()
+    {
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete-role' => ['post'],
+                ],
+            ],
+        ];
+    }
 
     /**
      * 显示角色列表
@@ -110,6 +123,19 @@ class ManagerController extends \yii\web\Controller
             throw new NotFoundHttpException(\Yii::t('rbac', 'The role is not exist!'));
         }
 
+        // 是否存在为该角色的管理员
+        /* @var $managers \app\modules\man\models\Manager[] */
+        $managers = Manager::find()->all();
+        foreach($managers as $man){
+            if($this->getAuth()->getAssignment($name,$man->id)){
+                Event::trigger(Module::className(),
+                    Module::EVENT_DELETE_ROLE_FAIL,
+                    new DeleteRoleEvent(['role'=>$role ,'error'=>\Yii::t('rbac','This role can not be deleted unless the role of any user is it.')])
+                );
+                return $this->redirect(['roles']);
+            }
+        }
+
         if ($this->getAuth()->remove($role)) {
             Event::trigger(Module::className(), Module::EVENT_DELETE_ROLE_SUCCESS,new DeleteRoleEvent(['role'=>$role]));
         } else {
@@ -169,4 +195,5 @@ class PermissionEvent extends Event
 class DeleteRoleEvent extends Event
 {
     public $role;
+    public $error =null;
 }

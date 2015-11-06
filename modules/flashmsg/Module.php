@@ -106,7 +106,11 @@ class Module extends \yii\base\Module implements BootstrapInterface
      */
     public function sendFlashMessage($event)
     {
-        \Yii::$app->session->setFlash(\Yii::$app->params['flashMessageParam'], $event->data);
+        if(isset($event->error) && $event->error){
+            \Yii::$app->session->setFlash(\Yii::$app->params['flashMessageParam'], $event->error);
+        }else{
+            \Yii::$app->session->setFlash(\Yii::$app->params['flashMessageParam'], $event->data);
+        }
     }
 
     /**

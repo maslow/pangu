@@ -26,4 +26,5 @@ return [
     'The role name has already been exist!'=> '角色名已存在！',
     'The role is not exist!' => '角色不存在！',
     'The role named "{role}" is not exist!' => '不存在名称为{role}的角色!',
+    'This role can not be deleted unless the role of any user is it.' => '这个角色不能被删除，除非没有任何用户的角色为该角色!',
 ];
