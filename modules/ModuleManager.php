@@ -20,6 +20,7 @@ use yii\base\InvalidConfigException;
  */
 class ModuleManager extends Component
 {
+    const MAX_CALL_DEPTH = 1024;
 
     public $moduleRoot = '@app/modules';
     public $moduleNamespace = '\\app\\modules';
@@ -32,13 +33,14 @@ class ModuleManager extends Component
      * @return array
      * @throws InvalidConfigException
      */
-    public function getI18n($id){
-        $path = $this->moduleRoot.'/'.$id.'/i18n.php';
+    public function getI18n($id)
+    {
+        $path = $this->moduleRoot . '/' . $id . '/i18n.php';
         $path = \Yii::getAlias($path);
-        if(file_exists($path)){
+        if (file_exists($path)) {
             $i18n = require($path);
             return $i18n;
-        }else{
+        } else {
             throw new InvalidConfigException("Not found file : {$path}");
         }
     }
@@ -57,7 +59,34 @@ class ModuleManager extends Component
             if ($m == false) throw new ErrorException("module ($id) is not exist");
             $modules[$id] = $m;
         }
-        return $modules;
+        return $this->sortModules($modules);
+    }
+
+    /**
+     * 根据模块之间依赖关系调整模块顺序
+     * @param $modules
+     * @return array the sorted modules
+     */
+    public function sortModules($modules)
+    {
+        $list = [];
+        $put = function ($m) use (&$put, &$list, $modules) {
+            static $i = 0;
+            $i++;
+            if ($i > self::MAX_CALL_DEPTH) {
+                throw new InvalidConfigException("The 'deps' config of modules may have dead cycle!");
+            }
+            if (array_key_exists($m, $list)) {
+                return;
+            }
+            foreach ($modules[$m]['deps'] as $d) {
+                $put($d);
+            }
+            $list[$m] = $modules[$m];
+        };
+        reset($modules);
+        $put(key($modules));
+        return $list;
     }
 
     /**
@@ -71,7 +100,7 @@ class ModuleManager extends Component
             return false;
         }
         $i18n = $this->getI18n($id);
-        foreach($i18n as $id => $config){
+        foreach ($i18n as $id => $config) {
             \Yii::$app->i18n->translations[$id] = $config;
         }
         $meta = require($this->getMetaFile($id));
@@ -170,7 +199,7 @@ class ModuleManager extends Component
         $permissions = [];
         foreach ($modules as $id => $m) {
             $p = $this->getPermissions($id);
-            if($p){
+            if ($p) {
                 $permissions [$id] = $p;
             }
         }
