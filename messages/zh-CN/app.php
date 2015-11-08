@@ -7,13 +7,13 @@
  */
 
 return [
-    'Pan\'gu' => '盘古',
+    'Pangu' => '盘古',
     'Home' => '首页',
     'Sign up' => '注册',
     'Login' => '登陆',
     'Logout' => '退出',
 
-    "My Application in Pan'gu" => '基于盘古的应用',
+    "My Application in Pangu" => '基于盘古的应用',
     'Welcome to come here!' => '终于到这里了!',
     'Getting start!' => '开始吧',
 

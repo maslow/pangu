@@ -1,6 +1,6 @@
 <?php
 /* @var $this yii\web\View */
-$this->title = Yii::t('app','My Application in Pan\'gu');
+$this->title = Yii::t('app','My Application in Pangu');
 ?>
 <div class="site-index">
 

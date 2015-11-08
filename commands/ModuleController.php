@@ -10,11 +10,6 @@ use yii\helpers\FileHelper;
 
 class ModuleController extends Controller
 {
-    public function actionTest(){
-        $modules = $this->getModuleManager()->getModules();
-        $list = $this->getModuleManager()->sortModules($modules);
-        var_dump($list);
-    }
     /**
      * 模块管理命令
      */

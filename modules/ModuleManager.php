@@ -63,33 +63,37 @@ class ModuleManager extends Component
     }
 
     /**
-     * 根据模块之间依赖关系调整模块顺序
-     * @param $modules
-     * @return array the sorted modules
+     * 莸取所有模块后台管理菜单
+     * @return array
+     * @throws ErrorException
      */
-    public function sortModules($modules)
+    public function getMenu()
     {
-        $list = [];
-        $put = function ($m) use (&$put, &$list, $modules) {
-            static $i = 0;
-            $i++;
-            if ($i > self::MAX_CALL_DEPTH) {
-                throw new InvalidConfigException("The 'deps' config of modules may have dead cycle!");
+        $modules = $this->getModules();
+        $menu = [];
+        foreach ($modules as $id => $m) {
+            if ($m['manager'] !== false && isset($m['manager']['menu'])) {
+                if (isset($m['manager']['menu']['label'])) {
+                    $m['manager']['menu'] = array($m['manager']['menu']);
+                }
+                foreach ($m['manager']['menu'] as $mi) {
+                    //通过web访问时，则根据登录管理员权限筛选
+                    if (\Yii::$app->has('manager', true)) {
+                        foreach ($mi['items'] as $i => $item) {
+                            if (isset($item['permission']) && !\Yii::$app->manager->can($item['permission'])) {
+                                unset($mi['items'][$i]);
+                            }
+                        }
+                    }
+                    if (count($mi['items'])) {
+                        $menu[] = $mi;
+                    }
+                }
             }
-            if (array_key_exists($m, $list)) {
-                return;
-            }
-            foreach ($modules[$m]['deps'] as $d) {
-                $put($d);
-            }
-            $list[$m] = $modules[$m];
-        };
-        reset($modules);
-        foreach($modules as $k => $v){
-            $put($k);
         }
-        return $list;
+        return $menu;
     }
+
 
     /**
      * 莸取指定模块(meta，描述信息)
@@ -217,6 +221,35 @@ class ModuleManager extends Component
     {
         $m = $this->getModule($id);
         return isset($m['manager']['permissions']) ? $m['manager']['permissions'] : null;
+    }
+
+    /**
+     * 根据模块之间依赖关系调整模块顺序
+     * @param $modules
+     * @return array the sorted modules
+     */
+    protected function sortModules($modules)
+    {
+        $list = [];
+        $put = function ($m) use (&$put, &$list, $modules) {
+            static $i = 0;
+            $i++;
+            if ($i > self::MAX_CALL_DEPTH) {
+                throw new InvalidConfigException("The 'deps' config of modules may have dead cycle!");
+            }
+            if (array_key_exists($m, $list)) {
+                return;
+            }
+            foreach ($modules[$m]['deps'] as $d) {
+                $put($d);
+            }
+            $list[$m] = $modules[$m];
+        };
+        reset($modules);
+        foreach ($modules as $k => $v) {
+            $put($k);
+        }
+        return $list;
     }
 
     /**

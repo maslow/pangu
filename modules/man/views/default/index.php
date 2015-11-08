@@ -36,14 +36,14 @@ $manager = Yii::$app->manager;
                     <!-- Language -->
                     <li class="">
                         <?php if (($lang = Yii::$app->language) == 'zh-CN'): ?>
-                            <a href="<?= Url::to(['/man/default/set-language','lang' =>'en-US']) ?>"
-                               class="dropdown-toggle" >
+                            <a href="<?= Url::to(['/man/default/set-language', 'lang' => 'en-US']) ?>"
+                               class="dropdown-toggle">
                                 <i class="fa fa-gear"></i>
                                 <span class="label label-danger">En</span>
                             </a>
-                            <?php else: ?>
-                            <a href="<?= Url::to(['/man/default/set-language','lang' => 'zh-CN']) ?>"
-                               class="dropdown-toggle" >
+                        <?php else: ?>
+                            <a href="<?= Url::to(['/man/default/set-language', 'lang' => 'zh-CN']) ?>"
+                               class="dropdown-toggle">
                                 <i class="fa fa-gear"></i>
                                 <span class="label label-danger">中</span>
                             </a>
@@ -93,7 +93,7 @@ $manager = Yii::$app->manager;
             <!-- Sidebar Menu -->
             <ul class="sidebar-menu">
                 <li class="header"></li>
-                <?php foreach ($menu as $mid => $item): ?>
+                <?php foreach ($menu as $item): ?>
                     <li class="treeview">
                         <a href="#">
                             <i class="fa fa-plus"></i>

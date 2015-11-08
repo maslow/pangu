@@ -24,21 +24,7 @@ class DefaultController extends Controller
             return $this->redirect(['default/login']);
         }
 
-        /* 获取所有模块man配置信息 */
-        $modules = Module::getInstance()->moduleManager->getModules();
-        $menu = [];
-        foreach ($modules as $id => $m) {
-            if ($m['manager'] !== false && isset($m['manager']['menu'])) {
-                foreach ($m['manager']['menu']['items'] as $i => $item) {
-                    if (isset($item['permission']) && !$this->getManager()->can($item['permission'])) {
-                        unset($m['manager']['menu']['items'][$i]);
-                    }
-                }
-                if (count($m['manager']['menu']['items'])) {
-                    $menu[$id] = $m['manager']['menu'];
-                }
-            }
-        }
+        $menu = Module::getInstance()->moduleManager->getMenu();
         return $this->render('index', ['menu' => $menu]);
     }
 
