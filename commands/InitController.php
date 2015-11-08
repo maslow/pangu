@@ -8,12 +8,6 @@ use yii\rbac\Role;
 
 class InitController extends Controller
 {
-    public function init(){
-        if(strtoupper(substr(PHP_OS,0,3))==='WIN'){
-            exec('chcp 65001');
-        }
-    }
-
     /**
      * 系统安装命令
      * ```
@@ -39,11 +33,11 @@ class InitController extends Controller
         $webroot = \Yii::getAlias('@app/web');
         $index = $webroot . '/index.php';
 
-        echo "清除环境...";
+        echo "Clearing environments...";
         file_exists($index) ? unlink($index) : print('x..');
-        echo "完成!\n";
+        echo "done!\n";
 
-        if(!file_exists($dbFile)){
+        if (!file_exists($dbFile)) {
             file_put_contents($dbFile, file_get_contents($dbExample)) ? print($dbFile . "\n") : print("error!");
         }
 
@@ -66,46 +60,46 @@ class InitController extends Controller
         $role = new Role();
         $role->name = 'super-admin';
         $role->description = 'Super Admin';
-        if(!$auth->getRole($role->name)){
+        if (!$auth->getRole($role->name)) {
             $auth->add($role);
-        }else{
+        } else {
             $role = $auth->getRole($role->name);
         }
 
-        $this->stdout("正在创建角色{{$role->description}}并初始化角色权限 ");
+        $this->stdout("Creating the role named `{$role->description}`, and initializing the role's permissions ");
         $permissions = $auth->getPermissions();
         foreach ($permissions as $p) {
-            if(!$auth->hasChild($role,$p)) {
+            if (!$auth->hasChild($role, $p)) {
                 $auth->addChild($role, $p);
             }
         }
-        $this->stdout("...\n");
+        $this->stdout("...done!\n");
 
         $manager = new Manager();
-        $manager->username = $this->prompt("请输入{$role->description}的用户名:",
-            ['default'=>'manager']);
-        $password = $this->prompt("请输入{$role->description}的密码:",
-            ['default'=>'999999']);
+        $manager->username = $this->prompt("Please input the account of `{$role->description}`:",
+            ['default' => 'manager']);
+        $password = $this->prompt("Please input the password of `{$role->description}`:",
+            ['default' => '999999']);
 
         $manager->password_hash = \Yii::$app->security->generatePasswordHash($password);
         $manager->auth_key = \Yii::$app->security->generateRandomString();
-        $manager->created_at= time();
+        $manager->created_at = time();
         $manager->updated_at = time();
         $manager->created_by = 1; //to be itself
         $manager->created_ip = '0.0.0.0';
         $manager->locked = 0;
-        if($manager->save()){
-            $this->stdout("\n正在将管理员:{{$manager->username}}提升为{$role->description}角色 ...");
+        if ($manager->save()) {
+            $this->stdout("\nAssigning the role named `{$role->description}` to `{$manager->username}`");
             $auth->removeAllAssignments();
             $auth->assign($role, $manager->id);
-            $this->stdout("完成！\n");
-        }else{
-            $this->stdout("创建管理员失败！错误：".var_export($manager->getErrors(),true)."\n");
+            $this->stdout("`...done！\n");
+        } else {
+            $this->stdout("Failed to create manager！Error:" . var_export($manager->getErrors(), true) . "\n");
             //回滚角色与权限操作
-            $this->stdout("正在回滚角色与权限操作 ...");
+            $this->stdout("Rollback the operations above");
             $auth->removeAllAssignments();
             $auth->remove($role);
-            $this->stdout("完成！\n");
+            $this->stdout("...done！\n");
         }
     }
 }

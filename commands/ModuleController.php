@@ -10,20 +10,14 @@ use yii\helpers\FileHelper;
 
 class ModuleController extends Controller
 {
-    public function init(){
-        if(strtoupper(substr(PHP_OS,0,3))==='WIN'){
-            exec('chcp 65001');
-        }
-    }
-    
     /**
      * 模块管理命令
      */
     public function actionUpdate()
     {
-        $this->stdout("更新所有模块信息...");
+        $this->stdout("=====> Updating configuration of all modules", Console::FG_BLUE);
         $this->installModules();
-        $this->stdout("\n更新模块信息完成!\n");
+        $this->stdout("\n<====== Successful!\n", Console::FG_BLUE);
 
         $this->actionUpdatePermissions();
     }
@@ -38,7 +32,7 @@ class ModuleController extends Controller
         if ($mm->isExist($id)) {
             $this->uninstallModule($id);
         } else {
-            $this->stdout("模块({$id})不存在!\n");
+            $this->stderr("Error: the module which id equals ({$id}) is not exist!\n", Console::FG_RED);
         }
     }
 
@@ -47,9 +41,9 @@ class ModuleController extends Controller
      */
     public function actionUpdatePermissions()
     {
-        $this->stdout("正在更新所有模块权限...");
+        $this->stdout("Updating permissions of all modules ...");
         $this->updatePermissions();
-        $this->stdout("完成！\n");
+        $this->stdout("done！\n", Console::FG_GREEN);
     }
 
     /**
@@ -67,7 +61,7 @@ class ModuleController extends Controller
                     $p = $auth->createPermission($name);
                     $p->description = $description;
                     if (!$auth->add($p)) {
-                        throw new InvalidConfigException('添加权限错误！' . __METHOD__);
+                        throw new InvalidConfigException('Error in adding permission to auth system！' . __METHOD__);
                     }
                 }
             }
@@ -97,7 +91,7 @@ class ModuleController extends Controller
         $modules = $mm->getModules();
         $modulesArr = [];
         foreach ($modules as $id => $m) {
-            $this->stdout("\n..检测到模块({$id})");
+            $this->stdout("\n---Module named `{$id}` has been found!");
             if ($mm->hasMigration($id)) {
                 $this->installModule($id);
             }
@@ -108,9 +102,9 @@ class ModuleController extends Controller
             ];
         }
         $content = serialize($modulesArr);
-        $this->stdout("正在生成模块配置文件@app/config/modules.php ...");
+        $this->stdout("Generating the configuration file of modules : `@app/config/modules.php` ...");
         file_put_contents(\Yii::getAlias('@app/config/modules.php'), $content);
-        $this->stdout("完成！\n");
+        $this->stdout("done!\n", Console::FG_GREEN);
     }
 
     /**
@@ -120,12 +114,12 @@ class ModuleController extends Controller
     protected function installModule($id)
     {
         $mm = $this->getModuleManager();
-        $this->stdout("\n....正在安装模块({$id}) ...");
+        $this->stdout("\n-----Installing the module `{$id}` ...");
         $migrationPath = $mm->getMigrationPath($id);
         $migrationTable = $mm->getMigrationTableName($id);
         $cmd = "php yii migrate/up --interactive=0 --migrationPath={$migrationPath} --migrationTable={$migrationTable}";
         system($cmd);
-        $this->stdout("....模块{$id}安装完成!\n");
+        $this->stdout("-----The installation of the module `{$id}` has completed!\n", Console::FG_GREEN);
     }
 
     /**
@@ -135,21 +129,21 @@ class ModuleController extends Controller
     protected function uninstallModule($id)
     {
         $mm = $this->getModuleManager();
-        $this->stdout("正在卸载模块{$id} ...");
+        $this->stdout("Uninstalling the module `{$id}` ...");
         if ($this->getModuleManager()->hasMigration($id)) {
             $migrationPath = $mm->getMigrationPath($id);
             $migrationTable = $mm->getMigrationTableName($id);
             $cmd = "php yii migrate/to 0 --interactive=0 --migrationPath={$migrationPath} --migrationTable={$migrationTable}";
             system($cmd);
         }
-        $this->stdout("完成！\n");
+        $this->stdout("done!\n", Console::FG_GREEN);
         if ($this->interactive) {
-            if ($this->confirm("是否删除该模块目录？")) {
-                $path = $this->getModuleManager()->getPath($id);
+            $path = $this->getModuleManager()->getPath($id);
+            if ($this->confirm("Do you want to delete the directory of the module `{$id}`?")) {
                 FileHelper::removeDirectory($path);
-                $this->stdout("已删除`{$id}`模块目录{$path}！", Console::FG_GREEN);
+                $this->stdout("The module `{$id}` has been deleted!", Console::FG_GREEN);
             } else {
-                $this->stdout("未删除`{$id}`模块目录，请手动删除!\n", Console::FG_YELLOW);
+                $this->stdout("The directory of the module `{$id}` has been reserved ，you can delete it later! ({$path})\n", Console::FG_YELLOW);
             }
         }
     }
