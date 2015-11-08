@@ -69,6 +69,19 @@ class ModuleController extends Controller
     }
 
     /**
+     * 清除所有模块数据迁移操作，但并不删除模块目录
+     * @throws \yii\base\ErrorException
+     */
+    public function actionFlush()
+    {
+        $this->interactive = 0;
+        $modules = $this->getModuleManager()->getModules();
+        foreach ($modules as $id => $m) {
+            $this->actionUninstall($id);
+        }
+    }
+
+    /**
      * 配置并安装所有模块
      * @throws \yii\base\ErrorException
      */
@@ -124,12 +137,14 @@ class ModuleController extends Controller
             system($cmd);
         }
         $this->stdout("完成！\n");
-        if ($this->confirm("是否删除该模块目录？")) {
-            $path = $this->getModuleManager()->getPath($id);
-            FileHelper::removeDirectory($path);
-            $this->stdout("已删除`{$id}`模块目录{$path}！", Console::FG_GREEN);
-        } else {
-            $this->stdout("未删除`{$id}`模块目录，请手动删除!\n", Console::FG_YELLOW);
+        if ($this->interactive) {
+            if ($this->confirm("是否删除该模块目录？")) {
+                $path = $this->getModuleManager()->getPath($id);
+                FileHelper::removeDirectory($path);
+                $this->stdout("已删除`{$id}`模块目录{$path}！", Console::FG_GREEN);
+            } else {
+                $this->stdout("未删除`{$id}`模块目录，请手动删除!\n", Console::FG_YELLOW);
+            }
         }
     }
 

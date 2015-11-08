@@ -245,7 +245,7 @@ class ModuleManager extends Component
             }
             $list[$m] = $modules[$m];
         };
-        reset($modules);
+
         foreach ($modules as $k => $v) {
             $put($k);
         }

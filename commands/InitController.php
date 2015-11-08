@@ -60,16 +60,20 @@ class InitController extends Controller
         $role = new Role();
         $role->name = 'super-admin';
         $role->description = 'Super Admin';
-        $auth->add($role);
-        $this->stdout("正在创建角色{{$role->description}}并初始化角色权限 ");
-
-        $permissions = $auth->getPermissions();
-        foreach ($permissions as $p) {
-            $auth->addChild($role, $p);
-            $this->stdout('.');
+        if(!$auth->getRole($role->name)){
+            $auth->add($role);
+        }else{
+            $role = $auth->getRole($role->name);
         }
 
-        $this->stdout("完成！\n\n");
+        $this->stdout("正在创建角色{{$role->description}}并初始化角色权限 ");
+        $permissions = $auth->getPermissions();
+        foreach ($permissions as $p) {
+            if(!$auth->hasChild($role,$p)) {
+                $auth->addChild($role, $p);
+            }
+        }
+        $this->stdout("...\n");
 
         $manager = new Manager();
         $manager->username = $this->prompt("请输入{$role->description}的用户名:",
@@ -86,6 +90,7 @@ class InitController extends Controller
         $manager->locked = 0;
         if($manager->save()){
             $this->stdout("\n正在将管理员:{{$manager->username}}提升为{$role->description}角色 ...");
+            $auth->removeAllAssignments();
             $auth->assign($role, $manager->id);
             $this->stdout("完成！\n");
         }else{
