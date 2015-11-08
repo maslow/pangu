@@ -10,6 +10,12 @@ use yii\helpers\FileHelper;
 
 class ModuleController extends Controller
 {
+    public function init(){
+        if(strtoupper(substr(PHP_OS,0,3))==='WIN'){
+            exec('chcp 65001');
+        }
+    }
+    
     /**
      * 模块管理命令
      */

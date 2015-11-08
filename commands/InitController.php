@@ -8,6 +8,12 @@ use yii\rbac\Role;
 
 class InitController extends Controller
 {
+    public function init(){
+        if(strtoupper(substr(PHP_OS,0,3))==='WIN'){
+            exec('chcp 65001');
+        }
+    }
+
     /**
      * 系统安装命令
      * ```
