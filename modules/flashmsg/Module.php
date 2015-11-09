@@ -109,9 +109,9 @@ class Module extends \yii\base\Module implements BootstrapInterface
     public function sendFlashMessage($event)
     {
         if (isset($event->error) && $event->error) {
-            \Yii::$app->session->setFlash(\Yii::$app->params['flashMessageParam'], $event->error);
+            \Yii::$app->session->setFlash(\Yii::$app->params['flashMessageParam'], $event->error, false);
         } else {
-            \Yii::$app->session->setFlash(\Yii::$app->params['flashMessageParam'], $event->data);
+            \Yii::$app->session->setFlash(\Yii::$app->params['flashMessageParam'], $event->data, false);
         }
     }
 
@@ -120,6 +120,10 @@ class Module extends \yii\base\Module implements BootstrapInterface
      */
     public function permissionRequired($event)
     {
-        \Yii::$app->session->setFlash(\Yii::$app->params['flashMessageParam'], \Yii::t('flashmsg', 'You have no permission with the operation : {permission}', ['permission' => $event->permission]));
+        \Yii::$app->session->setFlash(
+            \Yii::$app->params['flashMessageParam'],
+            \Yii::t('flashmsg', 'You have no permission with the operation : {permission}', ['permission' => $event->permission]),
+            false
+        );
     }
 }
