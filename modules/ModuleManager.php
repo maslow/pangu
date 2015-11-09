@@ -72,22 +72,34 @@ class ModuleManager extends Component
         $modules = $this->getModules();
         $menu = [];
         foreach ($modules as $id => $m) {
-            if ($m['manager'] !== false && isset($m['manager']['menu'])) {
-                if (isset($m['manager']['menu']['label'])) {
-                    $m['manager']['menu'] = array($m['manager']['menu']);
+            if ($m['manager'] == false || !isset($m['manager']['menu'])) {
+                break;
+            }
+            if (isset($m['manager']['menu']['label'])) {
+                $m['manager']['menu'] = array($m['manager']['menu']);
+            }
+            foreach ($m['manager']['menu'] as $mi) {
+                if (!\Yii::$app->has('manager', true)) {
+                    $menu[] = $mi;
+                    continue;
                 }
-                foreach ($m['manager']['menu'] as $mi) {
-                    //通过web访问时，则根据登录管理员权限筛选
-                    if (\Yii::$app->has('manager', true)) {
-                        foreach ($mi['items'] as $i => $item) {
-                            if (isset($item['permission']) && !\Yii::$app->manager->can($item['permission'])) {
-                                unset($mi['items'][$i]);
-                            }
-                        }
+                foreach ($mi['items'] as $i => $item) {
+                    if (!isset($item['permission'])) {
+                        continue;
                     }
-                    if (count($mi['items'])) {
-                        $menu[] = $mi;
+                    if (is_string($item['permission'])) {
+                        $item['permission'] = array($item['permission']);
                     }
+                    $can = false;
+                    foreach ($item['permission'] as $p) {
+                        $can = $can || \Yii::$app->manager->can($p);
+                    }
+                    if (!$can) {
+                        unset($mi['items'][$i]);
+                    }
+                }
+                if (count($mi['items'])) {
+                    $menu[] = $mi;
                 }
             }
         }

@@ -20,7 +20,11 @@ return [
                 [
                     'label' => Yii::t('member', 'User List'),
                     'url' => ['/member/manager/index'],
-                    'permission' => 'member.users.list',
+                    'permission' => [
+                        'member.users.list',
+                        'member.users.update',
+                        'member.users.delete',
+                    ],
                 ],
                 [
                     'label' => Yii::t('member', 'Create User'),

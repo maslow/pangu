@@ -15,13 +15,17 @@ return [
     'deps' => [],
     'manager' => [
         'menu' => [
-            'label' => Yii::t('rbac','Roles'),
+            'label' => Yii::t('rbac', 'Roles'),
             'url' => ['/rbac/manager/roles'],
             'items' => [
                 [
                     'label' => Yii::t('rbac', 'Role List'),
                     'url' => ['/rbac/manager/roles'],
-                    'permission' => 'rbac.roles.list'
+                    'permission' => [
+                        'rbac.roles.list',
+                        'rbac.roles.update',
+                        'rbac.roles.delete',
+                    ]
                 ],
                 [
                     'label' => Yii::t('rbac', 'Create Role'),

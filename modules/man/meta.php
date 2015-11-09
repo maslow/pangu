@@ -22,7 +22,11 @@ return [
                     [
                         'label' => Yii::t('man', 'Manager List'),
                         'url' => ['/man/manager/list'],
-                        'permission' => 'man.managers.list',
+                        'permission' => [
+                            'man.managers.list',
+                            'man.managers.update',
+                            'man.managers.delete',
+                        ],
                     ],
                     [
                         'label' => Yii::t('man', 'Create Manager'),
