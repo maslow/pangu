@@ -71,6 +71,23 @@ class ModuleManager extends Component
     {
         $modules = $this->getModules();
         $menu = [];
+        $processItems = function (&$mi) {
+            foreach ($mi['items'] as $i => $item) {
+                if (!isset($item['permission'])) {
+                    continue;
+                }
+                if (is_string($item['permission'])) {
+                    $item['permission'] = array($item['permission']);
+                }
+                $can = false;
+                foreach ($item['permission'] as $p) {
+                    $can = $can || \Yii::$app->manager->can($p);
+                }
+                if (!$can) {
+                    unset($mi['items'][$i]);
+                }
+            }
+        };
         foreach ($modules as $id => $m) {
             if ($m['manager'] == false || !isset($m['manager']['menu'])) {
                 break;
@@ -83,21 +100,7 @@ class ModuleManager extends Component
                     $menu[] = $mi;
                     continue;
                 }
-                foreach ($mi['items'] as $i => $item) {
-                    if (!isset($item['permission'])) {
-                        continue;
-                    }
-                    if (is_string($item['permission'])) {
-                        $item['permission'] = array($item['permission']);
-                    }
-                    $can = false;
-                    foreach ($item['permission'] as $p) {
-                        $can = $can || \Yii::$app->manager->can($p);
-                    }
-                    if (!$can) {
-                        unset($mi['items'][$i]);
-                    }
-                }
+                $processItems($mi);
                 if (count($mi['items'])) {
                     $menu[] = $mi;
                 }
