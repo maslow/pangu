@@ -92,7 +92,7 @@ class InitController extends Controller
             $this->stdout("\nAssigning the role named `{$role->description}` to `{$manager->username}`");
             $auth->removeAllAssignments();
             $auth->assign($role, $manager->id);
-            $this->stdout("`...done！\n");
+            $this->stdout("...done！\n");
         } else {
             $this->stdout("Failed to create manager！Error:" . var_export($manager->getErrors(), true) . "\n");
             //回滚角色与权限操作
