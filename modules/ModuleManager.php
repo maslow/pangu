@@ -90,7 +90,7 @@ class ModuleManager extends Component
         };
         foreach ($modules as $id => $m) {
             if ($m['manager'] == false || !isset($m['manager']['menu'])) {
-                break;
+                continue;
             }
             if (isset($m['manager']['menu']['label'])) {
                 $m['manager']['menu'] = array($m['manager']['menu']);
