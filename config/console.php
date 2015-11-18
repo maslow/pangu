@@ -3,6 +3,7 @@
 Yii::setAlias('@tests', dirname(__DIR__) . '/tests');
 
 $params = require(__DIR__ . '/params.php');
+$db = null;
 if(file_exists(__DIR__.'/db.php')){
     $db = require(__DIR__ . '/db.php');
 }
