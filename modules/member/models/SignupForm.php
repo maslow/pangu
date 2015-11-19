@@ -27,7 +27,7 @@ class SignupForm extends Model
     public function rules()
     {
         return [
-            [['username', 'password'], 'required'],
+            [['username', 'password', 'password_confirm'], 'required'],
             [['username', 'password'], 'string', 'max' => 32, 'min' => 3],
             ['username', 'unique', 'targetClass' => User::className()],
             ['password_confirm', 'compare', 'compareAttribute' => 'password']
