@@ -121,8 +121,8 @@ class ModuleManager extends Component
             return false;
         }
         $i18n = $this->getI18n($id);
-        foreach ($i18n as $id => $config) {
-            \Yii::$app->i18n->translations[$id] = $config;
+        foreach ($i18n as $mid => $config) {
+            \Yii::$app->i18n->translations[$mid] = $config;
         }
         $meta = require($this->getMetaFile($id));
         $meta['class'] = $this->getClass($id);
