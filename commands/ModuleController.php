@@ -36,6 +36,19 @@ class ModuleController extends Controller
         }
     }
 
+
+    /**
+     * 指定安装某一个模块同时更新权限内容
+     * @param string $id  module name
+     * @throws InvalidConfigException
+     * @author LaoJiu 2015-11-21
+     */
+    public function actionInstall($id)
+    {
+        $this->installModule($id);
+        $this->updatePermissions();
+    }
+
     /**
      * 更新所有模块权限
      */
@@ -126,11 +139,27 @@ class ModuleController extends Controller
     /**
      * 卸载指定模块, 执行migrations清除操作
      * @param $id string 指定模块的id
+     * @since LaoJiu 2015-11-21 add delete permissions code
      */
     protected function uninstallModule($id)
     {
         $mm = $this->getModuleManager();
-        $this->stdout("Uninstalling the module `{$id}` ...");
+        $this->stdout("Uninstalling the module `{$id}` ...\n");
+
+        //delete permissions
+        $manager = \Yii::$app->getAuthManager();
+        $permissions = $mm->getPermissions($id);
+        if ($permissions) {
+            foreach ($permissions as $permission=>$name) {
+                $child = $manager->getPermission($permission);
+                try {
+                    $manager->remove($child);
+                } catch (\Exception $exc) {
+                    $this->stdout("delete permission `{$permission}` fail ...\n");
+                }
+                $this->stdout("delete permission `{$permission}` Successful ...\n");
+            }
+        }
         if ($this->getModuleManager()->hasMigration($id)) {
             $migrationPath = $mm->getMigrationPath($id);
             $migrationTable = $mm->getMigrationTableName($id);
