@@ -7,11 +7,27 @@ use yii\console\Controller;
 use yii\helpers\Console;
 use yii\helpers\FileHelper;
 
-
+/**
+ * Class ModuleController
+ * ModuleController 提供了3个模块管理的命令：
+ *
+ * ```commands
+ * #安装、配置、更新模块
+ * php yii module/update
+ *
+ * #flush与update命令相对应，该命令清除所有模块的Migrations（如果存在的话），并不删除模块目录
+ * php yii module/flush
+ *
+ * #uninstall用于卸载单个模块
+ * php yii module/uninstall  [module_name]
+ *
+ * ```
+ * @package app\commands
+ */
 class ModuleController extends Controller
 {
     /**
-     * 模块管理命令
+     * 更新所有模块信息，适用于安装模块、卸载模块后、配置模块、更新角色系统权限使用。
      */
     public function actionUpdate()
     {
@@ -19,7 +35,21 @@ class ModuleController extends Controller
         $this->installModules();
         $this->stdout("\n<====== Successful!\n", Console::FG_BLUE);
 
-        $this->actionUpdatePermissions();
+        $this->updatePermissions();
+    }
+
+    /**
+     * 清除所有模块数据迁移操作，但并不删除模块目录
+     * @throws \yii\base\ErrorException
+     */
+    public function actionFlush()
+    {
+        $this->interactive = 0;
+        $modules = $this->getModuleManager()->getModules();
+        $ordered = array_reverse($modules);
+        foreach ($ordered as $id => $m) {
+            $this->uninstallModule($id);
+        }
     }
 
     /**
@@ -28,35 +58,7 @@ class ModuleController extends Controller
      */
     public function actionUninstall($id)
     {
-        $mm = $this->getModuleManager();
-        if ($mm->isExist($id)) {
-            $this->uninstallModule($id);
-        } else {
-            $this->stderr("Error: the module which id equals ({$id}) is not exist!\n", Console::FG_RED);
-        }
-    }
-
-
-    /**
-     * 指定安装某一个模块同时更新权限内容
-     * @param string $id  module name
-     * @throws InvalidConfigException
-     * @author LaoJiu 2015-11-21
-     */
-    public function actionInstall($id)
-    {
-        $this->installModule($id);
-        $this->updatePermissions();
-    }
-
-    /**
-     * 更新所有模块权限
-     */
-    public function actionUpdatePermissions()
-    {
-        $this->stdout("Updating permissions of all modules ...");
-        $this->updatePermissions();
-        $this->stdout("done！\n", Console::FG_GREEN);
+        $this->uninstallModule($id);
     }
 
     /**
@@ -65,6 +67,8 @@ class ModuleController extends Controller
      */
     protected function updatePermissions()
     {
+        $this->stdout("Updating permissions of all modules ...");
+
         $mm = $this->getModuleManager();
         $auth = $this->getAuth();
         $permissions = $mm->getAllPermissions();
@@ -79,20 +83,7 @@ class ModuleController extends Controller
                 }
             }
         }
-    }
-
-    /**
-     * 清除所有模块数据迁移操作，但并不删除模块目录
-     * @throws \yii\base\ErrorException
-     */
-    public function actionFlush()
-    {
-        $this->interactive = 0;
-        $modules = $this->getModuleManager()->getModules();
-        $ordered = array_reverse($modules);
-        foreach ($ordered as $id => $m) {
-            $this->actionUninstall($id);
-        }
+        $this->stdout("done！\n", Console::FG_GREEN);
     }
 
     /**
@@ -144,6 +135,9 @@ class ModuleController extends Controller
     protected function uninstallModule($id)
     {
         $mm = $this->getModuleManager();
+        if (!$mm->isExist($id)) {
+            $this->stderr("Error: the module which id equals ({$id}) is not exist!\n", Console::FG_RED);
+        }
         $this->stdout("Uninstalling the module `{$id}` ...\n");
 
         //delete permissions
@@ -195,5 +189,4 @@ class ModuleController extends Controller
     {
         return \Yii::$app->authManager;
     }
-
 }

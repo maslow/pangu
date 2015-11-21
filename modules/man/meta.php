@@ -12,7 +12,9 @@ return [
     'description' => '后台管理中心模块。',
 
     'bootstrap' => true,
-    'deps' => [],
+    'deps' => [
+        'rbac',
+    ],
     'manager' => [
         'menu' => [
             [
