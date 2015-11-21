@@ -76,7 +76,8 @@ class ModuleController extends Controller
     {
         $this->interactive = 0;
         $modules = $this->getModuleManager()->getModules();
-        foreach ($modules as $id => $m) {
+        $ordered = array_reverse($modules);
+        foreach ($ordered as $id => $m) {
             $this->actionUninstall($id);
         }
     }
