@@ -1,7 +1,7 @@
 <?php
+
 use yii\helpers\Html;
 use yii\widgets\Breadcrumbs;
-use app\assets\AppAsset;
 
 /* @var $this \yii\web\View */
 /* @var $content string */
@@ -32,10 +32,10 @@ use app\assets\AppAsset;
         ]);
     }
     ?>
-    <?= Breadcrumbs::widget([
+    <?php /* echo  Breadcrumbs::widget([
         'homeLink' => ['label' => Yii::t('man', 'Managers'), 'url' => \yii\helpers\Url::to('list')],
         'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-    ]) ?>
+    ])*/ ?>
     <?= $content ?>
 </div>
 

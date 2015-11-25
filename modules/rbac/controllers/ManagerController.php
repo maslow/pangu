@@ -12,7 +12,7 @@ use yii\web\NotFoundHttpException;
 
 class ManagerController extends \yii\web\Controller
 {
-    public $layout = 'manager';
+    public $layout = '/manager';
 
     public function behaviors()
     {

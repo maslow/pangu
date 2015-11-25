@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: wangfugen
- * Date: 15/11/2
- * Time: 下午11:14
- */
 
 return [
     'Roles' => '角色管理',
@@ -13,7 +7,7 @@ return [
     'Update Role' => '更新角色',
 
     'Role' => '角色',
-    'Role ID' => '角色标识',
+    'Role ID' => '标识',
     'Permissions' => '权限',
     'Remark' => '备注',
     'Action' => '操作',

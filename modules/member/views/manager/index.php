@@ -11,20 +11,23 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="panel panel-default">
 
-    <div class="panel-heading"><?= Html::encode($this->title) ?></div>
-    <div class="panel-body">
-        <?= Html::a(Yii::t('member', 'Create User'), ['create'], ['class' => 'btn btn-default']) ?>
+    <div class="panel-heading">
+        <h3 class="panel-title"><?= Html::encode($this->title) ?></h3>
     </div>
+    <div class="panel-body">
+        <p>
+            <?= Html::a(Yii::t('member', 'Create User'), ['create'], ['class' => 'btn btn-default']) ?>
+        </p>
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'columns' => [
-            'id',
-            'username',
-            'created_at:datetime',
-            'updated_at:datetime',
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
-
+        <?= GridView::widget([
+            'dataProvider' => $dataProvider,
+            'columns' => [
+                'id',
+                'username',
+                'created_at:datetime',
+                'updated_at:datetime',
+                ['class' => 'yii\grid\ActionColumn'],
+            ],
+        ]); ?>
+    </div>
 </div>

@@ -18,7 +18,7 @@ use yii\filters\VerbFilter;
  */
 class ManagerController extends Controller
 {
-    public $layout = 'manager';
+    public $layout = '/manager';
 
     public function behaviors()
     {

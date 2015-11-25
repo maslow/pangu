@@ -1,6 +1,5 @@
 <?php
 use yii\helpers\Html;
-use app\assets\AppAsset;
 
 /* @var $this \yii\web\View */
 /* @var $content string */

@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: wangfugen
- * Date: 15/10/17
- * Time: 下午2:33
- */
 
 namespace app\modules\man\controllers;
 
@@ -21,8 +15,7 @@ use yii\web\NotFoundHttpException;
 
 class ManagerController extends Controller
 {
-    public $layout = "manager";
-
+    public $layout = "/manager";
 
     /**
      * 修改当前管理员密码

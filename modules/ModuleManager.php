@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: wangfugen
- * Date: 15/10/10
- * Time: 下午7:40
- */
 
 namespace app\modules;
 

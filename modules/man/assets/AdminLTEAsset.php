@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: wangfugen
- * Date: 15/11/5
- * Time: 下午6:59
- */
 
 namespace app\modules\man\assets;
 

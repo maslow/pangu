@@ -12,25 +12,28 @@ $this->params['breadcrumbs'][] = ['label' => $model->username, 'url' => ['view',
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
-    <h1>
-        <?= Html::encode($this->title) ?>
-    </h1>
-    <hr/>
-<?php $form = ActiveForm::begin([
-    'id' => 'update-user',
-    'options' => ['class' => 'form-horizontal'],
-    'fieldConfig' => [
-        'template' => "{label}\n<div class=\"col-sm-3\">{input}</div>\n<div class=\"col-sm-8\">{error}</div>",
-        'labelOptions' => ['class' => 'col-sm-1 control-label'],
-    ]
-]); ?>
-<?= $form->field($model, 'username',['options'=>['style'=>'display:none']])->hiddenInput() ?>
-<?= $form->field($model, 'password')->passwordInput() ?>
-<?= $form->field($model, 'password_confirm')->passwordInput() ?>
-
-    <div class="form-group">
-        <div class="col-sm-offset-1 col-sm-11">
-            <?= Html::submitButton(Yii::t('member', 'Update User'), ['class' => 'btn btn-primary', 'name' => 'update-user']) ?>
-        </div>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title"><?= Html::encode($this->title) ?></h3>
     </div>
-<?php ActiveForm::end(); ?>
+    <div class="panel-body">
+        <?php $form = ActiveForm::begin([
+            'id' => 'update-user',
+            'options' => ['class' => 'form-horizontal'],
+            'fieldConfig' => [
+                'template' => "{label}\n<div class=\"col-sm-3\">{input}</div>\n<div class=\"col-sm-7\">{error}</div>",
+                'labelOptions' => ['class' => 'col-sm-2 control-label'],
+            ]
+        ]); ?>
+        <?= $form->field($model, 'username', ['options' => ['style' => 'display:none']])->hiddenInput() ?>
+        <?= $form->field($model, 'password')->passwordInput() ?>
+        <?= $form->field($model, 'password_confirm')->passwordInput() ?>
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <?= Html::submitButton(Yii::t('member', 'Update User'), ['class' => 'btn btn-primary', 'name' => 'update-user']) ?>
+            </div>
+        </div>
+        <?php ActiveForm::end(); ?>
+    </div>
+</div>

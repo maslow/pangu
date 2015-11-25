@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: wangfugen
- * Date: 15/10/12
- * Time: 上午12:39
- */
 
 namespace app\modules\member\models;
 
