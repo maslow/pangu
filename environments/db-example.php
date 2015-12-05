@@ -8,5 +8,5 @@ return [
     'charset' => 'utf8',
     'enableSchemaCache' => true,
     'schemaCacheDuration' => 60,
-    'tablePrefix'=>'tbl_',
+    'tablePrefix'=>'pg_',
 ];
