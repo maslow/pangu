@@ -20,6 +20,8 @@ $this->params['breadcrumbs'][] = $this->title;
         </p>
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
+            'options' => ['class' => 'table-responsive'],
+            'tableOptions' => ['class' => 'table table-striped table-bordered table-hover'],
             'columns' => [
                 'id',
                 'username',
