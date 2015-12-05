@@ -3,11 +3,9 @@
 /* @var $this \yii\web\View */
 /* @var $menu array */
 
-use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
 use \yii\helpers\Url;
 
-\app\modules\man\assets\AdminLTEAsset::register($this);
+\app\modules\backend\assets\AdminLTEAsset::register($this);
 /* @var $manager \yii\web\User */
 $manager = Yii::$app->manager;
 ?>
@@ -36,13 +34,13 @@ $manager = Yii::$app->manager;
                     <!-- Language -->
                     <li class="">
                         <?php if (($lang = Yii::$app->language) == 'zh-CN'): ?>
-                            <a href="<?= Url::to(['/man/default/set-language', 'lang' => 'en-US']) ?>"
+                            <a href="<?= Url::to(['/backend/default/set-language', 'lang' => 'en-US']) ?>"
                                class="dropdown-toggle">
                                 <i class="fa fa-gear"></i>
                                 <span class="label label-danger">En</span>
                             </a>
                         <?php else: ?>
-                            <a href="<?= Url::to(['/man/default/set-language', 'lang' => 'zh-CN']) ?>"
+                            <a href="<?= Url::to(['/backend/default/set-language', 'lang' => 'zh-CN']) ?>"
                                class="dropdown-toggle">
                                 <i class="fa fa-gear"></i>
                                 <span class="label label-danger">中</span>
@@ -69,14 +67,14 @@ $manager = Yii::$app->manager;
                             <!-- Menu Footer-->
                             <li class="user-footer">
                                 <div class="pull-left">
-                                    <a href="<?= Url::to(['/man/manager/reset-password']) ?>" target="sub-container"
+                                    <a href="<?= Url::to(['/backend/manager/reset-password']) ?>" target="sub-container"
                                        class="btn btn-default btn-flat">
-                                        <?= Yii::t('man', 'Reset Password') ?>
+                                        <?= Yii::t('backend', 'Reset Password') ?>
                                     </a>
                                 </div>
                                 <div class="pull-right">
-                                    <a href="<?= Url::to(['/man/default/logout']) ?>"
-                                       class="btn btn-default btn-flat"><?= Yii::t('man', 'Logout') ?></a>
+                                    <a href="<?= Url::to(['/backend/default/logout']) ?>"
+                                       class="btn btn-default btn-flat"><?= Yii::t('backend', 'Logout') ?></a>
                                 </div>
                             </li>
                         </ul>
@@ -126,7 +124,7 @@ $manager = Yii::$app->manager;
         <section class="content">
 
             <!-- Your Page Content Here -->
-            <iframe src="<?= \yii\helpers\Url::to(['/man/default/info']) ?>" name="sub-container" id="iframepage"
+            <iframe src="<?= \yii\helpers\Url::to(['/backend/default/info']) ?>" name="sub-container" id="iframepage"
                     frameborder="0" scrolling="no" style="width: 100%;min-height: 500px;" onLoad="iFrameHeight()">
             </iframe>
         </section>

@@ -2,7 +2,7 @@
 
 namespace app\commands;
 
-use app\modules\man\models\Manager;
+use app\modules\backend\models\Manager;
 use yii\console\Controller;
 use yii\rbac\Role;
 

@@ -1,15 +1,15 @@
 <?php
 
-namespace app\modules\man\models;
+namespace app\modules\backend\models;
 
-use app\modules\man\Module;
+use app\modules\backend\Module;
 use Yii;
 use yii\base\Event;
 use yii\base\Model;
 
 /**
  * Class LoginForm
- * @package app\modules\man\models
+ * @package app\modules\backend\models
  */
 class LoginForm extends Model
 {
@@ -36,9 +36,9 @@ class LoginForm extends Model
     public function attributeLabels()
     {
         return [
-            'username' => Yii::t('man', 'Username'),
-            'password' => Yii::t('man', 'Password'),
-            'verifyCode' => Yii::t('man', 'Captcha'),
+            'username' => Yii::t('backend', 'Username'),
+            'password' => Yii::t('backend', 'Password'),
+            'verifyCode' => Yii::t('backend', 'Captcha'),
         ];
     }
 
@@ -58,11 +58,11 @@ class LoginForm extends Model
                     Event::trigger(Module::className(), Module::EVENT_LOGIN_SUCCESS, $event);
                     return true;
                 } else {
-                    $this->addError('username', Yii::t('man','Username and  password are incorrect!'));
+                    $this->addError('username', Yii::t('backend','Username and  password are incorrect!'));
                 }
             } catch (\Exception $e) {
                 Yii::error($e->getMessage());
-                $this->addError('username', Yii::t('man','The user has some exceptions!'));
+                $this->addError('username', Yii::t('backend','The user has some exceptions!'));
             }
         }
         Event::trigger(Module::className(), Module::EVENT_LOGIN_FAIL, $event);
@@ -81,7 +81,7 @@ class LoginForm extends Model
 
 /**
  * Class LoginEvent
- * @package app\modules\man\models
+ * @package app\modules\backend\models
  */
 class LoginEvent extends Event
 {

@@ -7,7 +7,7 @@ return [
     'bootstrap' => true,
     'manager' => false,
     'deps' => [
-        'man',
+        'backend',
         'member',
         'rbac',
     ],

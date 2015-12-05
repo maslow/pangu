@@ -1,13 +1,13 @@
 <?php
 
-namespace app\modules\man\controllers;
+namespace app\modules\backend\controllers;
 
 
-use app\modules\man\models\CreateForm;
-use app\modules\man\models\Manager;
-use app\modules\man\models\ResetPasswordForm;
-use app\modules\man\models\UpdateForm;
-use app\modules\man\Module;
+use app\modules\backend\models\CreateForm;
+use app\modules\backend\models\Manager;
+use app\modules\backend\models\ResetPasswordForm;
+use app\modules\backend\models\UpdateForm;
+use app\modules\backend\Module;
 use yii\base\Event;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
@@ -20,7 +20,7 @@ class ManagerController extends Controller
     /**
      * 修改当前管理员密码
      * @return string|\yii\web\Response
-     * @permission man.managers.reset.password
+     * @permission backend.managers.reset.password
      */
     public function actionResetPassword(){
 
@@ -34,11 +34,11 @@ class ManagerController extends Controller
     /**
      * 显示管理员列表
      * @return string
-     * @permission man.managers.list
+     * @permission backend.managers.list
      */
     public function actionList()
     {
-        if (!$this->checkAccess('man.managers.list')) {
+        if (!$this->checkAccess('backend.managers.list')) {
             return $this->goNotAllowed();
         }
 
@@ -51,11 +51,11 @@ class ManagerController extends Controller
     /**
      * 创建管理员
      * @return string
-     * @permission man.managers.create
+     * @permission backend.managers.create
      */
     public function actionCreate()
     {
-        if (!$this->checkAccess('man.managers.create')) {
+        if (!$this->checkAccess('backend.managers.create')) {
             return $this->goNotAllowed();
         }
 
@@ -72,17 +72,17 @@ class ManagerController extends Controller
      * @param $id integer 指定管理员id
      * @return string
      * @throws NotFoundHttpException
-     * @permission man.managers.update
+     * @permission backend.managers.update
      */
     public function actionUpdate($id)
     {
-        if (!$this->checkAccess('man.managers.update')) {
+        if (!$this->checkAccess('backend.managers.update')) {
             return $this->goNotAllowed();
         }
 
         $manager = Manager::findOne($id);
         if (!$manager) {
-            throw new NotFoundHttpException(\Yii::t('man','The Manager (ID:{id}) is not exist!',['id'=>$id]));
+            throw new NotFoundHttpException(\Yii::t('backend','The Manager (ID:{id}) is not exist!',['id'=>$id]));
         }
 
         $model = new UpdateForm();
@@ -108,11 +108,11 @@ class ManagerController extends Controller
      * @return \yii\web\Response
      * @throws NotFoundHttpException
      * @throws \Exception
-     * @permission man.managers.delete
+     * @permission backend.managers.delete
      */
     public function actionDelete($id)
     {
-        if (!$this->checkAccess('man.managers.delete')) {
+        if (!$this->checkAccess('backend.managers.delete')) {
             return $this->goNotAllowed();
         }
 
@@ -121,7 +121,7 @@ class ManagerController extends Controller
         $event = new DeleteManagerEvent(['manager' => $manager]);
 
         if (!$manager) {
-            throw new NotFoundHttpException(\Yii::t('man','The Manager (ID:{id}) is not exist!',['id'=>$id]));
+            throw new NotFoundHttpException(\Yii::t('backend','The Manager (ID:{id}) is not exist!',['id'=>$id]));
         }
 
         if ($manager->delete()) {
@@ -175,7 +175,7 @@ class ManagerController extends Controller
 
 /**
  * Class PermissionRequiredEvent
- * @package app\modules\man\controllers
+ * @package app\modules\backend\controllers
  */
 class PermissionRequiredEvent extends Event
 {
@@ -184,7 +184,7 @@ class PermissionRequiredEvent extends Event
 
 /**
  * Class DeleteManagerEvent
- * @package app\modules\man\controllers
+ * @package app\modules\backend\controllers
  */
 class DeleteManagerEvent extends Event
 {

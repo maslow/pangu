@@ -1,8 +1,8 @@
 <?php
 
-namespace app\modules\man\models;
+namespace app\modules\backend\models;
 
-use app\modules\man\Module;
+use app\modules\backend\Module;
 use Yii;
 use yii\base\Event;
 use yii\base\InvalidParamException;
@@ -10,7 +10,7 @@ use yii\base\Model;
 
 /**
  * Class CreateForm
- * @package app\modules\man\models
+ * @package app\modules\backend\models
  */
 class CreateForm extends Model
 {
@@ -39,10 +39,10 @@ class CreateForm extends Model
     public function attributeLabels()
     {
         return [
-            'username' => Yii::t('man', 'Username'),
-            'password' => Yii::t('man', 'Password'),
-            'password_confirm' => Yii::t('man', 'Confirm Password'),
-            'role' => Yii::t('man', 'Role'),
+            'username' => Yii::t('backend', 'Username'),
+            'password' => Yii::t('backend', 'Password'),
+            'password_confirm' => Yii::t('backend', 'Confirm Password'),
+            'role' => Yii::t('backend', 'Role'),
         ];
     }
 
@@ -79,7 +79,7 @@ class CreateForm extends Model
             } catch (\Exception $e) {
                 Yii::error($manager->getErrors());
                 Yii::error($e->getMessage());
-                $this->addError('username', Yii::t('man', 'Throw an exception of saving data!'));
+                $this->addError('username', Yii::t('backend', 'Throw an exception of saving data!'));
             }
         }
         Event::trigger(Module::className(), Module::EVENT_CREATE_MANAGER_FAIL, $event);

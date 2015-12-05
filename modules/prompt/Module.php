@@ -5,7 +5,7 @@ namespace app\modules\prompt;
 use yii\base\Application;
 use yii\base\BootstrapInterface;
 use yii\base\Event;
-use app\modules\man\Module as ManModule;
+use app\modules\backend\Module as ManModule;
 use app\modules\member\Module as MemberModule;
 USE app\modules\rbac\Module as RbacModule;
 

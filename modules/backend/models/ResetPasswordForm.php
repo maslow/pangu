@@ -1,8 +1,8 @@
 <?php
 
-namespace app\modules\man\models;
+namespace app\modules\backend\models;
 
-use app\modules\man\Module;
+use app\modules\backend\Module;
 use Yii;
 use yii\base\Event;
 use yii\base\InvalidParamException;
@@ -10,7 +10,7 @@ use yii\base\Model;
 
 /**
  * Class ResetPasswordForm
- * @package app\modules\man\models
+ * @package app\modules\backend\models
  */
 class ResetPasswordForm extends Model
 {
@@ -35,8 +35,8 @@ class ResetPasswordForm extends Model
     public function attributeLabels()
     {
         return [
-            'password' => Yii::t('man', 'Password'),
-            'password_confirm' => Yii::t('man', 'Confirm Password'),
+            'password' => Yii::t('backend', 'Password'),
+            'password_confirm' => Yii::t('backend', 'Confirm Password'),
         ];
     }
 
@@ -64,7 +64,7 @@ class ResetPasswordForm extends Model
             } catch (\Exception $e) {
                 Yii::error($manager->getErrors());
                 Yii::error($e->getMessage());
-                $this->addError('password', Yii::t('man', 'Throw an exception of saving data!'));
+                $this->addError('password', Yii::t('backend', 'Throw an exception of saving data!'));
             }
         }
         Event::trigger(Module::className(), Module::EVENT_RESET_PASSWORD_FAIL, $event);

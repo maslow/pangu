@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\man\models;
+namespace app\modules\backend\models;
 
 use Yii;
 use yii\web\IdentityInterface;
@@ -49,15 +49,15 @@ class Manager extends \yii\db\ActiveRecord implements IdentityInterface
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('man', 'ID'),
-            'username' => Yii::t('man', 'Username'),
+            'id' => Yii::t('backend', 'ID'),
+            'username' => Yii::t('backend', 'Username'),
             'password_hash' => 'Password Hash',
-            'auth_key' => Yii::t('man', 'Auth Key'),
-            'locked' => Yii::t('man', 'IsLocked'),
-            'updated_at' => Yii::t('man', 'Update Time'),
-            'created_at' => Yii::t('man', 'Create Time'),
-            'created_ip' => Yii::t('man', 'Create IP'),
-            'created_by' => Yii::t('man', 'Creator'),
+            'auth_key' => Yii::t('backend', 'Auth Key'),
+            'locked' => Yii::t('backend', 'IsLocked'),
+            'updated_at' => Yii::t('backend', 'Update Time'),
+            'created_at' => Yii::t('backend', 'Create Time'),
+            'created_ip' => Yii::t('backend', 'Create IP'),
+            'created_by' => Yii::t('backend', 'Creator'),
         ];
     }
 

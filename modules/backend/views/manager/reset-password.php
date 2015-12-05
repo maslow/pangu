@@ -5,10 +5,9 @@ use yii\helpers\Html;
 
 /* @var $this \yii\web\View */
 /* @var $form \yii\widgets\ActiveForm */
-/* @var $model \app\modules\man\models\UpdateForm */
+/* @var $model \app\modules\backend\models\ResetPasswordForm */
 
-$this->title = Yii::t('man', 'Update Manager');
-$this->params['breadcrumbs'][] = $model->username;
+$this->title = Yii::t('backend', 'Reset Password');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -18,29 +17,18 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
     <div class="panel-body">
         <?php $form = ActiveForm::begin([
-            'id' => 'update-manager',
+            'id' => 'reset-password',
             'options' => ['class' => 'form-horizontal'],
             'fieldConfig' => [
                 'template' => "{label}\n<div class=\"col-sm-3\">{input}</div>\n<div class=\"col-sm-7\">{error}</div>",
                 'labelOptions' => ['class' => 'col-sm-2 control-label'],
             ]
         ]); ?>
-        <?= $form->field($model, 'id', ['options' => ['style' => 'display:none;']])->hiddenInput() ?>
-        <?= $form->field($model, 'username', ['options' => ['style' => 'display:none;']])->hiddenInput() ?>
         <?= $form->field($model, 'password')->passwordInput() ?>
         <?= $form->field($model, 'password_confirm')->passwordInput() ?>
-
-        <?php
-        $roles = Yii::$app->authManager->getRoles();
-        $roleList = [];
-        foreach ($roles as $role) {
-            $roleList[$role->name] = $role->description;
-        }
-        ?>
-        <?= $form->field($model, 'role')->radioList($roleList) ?>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <?= Html::submitButton(Yii::t('man', 'Update Manager'), ['class' => 'btn btn-primary', 'name' => 'update-manager']) ?>
+                <?= Html::submitButton(Yii::t('backend', 'Reset Password'), ['class' => 'btn btn-primary', 'name' => 'reset-password']) ?>
             </div>
         </div>
         <?php ActiveForm::end(); ?>

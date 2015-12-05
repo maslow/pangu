@@ -1,15 +1,15 @@
 <?php
 
-namespace app\modules\man\models;
+namespace app\modules\backend\models;
 
-use app\modules\man\Module;
+use app\modules\backend\Module;
 use Yii;
 use yii\base\Event;
 use yii\base\Model;
 
 /**
  * Class UpdateForm
- * @package app\modules\man\models
+ * @package app\modules\backend\models
  */
 class UpdateForm extends Model
 {
@@ -40,10 +40,10 @@ class UpdateForm extends Model
     public function attributeLabels()
     {
         return [
-            'username' => Yii::t('man', 'Username'),
-            'password' => Yii::t('man', 'Password'),
-            'password_confirm' => Yii::t('man', 'Confirm Password'),
-            'role' => Yii::t('man', 'Role'),
+            'username' => Yii::t('backend', 'Username'),
+            'password' => Yii::t('backend', 'Password'),
+            'password_confirm' => Yii::t('backend', 'Confirm Password'),
+            'role' => Yii::t('backend', 'Role'),
         ];
     }
 
@@ -66,7 +66,7 @@ class UpdateForm extends Model
                 if ($manager->save()) {
                     $role = $this->getAuth()->getRole($this->role);
                     if (!$role) {
-                        throw new \InvalidArgumentException(Yii::t('man', 'The role is not exist!'));
+                        throw new \InvalidArgumentException(Yii::t('backend', 'The role is not exist!'));
                     }
                     $this->getAuth()->revokeAll($manager->id);
                     $this->getAuth()->assign($role, $manager->id);
@@ -77,7 +77,7 @@ class UpdateForm extends Model
                 }
             } catch (\Exception $e) {
                 Yii::error($e->getMessage());
-                $this->addError('username', Yii::t('man','Throw an exception of saving data!'));
+                $this->addError('username', Yii::t('backend','Throw an exception of saving data!'));
             }
         }
         Event::trigger(Module::className(), Module::EVENT_UPDATE_MANAGER_FAIL, $event);
@@ -95,7 +95,7 @@ class UpdateForm extends Model
 
 /**
  * Class UpdateEvent
- * @package app\modules\man\models
+ * @package app\modules\backend\models
  */
 class UpdateEvent extends Event
 {

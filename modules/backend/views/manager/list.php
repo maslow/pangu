@@ -6,7 +6,7 @@ use yii\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('man', 'Manager List');
+$this->title = Yii::t('backend', 'Manager List');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="panel panel-default">
@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
     <div class="panel-body">
         <p>
-            <?= Html::a(Yii::t('man', 'Create Manager'), ['create'], ['class' => 'btn btn-default']) ?>
+            <?= Html::a(Yii::t('backend', 'Create Manager'), ['create'], ['class' => 'btn btn-default']) ?>
         </p>
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
@@ -32,13 +32,13 @@ $this->params['breadcrumbs'][] = $this->title;
                             return '-';
                         }
                     },
-                    'label' => Yii::t('man', 'Role'),
+                    'label' => Yii::t('backend', 'Role'),
                 ],
                 [
                     'attribute' => 'created_by',
                     'value' => function ($row) {
-                        /* @var $c \app\modules\man\models\Manager */
-                        $c = \app\modules\man\models\Manager::findOne($row->created_by);
+                        /* @var $c \app\modules\backend\models\Manager */
+                        $c = \app\modules\backend\models\Manager::findOne($row->created_by);
                         return $c->username;
                     },
                 ],

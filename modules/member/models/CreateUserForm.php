@@ -11,7 +11,7 @@ use yii\base\Model;
 
 /**
  * Class CreateUserForm
- * @package app\modules\man\models
+ * @package app\modules\backend\models
  */
 class CreateUserForm extends Model
 {

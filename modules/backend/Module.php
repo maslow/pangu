@@ -1,8 +1,8 @@
 <?php
 
-namespace app\modules\man;
+namespace app\modules\backend;
 
-use app\modules\man\models\Manager;
+use app\modules\backend\models\Manager;
 use yii\base\Application;
 use yii\base\BootstrapInterface;
 
@@ -33,7 +33,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
     const EVENT_RESET_PASSWORD_FAIL = "resetPasswordSuccess";
 
 
-    public $controllerNamespace = 'app\modules\man\controllers';
+    public $controllerNamespace = 'app\modules\backend\controllers';
 
     public function init()
     {

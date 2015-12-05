@@ -1,9 +1,9 @@
 <?php
 
-namespace app\modules\man\controllers;
+namespace app\modules\backend\controllers;
 
-use app\modules\man\models\LoginForm;
-use app\modules\man\Module;
+use app\modules\backend\models\LoginForm;
+use app\modules\backend\Module;
 use yii\base\Event;
 use yii\captcha\CaptchaAction;
 use yii\web\Controller;
@@ -82,7 +82,7 @@ class DefaultController extends Controller
             'value' => $lang,
             'expire' => time() + 3600 * 24,
         ]));
-        return $this->redirect(['/man']);
+        return $this->redirect(['/backend']);
     }
 
     /**

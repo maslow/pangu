@@ -1,12 +1,12 @@
 <?php
 
-namespace app\modules\man\assets;
+namespace app\modules\backend\assets;
 
 use yii\web\AssetBundle;
 
 class AdminLTEAsset extends AssetBundle
 {
-    public $sourcePath = "@app/modules/man/assets/AdminLTE2";
+    public $sourcePath = "@app/modules/backend/assets/AdminLTE2";
 
     public $css =[
         'font-awesome/css/font-awesome.min.css',

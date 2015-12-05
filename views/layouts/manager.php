@@ -33,7 +33,7 @@ use yii\widgets\Breadcrumbs;
     }
     ?>
     <?php /* echo  Breadcrumbs::widget([
-        'homeLink' => ['label' => Yii::t('man', 'Managers'), 'url' => \yii\helpers\Url::to('list')],
+        'homeLink' => ['label' => Yii::t('backend', 'Managers'), 'url' => \yii\helpers\Url::to('list')],
         'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
     ])*/ ?>
     <?= $content ?>
