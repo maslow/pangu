@@ -5,7 +5,7 @@ return [
     'description' => '用户模块，用户认证、编辑、管理。',
 
     'bootstrap' => true,
-    'manager' => [
+    'backend' => [
         'menu' => [
             'label' => Yii::t('member', 'Users'),
             'url' => ['/member/manager/index'],

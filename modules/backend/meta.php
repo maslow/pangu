@@ -8,7 +8,7 @@ return [
     'deps' => [
         'rbac',
     ],
-    'manager' => [
+    'backend' => [
         'menu' => [
             [
                 'label' => Yii::t('backend', 'Managers'),

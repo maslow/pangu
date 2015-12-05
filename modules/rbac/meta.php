@@ -6,7 +6,7 @@ return [
 
     'bootstrap' => false,
     'deps' => [],
-    'manager' => [
+    'backend' => [
         'menu' => [
             'label' => Yii::t('rbac', 'Roles'),
             'url' => ['/rbac/manager/roles'],

@@ -83,13 +83,13 @@ class ModuleManager extends Component
             }
         };
         foreach ($modules as $id => $m) {
-            if ($m['manager'] == false || !isset($m['manager']['menu'])) {
+            if ($m['backend'] == false || !isset($m['backend']['menu'])) {
                 continue;
             }
-            if (isset($m['manager']['menu']['label'])) {
-                $m['manager']['menu'] = array($m['manager']['menu']);
+            if (isset($m['backend']['menu']['label'])) {
+                $m['backend']['menu'] = array($m['backend']['menu']);
             }
-            foreach ($m['manager']['menu'] as $mi) {
+            foreach ($m['backend']['menu'] as $mi) {
                 if (!\Yii::$app->has('manager', true)) {
                     $menu[] = $mi;
                     continue;
@@ -229,7 +229,7 @@ class ModuleManager extends Component
     public function getPermissions($id)
     {
         $m = $this->getModule($id);
-        return isset($m['manager']['permissions']) ? $m['manager']['permissions'] : null;
+        return isset($m['backend']['permissions']) ? $m['backend']['permissions'] : null;
     }
 
     /**
