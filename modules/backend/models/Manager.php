@@ -3,6 +3,7 @@
 namespace app\modules\backend\models;
 
 use Yii;
+use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 
 /**
@@ -18,7 +19,7 @@ use yii\web\IdentityInterface;
  * @property string $created_ip
  * @property integer $created_by
  */
-class Manager extends \yii\db\ActiveRecord implements IdentityInterface
+class Manager extends ActiveRecord implements IdentityInterface
 {
     /**
      * @inheritdoc

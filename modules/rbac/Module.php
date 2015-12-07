@@ -2,6 +2,10 @@
 
 namespace app\modules\rbac;
 
+/**
+ * Class Module
+ * @package app\modules\rbac
+ */
 class Module extends \yii\base\Module
 {
     const EVENT_BEFORE_CREATE_ROLE = 'beforeCreateRole';

@@ -80,6 +80,7 @@ class ManagerController extends Controller
             return $this->goNotAllowed();
         }
 
+        /** @var Manager $manager */
         $manager = Manager::findOne($id);
         if (!$manager) {
             throw new NotFoundHttpException(\Yii::t('backend','The Manager (ID:{id}) is not exist!',['id'=>$id]));
@@ -116,7 +117,7 @@ class ManagerController extends Controller
             return $this->goNotAllowed();
         }
 
-        /* @var $manager \app\modules\man\models\Manager */
+        /* @var $manager \app\modules\backend\models\Manager */
         $manager = Manager::findOne($id);
         $event = new DeleteManagerEvent(['manager' => $manager]);
 

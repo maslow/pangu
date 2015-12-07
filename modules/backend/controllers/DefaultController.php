@@ -5,7 +5,6 @@ namespace app\modules\backend\controllers;
 use app\modules\backend\models\LoginForm;
 use app\modules\backend\Module;
 use yii\base\Event;
-use yii\captcha\CaptchaAction;
 use yii\web\Controller;
 use yii\web\Cookie;
 

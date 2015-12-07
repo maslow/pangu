@@ -5,6 +5,10 @@ namespace app\modules\member;
 use yii\base\Application;
 use yii\base\BootstrapInterface;
 
+/**
+ * Class Module
+ * @package app\modules\member
+ */
 class Module extends \yii\base\Module implements BootstrapInterface
 {
     const EVENT_BEFORE_LOGIN = 'beforeLogin';

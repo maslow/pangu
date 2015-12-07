@@ -50,9 +50,8 @@ class InitController extends Controller
 
     /**
      * 初始化系统第一个超级管理员，仅在系统初建时使用
-     * @param int $user_id
      */
-    public function actionAdmin($user_id = 1)
+    public function actionAdmin()
     {
 
         $auth = \Yii::$app->authManager;

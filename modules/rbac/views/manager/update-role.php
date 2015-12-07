@@ -5,6 +5,7 @@ use yii\helpers\Html;
 
 /* @var $this \yii\web\View */
 /* @var $form \yii\widgets\ActiveForm */
+/** @var array $permissions */
 /* @var $model \app\modules\rbac\models\UpdateRoleForm */
 
 $this->title = Yii::t('rbac', 'Update Role');

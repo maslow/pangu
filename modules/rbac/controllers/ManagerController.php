@@ -2,15 +2,16 @@
 
 namespace app\modules\rbac\controllers;
 
-use app\modules\man\models\Manager;
+use app\modules\backend\models\Manager;
 use app\modules\rbac\models\CreateRoleForm;
 use app\modules\rbac\models\UpdateRoleForm;
 use app\modules\rbac\Module;
 use yii\base\Event;
 use yii\filters\VerbFilter;
+use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
-class ManagerController extends \yii\web\Controller
+class ManagerController extends Controller
 {
     public $layout = '/manager';
 
@@ -124,7 +125,7 @@ class ManagerController extends \yii\web\Controller
         }
 
         // 是否存在为该角色的管理员
-        /* @var $managers \app\modules\man\models\Manager[] */
+        /* @var $managers \app\modules\backend\models\Manager[] */
         $managers = Manager::find()->all();
         foreach($managers as $man){
             if($this->getAuth()->getAssignment($name,$man->id)){
