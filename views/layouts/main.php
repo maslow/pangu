@@ -49,12 +49,12 @@ AppAsset::register($this);
 
         <div class="container">
             <?php
-            if(Yii::$app->session->hasFlash(Yii::$app->params['flashMessageParam'])){
+            if(Yii::$app->session->hasFlash(Yii::$app->params['prompt.param.frontend'])){
                 echo \yii\bootstrap\Alert::widget([
                     'options'=>[
                         'class'=>'alert-warning',
                     ],
-                    'body'=>Yii::$app->session->getFlash(Yii::$app->params['flashMessageParam']),
+                    'body'=>Yii::$app->session->getFlash(Yii::$app->params['prompt.param.frontend']),
                 ]);
             }
             ?>
