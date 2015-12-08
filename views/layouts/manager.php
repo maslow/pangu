@@ -1,7 +1,6 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\Breadcrumbs;
 
 /* @var $this \yii\web\View */
 /* @var $content string */
@@ -9,11 +8,9 @@ use yii\widgets\Breadcrumbs;
 \yii\bootstrap\BootstrapAsset::register($this);
 \app\assets\LayerAsset::register($this);
 ?>
-<script>
-    <?php $this->beginBlock('prompt_js') ?>
+<?php $this->beginBlock('prompt_js') ?>
     layer.msg('<?=Yii::$app->session->getFlash(Yii::$app->params['prompt.param.backend'])?>');
-    <?php $this->endBlock() ?>
-</script>
+<?php $this->endBlock() ?>
 
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -31,14 +28,6 @@ use yii\widgets\Breadcrumbs;
     <?php
     if (Yii::$app->session->hasFlash(Yii::$app->params['prompt.param.backend'])) {
          $this->registerJs($this->blocks['prompt_js']);
-         /*
-          * \yii\bootstrap\Alert::widget([
-            'options' => [
-                'class' => 'alert-warning',
-            ],
-            'body' => Yii::$app->session->getFlash(Yii::$app->params['prompt.param.backend']),
-        ]);
-         */
     }
     ?>
     <?= $content ?>
