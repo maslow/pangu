@@ -18,7 +18,7 @@ return [
     ],
     'components' => [
         'moduleManager'=>[
-            'class'=>'app\modules\ModuleManager',
+            'class'=>'app\base\ModuleManager',
         ],
         'authManager' => [
             'class' => 'yii\rbac\DbManager',

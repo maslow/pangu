@@ -3,7 +3,7 @@
 return [
     'components'=>[
         'moduleManager'=>[
-            'class'=>'app\modules\ModuleManager'
+            'class'=>'app\base\ModuleManager'
         ],
     ],
     'params'=>[

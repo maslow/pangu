@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules;
+namespace app\base;
 
 
 use yii\base\Component;

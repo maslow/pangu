@@ -174,7 +174,7 @@ class ModuleController extends Controller
 
     /**
      * 获取模块管理组件
-     * @return \app\modules\ModuleManager
+     * @return \app\base\ModuleManager
      */
     protected function getModuleManager()
     {

@@ -6,7 +6,6 @@ use app\modules\backend\models\LoginForm;
 use app\modules\backend\Module;
 use yii\base\Event;
 use yii\web\Controller;
-use yii\web\Cookie;
 
 class DefaultController extends Controller
 {
