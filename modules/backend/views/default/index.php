@@ -125,7 +125,7 @@ $manager = Yii::$app->manager;
 
             <!-- Your Page Content Here -->
             <iframe src="<?= \yii\helpers\Url::to(['/backend/default/info']) ?>" name="sub-container" id="iframepage"
-                    frameborder="0" scrolling="no" style="width: 100%;min-height: 500px;" onLoad="iFrameHeight()">
+                    frameborder="0" scrolling="auto" style="width: 100%;">
             </iframe>
         </section>
         <!-- /.content -->
@@ -146,15 +146,10 @@ $manager = Yii::$app->manager;
 <!-- ./wrapper -->
 
 <script type="text/javascript" language="javascript">
-    function iFrameHeight() {
-        var ifm = document.getElementById("iframepage");
-        var subWeb = document.frames ? document.frames["iframepage"].document : ifm.contentDocument;
-        if (ifm != null && subWeb != null) {
-            ifm.height = subWeb.body.scrollHeight;
-            ifm.width = subWeb.body.scrollWidth;
-        }
-    }
     <?php $this->beginBlock('js_ready');?>
+    $('#iframepage').load(function () {
+        $(this).height(window.innerHeight);
+    });
     $('.treeview-menu li').click(function () {
         $('.treeview-menu li').each(function () {
             $(this).removeClass('active');
