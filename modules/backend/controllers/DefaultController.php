@@ -70,21 +70,6 @@ class DefaultController extends Controller
     }
 
     /**
-     * 切换系统显示语言
-     * @param $lang
-     * @return \yii\web\Response
-     */
-    public function actionSetLanguage($lang)
-    {
-        \Yii::$app->response->cookies->add(new Cookie([
-            'name' => '__lang',
-            'value' => $lang,
-            'expire' => time() + 3600 * 24,
-        ]));
-        return $this->redirect(['/backend']);
-    }
-
-    /**
      * 获取管理员(manager)组件对象
      * @return \yii\web\User
      */

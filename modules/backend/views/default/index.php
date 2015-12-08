@@ -25,29 +25,11 @@ $manager = Yii::$app->manager;
         <!-- Header Navbar -->
         <nav class="navbar navbar-static-top" role="navigation">
             <!-- Sidebar toggle button-->
-            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-                <span class="sr-only">Toggle navigation</span>
-            </a>
+            <a href="#" class="sidebar-toggle" data-toggle="offcanvas"></a>
             <!-- Navbar Right Menu -->
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
-                    <!-- Language -->
-                    <li class="">
-                        <?php if (($lang = Yii::$app->language) == 'zh-CN'): ?>
-                            <a href="<?= Url::to(['/backend/default/set-language', 'lang' => 'en-US']) ?>"
-                               class="dropdown-toggle">
-                                <i class="fa fa-gear"></i>
-                                <span class="label label-danger">En</span>
-                            </a>
-                        <?php else: ?>
-                            <a href="<?= Url::to(['/backend/default/set-language', 'lang' => 'zh-CN']) ?>"
-                               class="dropdown-toggle">
-                                <i class="fa fa-gear"></i>
-                                <span class="label label-danger">中</span>
-                            </a>
-                        <?php endif; ?>
-                    </li>
-                    <!-- User Account Menu -->
+                    <!-- User Menu -->
                     <li class="dropdown user user-menu">
                         <!-- Menu Toggle Button -->
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -61,7 +43,7 @@ $manager = Yii::$app->manager;
                                 <p>
                                     <?= $manager->identity->username ?> -
                                     <?= ($role = current(Yii::$app->authManager->getRolesByUser($manager->id))) ? $role->description : '?' ?>
-                                    <small>Member since <?= date('Y/m/d', $manager->identity->created_at) ?></small>
+                                    <small>Since <?= date('Y/m/d', $manager->identity->created_at) ?></small>
                                 </p>
                             </li>
                             <!-- Menu Footer-->

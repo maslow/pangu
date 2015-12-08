@@ -15,7 +15,6 @@ use yii\helpers\Html;
     <?php $this->head() ?>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
-
 <?php $this->beginBody() ?>
 <?= $content?>
 <?php $this->endBody() ?>

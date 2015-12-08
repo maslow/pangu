@@ -22,13 +22,14 @@ class ManagerController extends Controller
      * @return string|\yii\web\Response
      * @permission backend.managers.reset.password
      */
-    public function actionResetPassword(){
+    public function actionResetPassword()
+    {
 
         $model = new ResetPasswordForm();
-        if($model->load(\Yii::$app->request->post()) && $model->save()){
+        if ($model->load(\Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['list']);
         }
-        return $this->render('reset-password',['model'=>$model]);
+        return $this->render('reset-password', ['model' => $model]);
     }
 
     /**
@@ -83,7 +84,7 @@ class ManagerController extends Controller
         /** @var Manager $manager */
         $manager = Manager::findOne($id);
         if (!$manager) {
-            throw new NotFoundHttpException(\Yii::t('backend','The Manager (ID:{id}) is not exist!',['id'=>$id]));
+            throw new NotFoundHttpException(\Yii::t('backend', 'The Manager (ID:{id}) is not exist!', ['id' => $id]));
         }
 
         $model = new UpdateForm();
@@ -122,7 +123,7 @@ class ManagerController extends Controller
         $event = new DeleteManagerEvent(['manager' => $manager]);
 
         if (!$manager) {
-            throw new NotFoundHttpException(\Yii::t('backend','The Manager (ID:{id}) is not exist!',['id'=>$id]));
+            throw new NotFoundHttpException(\Yii::t('backend', 'The Manager (ID:{id}) is not exist!', ['id' => $id]));
         }
 
         if ($manager->delete()) {
@@ -170,8 +171,6 @@ class ManagerController extends Controller
     {
         return $this->redirect(\Yii::$app->params['route.not.allowed']);
     }
-
-
 }
 
 /**
