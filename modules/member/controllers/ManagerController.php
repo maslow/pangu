@@ -2,6 +2,7 @@
 
 namespace app\modules\member\controllers;
 
+use app\base\CheckAccessTrait;
 use app\modules\member\models\CreateUserForm;
 use app\modules\member\models\UpdateUserForm;
 use app\modules\member\Module;
@@ -18,6 +19,8 @@ use yii\filters\VerbFilter;
  */
 class ManagerController extends Controller
 {
+    use CheckAccessTrait;
+
     public $layout = '/manager';
 
     public function behaviors()
@@ -160,41 +163,6 @@ class ManagerController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-
-    /**
-     * 判断当前登录管理员是否满足指定权限
-     * @param $permission string 指定权限名
-     * @return boolean
-     */
-    protected function checkAccess($permission)
-    {
-        /* @var $manager \yii\web\User */
-        $manager = \Yii::$app->manager;
-        if (!$manager->can($permission)) {
-            Event::trigger(Module::className(),Module::EVENT_PERMISSION_REQUIRED,new PermissionEvent(['permission'=>$permission]));
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * 用户无权限访问请求时，跳转到指定页面
-     * @return \yii\web\Response
-     */
-    protected function goNotAllowed()
-    {
-        return $this->redirect(Yii::$app->params['route.not.allowed']);
-    }
-
-}
-
-/**
- * Class PermissionEvent
- * @package app\modules\member\controllers
- */
-class PermissionEvent extends Event
-{
-    public $permission;
 }
 
 class DeleteUserEvent extends Event

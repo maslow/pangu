@@ -42,9 +42,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
             Event::on(RbacModule::className(), $e, $handler, $m);
         }
 
-        Event::on(ManModule::className(), ManModule::EVENT_PERMISSION_REQUIRED, [$this, 'permissionRequired']);
-        Event::on(MemberModule::className(), MemberModule::EVENT_PERMISSION_REQUIRED, [$this, 'permissionRequired']);
-        Event::on(RbacModule::className(), RbacModule::EVENT_PERMISSION_REQUIRED, [$this, 'permissionRequired']);
+        \Yii::$app->on('events.backend.access.reject',[$this, 'permissionRequired']);
     }
 
     /**
@@ -109,9 +107,9 @@ class Module extends \yii\base\Module implements BootstrapInterface
     public function prompt($event)
     {
         if (isset($event->error) && $event->error) {
-            \Yii::$app->session->setFlash(\Yii::$app->params['flashMessageParam'], $event->error);
+            \Yii::$app->session->setFlash(\Yii::$app->params['prompt.param.backend'], $event->error);
         } else {
-            \Yii::$app->session->setFlash(\Yii::$app->params['flashMessageParam'], $event->data);
+            \Yii::$app->session->setFlash(\Yii::$app->params['prompt.param.backend'], $event->data);
         }
     }
 
@@ -121,7 +119,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
     public function permissionRequired($event)
     {
         \Yii::$app->session->setFlash(
-            \Yii::$app->params['flashMessageParam'],
+            \Yii::$app->params['prompt.param.backend'],
             \Yii::t('prompt', 'You have no permission with the operation : {permission}', ['permission' => $event->permission])
         );
     }

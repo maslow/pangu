@@ -2,6 +2,7 @@
 
 namespace app\modules\rbac\controllers;
 
+use app\base\CheckAccessTrait;
 use app\modules\backend\models\Manager;
 use app\modules\rbac\models\CreateRoleForm;
 use app\modules\rbac\models\UpdateRoleForm;
@@ -13,6 +14,8 @@ use yii\web\NotFoundHttpException;
 
 class ManagerController extends Controller
 {
+    use CheckAccessTrait;
+
     public $layout = '/manager';
 
     public function behaviors()
@@ -153,40 +156,6 @@ class ManagerController extends Controller
     {
         return \Yii::$app->authManager;
     }
-
-    /**
-     * 判断当前登录管理员是否满足指定权限
-     * @param $permission string 指定权限名
-     * @return boolean
-     */
-    protected function checkAccess($permission)
-    {
-        /* @var $manager \yii\web\User */
-        $manager = \Yii::$app->manager;
-        if (!$manager->can($permission)) {
-            Event::trigger(Module::className(), Module::EVENT_PERMISSION_REQUIRED, new PermissionEvent(['permission' => $permission]));
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * 用户无权限访问请求时，跳转到指定页面
-     * @return \yii\web\Response
-     */
-    protected function goNotAllowed()
-    {
-        return $this->redirect(\Yii::$app->params['route.not.allowed']);
-    }
-}
-
-/**
- * Class PermissionEvent
- * @package app\modules\rbac\controllers
- */
-class PermissionEvent extends Event
-{
-    public $permission;
 }
 
 /**

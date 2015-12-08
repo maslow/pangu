@@ -3,6 +3,7 @@
 namespace app\modules\backend\controllers;
 
 
+use app\base\CheckAccessTrait;
 use app\modules\backend\models\CreateForm;
 use app\modules\backend\models\Manager;
 use app\modules\backend\models\ResetPasswordForm;
@@ -15,6 +16,7 @@ use yii\web\NotFoundHttpException;
 
 class ManagerController extends Controller
 {
+    use CheckAccessTrait;
     public $layout = "/manager";
 
     /**
@@ -136,6 +138,28 @@ class ManagerController extends Controller
     }
 
     /**
+     * 进入中控台后默认页面
+     * @return string
+     */
+    public function actionInfo()
+    {
+        if ($this->getManager()->isGuest) {
+            Event::trigger(Module::className(), Module::EVENT_LOGIN_REQUIRED);
+            return $this->redirect(['default/login']);
+        }
+        return $this->render('info');
+    }
+
+    /**
+     * 获取管理员(manager)组件对象
+     * @return \yii\web\User
+     */
+    protected function getManager()
+    {
+        return \Yii::$app->manager;
+    }
+
+    /**
      * @return \yii\rbac\ManagerInterface
      */
     protected function getAuth()
@@ -143,43 +167,6 @@ class ManagerController extends Controller
         return \Yii::$app->authManager;
     }
 
-    /**
-     * 判断当前登录管理员是否满足指定权限
-     * @param $permission string 指定权限名
-     * @return boolean
-     */
-    protected function checkAccess($permission)
-    {
-        /* @var $manager \yii\web\User */
-        $manager = \Yii::$app->manager;
-
-        if (!$manager->can($permission)) {
-            $e = new PermissionRequiredEvent();
-            $e->permission = $permission;
-            Event::trigger(Module::className(), Module::EVENT_PERMISSION_REQUIRED, $e);
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * 用户无权限访问请求时，跳转到指定页面
-     * @return \yii\web\Response
-     */
-    protected function goNotAllowed()
-    {
-        return $this->redirect(\Yii::$app->params['route.not.allowed']);
-    }
-}
-
-/**
- * Class PermissionRequiredEvent
- * @package app\modules\backend\controllers
- */
-class PermissionRequiredEvent extends Event
-{
-    public $permission;
 }
 
 /**

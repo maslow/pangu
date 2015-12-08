@@ -2,6 +2,9 @@
 
 return [
     'adminEmail' => 'admin@example.com',
-    'flashMessageParam' => '__flash_message',
-    'route.not.allowed' => ['/man/default/info'],  // 请求不允许访问时应该跳转的路由
+
+    'prompt.param.backend' => '__prompt_message_backend',
+    'prompt.param.frontend' => '__prompt_message_frontend',
+    'backend.default.page' => ['/backend/manager/info'],
+
 ];

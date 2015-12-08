@@ -71,7 +71,7 @@ if (YII_ENV_DEV) {
     $config['modules']['gii']['allowedIPs'] = ['*'];
 }
 
-//加载模块配置文件
+//Load the configuration file of modules
 $modulesConfig = file_get_contents(__DIR__ . '/modules.php');
 $modules = unserialize($modulesConfig);
 foreach ($modules as $id => $m) {

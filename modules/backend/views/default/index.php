@@ -106,7 +106,7 @@ $manager = Yii::$app->manager;
         <section class="content">
 
             <!-- Your Page Content Here -->
-            <iframe src="<?= \yii\helpers\Url::to(['/backend/default/info']) ?>" name="sub-container" id="iframepage"
+            <iframe src="<?= Url::to(Yii::$app->params['backend.default.page']) ?>" name="sub-container" id="iframepage"
                     frameborder="0" scrolling="auto" style="width: 100%;">
             </iframe>
         </section>

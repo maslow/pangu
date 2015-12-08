@@ -57,19 +57,6 @@ class DefaultController extends Controller
     }
 
     /**
-     * 进入中控台后默认页面
-     * @return string
-     */
-    public function actionInfo()
-    {
-        if ($this->getManager()->isGuest) {
-            Event::trigger(Module::className(), Module::EVENT_LOGIN_REQUIRED);
-            return $this->redirect(['default/login']);
-        }
-        return $this->render('info');
-    }
-
-    /**
      * 获取管理员(manager)组件对象
      * @return \yii\web\User
      */

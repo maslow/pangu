@@ -23,19 +23,15 @@ use yii\widgets\Breadcrumbs;
 <?php $this->beginBody() ?>
 <div class="wrap">
     <?php
-    if (Yii::$app->session->hasFlash(Yii::$app->params['flashMessageParam'])) {
+    if (Yii::$app->session->hasFlash(Yii::$app->params['prompt.param.backend'])) {
         echo \yii\bootstrap\Alert::widget([
             'options' => [
                 'class' => 'alert-warning',
             ],
-            'body' => Yii::$app->session->getFlash(Yii::$app->params['flashMessageParam']),
+            'body' => Yii::$app->session->getFlash(Yii::$app->params['prompt.param.backend']),
         ]);
     }
     ?>
-    <?php /* echo  Breadcrumbs::widget([
-        'homeLink' => ['label' => Yii::t('backend', 'Managers'), 'url' => \yii\helpers\Url::to('list')],
-        'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-    ])*/ ?>
     <?= $content ?>
 </div>
 
