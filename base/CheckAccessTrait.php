@@ -20,7 +20,7 @@ trait CheckAccessTrait
         $manager = \Yii::$app->manager;
 
         if (!$manager->can($permission)) {
-            $e = new AccessRejectEvent();
+            $e = new \app\base\Event();
             $e->permission = $permission;
             $e->sender = $this;
             \Yii::$app->trigger('events.backend.access.reject',$e);
@@ -38,13 +38,4 @@ trait CheckAccessTrait
     {
         return $this->redirect(\Yii::$app->params['backend.default.page']);
     }
-}
-
-/**
- * Class PermissionEvent
- * @package app\modules\rbac\controllers
- */
-class AccessRejectEvent extends Event
-{
-    public $permission;
 }
