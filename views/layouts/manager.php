@@ -9,7 +9,9 @@ use yii\helpers\Html;
 \app\assets\LayerAsset::register($this);
 ?>
 <?php $this->beginBlock('prompt_js') ?>
-    layer.msg('<?=Yii::$app->session->getFlash(Yii::$app->params['prompt.param.backend'])?>');
+    layer.msg('<?=Yii::$app->session->getFlash(Yii::$app->params['prompt.param.backend'])?>',{
+        offset:'100px'
+    });
 <?php $this->endBlock() ?>
 
 <?php $this->beginPage() ?>
