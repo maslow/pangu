@@ -118,9 +118,11 @@ class Module extends \yii\base\Module implements BootstrapInterface
      */
     public function permissionRequired($event)
     {
+        $auth = \Yii::$app->authManager;
+        $permission = $auth->getPermission($event->permission);
         \Yii::$app->session->setFlash(
             \Yii::$app->params['prompt.param.backend'],
-            \Yii::t('prompt', 'You have no permission with the operation : {permission}', ['permission' => $event->permission])
+            \Yii::t('prompt', 'You have no permission with the operation : {permission}', ['permission' => $permission->description])
         );
     }
 }
