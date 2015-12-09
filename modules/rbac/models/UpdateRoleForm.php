@@ -2,11 +2,9 @@
 
 namespace app\modules\rbac\models;
 
-
 use app\modules\rbac\Module;
-use yii\base\Event;
+use app\base\Event;
 use yii\base\Model;
-use yii\rbac\Role;
 
 class UpdateRoleForm extends Model
 {
@@ -54,13 +52,13 @@ class UpdateRoleForm extends Model
                     $this->getAuth()->addChild($role, $p);
                 }
                 $this->getAuth()->update($role->name, $role);
-                Event::trigger(Module::className(),Module::EVENT_UPDATE_ROLE_SUCCESS,new UpdateRoleEvent(['model'=>$this]));
+                Event::trigger(Module::className(),Module::EVENT_UPDATE_ROLE_SUCCESS,new Event(['model'=>$this]));
                 return true;
             }else{
                 $this->addError('name',\Yii::t('rbac', 'The role is not exist!'));
             }
         }
-        Event::trigger(Module::className(),Module::EVENT_UPDATE_ROLE_FAIL,new UpdateRoleEvent(['model'=>$this]));
+        Event::trigger(Module::className(),Module::EVENT_UPDATE_ROLE_FAIL,new Event(['model'=>$this]));
         return false;
     }
 
@@ -72,13 +70,4 @@ class UpdateRoleForm extends Model
     {
         return \Yii::$app->authManager;
     }
-}
-
-/**
- * Class UpdateRoleEvent
- * @package app\modules\rbac\models
- */
-class UpdateRoleEvent extends Event
-{
-    public $model;
 }

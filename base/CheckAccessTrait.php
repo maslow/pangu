@@ -1,7 +1,6 @@
 <?php
 
 namespace app\base;
-use yii\base\Event;
 
 /**
  * Class CheckAccessTrait

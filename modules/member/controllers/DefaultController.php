@@ -5,7 +5,7 @@ namespace app\modules\member\controllers;
 use app\modules\member\models\LoginForm;
 use app\modules\member\models\SignupForm;
 use app\modules\member\Module;
-use yii\base\Event;
+use app\base\Event;
 use yii\web\Controller;
 
 class DefaultController extends Controller

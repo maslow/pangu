@@ -3,8 +3,8 @@
 namespace app\modules\member\models;
 
 use app\modules\member\Module;
+use app\base\Event;
 use Yii;
-use yii\base\Event;
 use yii\base\InvalidParamException;
 use yii\base\Model;
 
@@ -61,7 +61,7 @@ class UpdateUserForm extends Model
                 $user->auth_key = Yii::$app->security->generateRandomString();
 
                 if ($user->save()) {
-                    Event::trigger(Module::className(), Module::EVENT_UPDATE_USER_SUCCESS);
+                    Event::trigger(Module::className(), Module::EVENT_UPDATE_USER_SUCCESS,new Event(['model'=>$this]));
                     return true;
                 } else {
                     Yii::error($user->getErrors(), __METHOD__);
@@ -73,13 +73,4 @@ class UpdateUserForm extends Model
         }
         return false;
     }
-}
-
-/**
- * Class UpdateUserEvent
- * @package app\modules\member\models
- */
-class UpdateUserEvent extends Event
-{
-    public $model;
 }

@@ -4,7 +4,7 @@ namespace app\modules\backend\models;
 
 use app\modules\backend\Module;
 use Yii;
-use yii\base\Event;
+use app\base\Event;
 use yii\base\InvalidParamException;
 use yii\base\Model;
 
@@ -52,7 +52,7 @@ class CreateForm extends Model
      */
     public function create()
     {
-        $event = new CreateEvent(['model' => $this]);
+        $event = new Event(['model' => $this]);
         if ($this->validate()) {
             $manager = new Manager();
             try {
@@ -93,9 +93,4 @@ class CreateForm extends Model
     {
         return Yii::$app->authManager;
     }
-}
-
-class CreateEvent extends Event
-{
-    public $model;
 }

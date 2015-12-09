@@ -4,7 +4,7 @@ namespace app\modules\backend\models;
 
 use app\modules\backend\Module;
 use Yii;
-use yii\base\Event;
+use app\base\Event;
 use yii\base\Model;
 
 /**
@@ -48,7 +48,7 @@ class LoginForm extends Model
      */
     public function login()
     {
-        $event = new LoginEvent(['model' => $this]);
+        $event = new Event(['model' => $this]);
         if ($this->validate()) {
             /* @var Manager $manager */
             $manager = Manager::findOne(['username' => $this->username]);
@@ -77,13 +77,4 @@ class LoginForm extends Model
     {
         return Yii::$app->manager;
     }
-}
-
-/**
- * Class LoginEvent
- * @package app\modules\backend\models
- */
-class LoginEvent extends Event
-{
-    public $model;
 }

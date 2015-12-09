@@ -3,8 +3,8 @@
 namespace app\modules\member\models;
 
 use app\modules\member\Module;
+use app\base\Event;
 use Yii;
-use yii\base\Event;
 use yii\base\Model;
 
 /**
@@ -51,7 +51,7 @@ class LoginForm extends Model
             try {
                 if ($user && Yii::$app->security->validatePassword($this->password, $user->password_hash)) {
                     Yii::$app->user->login($user);
-                    Event::trigger(Module::className(), Module::EVENT_LOGIN_SUCCESS, new LoginEvent(['model' => $this]));
+                    Event::trigger(Module::className(), Module::EVENT_LOGIN_SUCCESS, new Event(['model' => $this]));
                     return true;
                 } else {
                     $this->addError('username', Yii::t('member', 'Username and  password are incorrect!'));
@@ -60,16 +60,7 @@ class LoginForm extends Model
                 $this->addError('username', Yii::t('member', 'The user has some exceptions!'));
             }
         }
-        Event::trigger(Module::className(), Module::EVENT_LOGIN_FAIL, new LoginEvent(['model' => $this]));
+        Event::trigger(Module::className(), Module::EVENT_LOGIN_FAIL, new Event(['model' => $this]));
         return false;
     }
-}
-
-/**
- * Class LoginEvent
- * @package app\modules\member\models
- */
-class LoginEvent extends Event
-{
-    public $model;
 }

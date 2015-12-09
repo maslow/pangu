@@ -2,10 +2,9 @@
 
 namespace app\modules\member\models;
 
-
+use app\base\Event;
 use app\modules\member\Module;
 use yii\base\ErrorException;
-use yii\base\Event;
 use yii\base\Model;
 
 /**
@@ -54,7 +53,7 @@ class SignupForm extends Model
             $user->created_at = time();
             try {
                 if ($user->save()) {
-                    Event::trigger(Module::className(), Module::EVENT_SIGNUP_SUCCESS, new SignupEvent(['model' => $this]));
+                    Event::trigger(Module::className(), Module::EVENT_SIGNUP_SUCCESS, new Event(['model' => $this]));
                     return true;
                 } else {
                     \Yii::error($user->getErrors(), __METHOD__);
@@ -65,16 +64,7 @@ class SignupForm extends Model
                 $this->addError('username', \Yii::t('member', 'The user has some exceptions!'));
             }
         }
-        Event::trigger(Module::className(), Module::EVENT_SIGNUP_FAIL, new SignupEvent(['model' => $this]));
+        Event::trigger(Module::className(), Module::EVENT_SIGNUP_FAIL, new Event(['model' => $this]));
         return false;
     }
-}
-
-/**
- * Class SignupEvent
- * @package app\modules\member\models
- */
-class SignupEvent extends Event
-{
-    public $model;
 }

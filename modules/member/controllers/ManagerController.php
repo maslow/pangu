@@ -3,12 +3,12 @@
 namespace app\modules\member\controllers;
 
 use app\base\CheckAccessTrait;
+use app\base\Event;
 use app\modules\member\models\CreateUserForm;
 use app\modules\member\models\UpdateUserForm;
 use app\modules\member\Module;
 use app\modules\member\models\User;
 use Yii;
-use yii\base\Event;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -141,9 +141,9 @@ class ManagerController extends Controller
         Event::trigger(Module::className(), Module::EVENT_BEFORE_DELETE_USER);
         $user = $this->findModel($id);
         if ($user->delete()) {
-            Event::trigger(Module::className(),Module::EVENT_DELETE_USER_SUCCESS,new DeleteUserEvent(['model'=>$user]));
+            Event::trigger(Module::className(), Module::EVENT_DELETE_USER_SUCCESS, new Event(['model' => $user]));
         } else {
-            Event::trigger(Module::className(),Module::EVENT_DELETE_USER_FAIL,new DeleteUserEvent(['model'=>$user]));
+            Event::trigger(Module::className(), Module::EVENT_DELETE_USER_FAIL, new Event(['model' => $user]));
         }
         return $this->redirect(['index']);
     }
@@ -163,9 +163,4 @@ class ManagerController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-}
-
-class DeleteUserEvent extends Event
-{
-    public $model;
 }

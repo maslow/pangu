@@ -9,7 +9,7 @@ use app\modules\backend\models\Manager;
 use app\modules\backend\models\ResetPasswordForm;
 use app\modules\backend\models\UpdateForm;
 use app\modules\backend\Module;
-use yii\base\Event;
+use app\base\Event;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -17,6 +17,7 @@ use yii\web\NotFoundHttpException;
 class ManagerController extends Controller
 {
     use CheckAccessTrait;
+
     public $layout = "/manager";
 
     /**
@@ -122,7 +123,7 @@ class ManagerController extends Controller
 
         /* @var $manager \app\modules\backend\models\Manager */
         $manager = Manager::findOne($id);
-        $event = new DeleteManagerEvent(['manager' => $manager]);
+        $event = new Event(['manager' => $manager]);
 
         if (!$manager) {
             throw new NotFoundHttpException(\Yii::t('backend', 'The Manager (ID:{id}) is not exist!', ['id' => $id]));
@@ -167,13 +168,4 @@ class ManagerController extends Controller
         return \Yii::$app->authManager;
     }
 
-}
-
-/**
- * Class DeleteManagerEvent
- * @package app\modules\backend\controllers
- */
-class DeleteManagerEvent extends Event
-{
-    public $manager;
 }

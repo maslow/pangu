@@ -4,7 +4,7 @@ namespace app\modules\backend\models;
 
 use app\modules\backend\Module;
 use Yii;
-use yii\base\Event;
+use app\base\Event;
 use yii\base\Model;
 
 /**
@@ -53,7 +53,7 @@ class UpdateForm extends Model
      */
     public function update()
     {
-        $event = new UpdateEvent(['model' => $this]);
+        $event = new Event(['model' => $this]);
         if ($this->validate()) {
             /* @var Manager $manager */
             $manager = Manager::findOne($this->id);
@@ -91,13 +91,4 @@ class UpdateForm extends Model
     {
         return Yii::$app->authManager;
     }
-}
-
-/**
- * Class UpdateEvent
- * @package app\modules\backend\models
- */
-class UpdateEvent extends Event
-{
-    public $model;
 }

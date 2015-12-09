@@ -4,7 +4,7 @@ namespace app\modules\backend\models;
 
 use app\modules\backend\Module;
 use Yii;
-use yii\base\Event;
+use app\base\Event;
 use yii\base\InvalidParamException;
 use yii\base\Model;
 
@@ -46,7 +46,7 @@ class ResetPasswordForm extends Model
      */
     public function save()
     {
-        $event = new ResetPasswordEvent(['model' => $this]);
+        $event = new Event(['model' => $this]);
         if ($this->validate()) {
             /* @var $manager Manager */
             $manager = Yii::$app->manager->identity;
@@ -78,9 +78,4 @@ class ResetPasswordForm extends Model
     {
         return Yii::$app->authManager;
     }
-}
-
-class ResetPasswordEvent extends Event
-{
-    public $model;
 }

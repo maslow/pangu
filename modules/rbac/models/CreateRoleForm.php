@@ -2,9 +2,8 @@
 
 namespace app\modules\rbac\models;
 
-
 use app\modules\rbac\Module;
-use yii\base\Event;
+use app\base\Event;
 use yii\base\Model;
 use yii\rbac\Role;
 
@@ -47,13 +46,13 @@ class CreateRoleForm extends Model
                 $role->description = $this->description;
                 $role->data = $this->data;
                 $this->getAuth()->add($role);
-                Event::trigger(Module::className(), Module::EVENT_CREATE_ROLE_SUCCESS, new CreateRoleEvent(['model' => $this]));
+                Event::trigger(Module::className(), Module::EVENT_CREATE_ROLE_SUCCESS, new Event(['model' => $this]));
                 return true;
             } else {
                 $this->addError('name', \Yii::t('rbac', 'The role name has already been exist!'));
             }
         }
-        Event::trigger(Module::className(), Module::EVENT_CREATE_ROLE_FAIL, new CreateRoleEvent(['model' => $this]));
+        Event::trigger(Module::className(), Module::EVENT_CREATE_ROLE_FAIL, new Event(['model' => $this]));
         return false;
     }
 
@@ -65,13 +64,4 @@ class CreateRoleForm extends Model
     {
         return \Yii::$app->authManager;
     }
-}
-
-/**
- * Class CreateRoleEvent
- * @package app\modules\rbac\models
- */
-class CreateRoleEvent extends Event
-{
-    public $model;
 }

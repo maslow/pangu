@@ -3,8 +3,8 @@
 namespace app\modules\member\models;
 
 use app\modules\member\Module;
+use app\base\Event;
 use Yii;
-use yii\base\Event;
 use yii\base\InvalidParamException;
 use yii\base\Model;
 
@@ -60,7 +60,7 @@ class CreateUserForm extends Model
                 $user->auth_key = Yii::$app->security->generateRandomString();
 
                 if ($user->save()) {
-                    Event::trigger(Module::className(), Module::EVENT_CREATE_USER_SUCCESS, new CreateUserEvent(['model' => $this]));
+                    Event::trigger(Module::className(), Module::EVENT_CREATE_USER_SUCCESS, new Event(['model' => $this]));
                     return true;
                 } else {
                     Yii::error($user->getErrors(), __METHOD__);
@@ -70,16 +70,7 @@ class CreateUserForm extends Model
                 $this->addError('username', Yii::t('member', 'Throw an exception of saving data!'));
             }
         }
-        Event::trigger(Module::className(), Module::EVENT_CREATE_USER_FAIL, new CreateUserEvent(['model' => $this]));
+        Event::trigger(Module::className(), Module::EVENT_CREATE_USER_FAIL, new Event(['model' => $this]));
         return false;
     }
-}
-
-/**
- * Class CreateUserEvent
- * @package app\modules\member\models
- */
-class CreateUserEvent extends Event
-{
-    public $model;
 }

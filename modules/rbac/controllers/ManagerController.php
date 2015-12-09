@@ -2,12 +2,12 @@
 
 namespace app\modules\rbac\controllers;
 
+use app\base\Event;
 use app\base\CheckAccessTrait;
 use app\modules\backend\models\Manager;
 use app\modules\rbac\models\CreateRoleForm;
 use app\modules\rbac\models\UpdateRoleForm;
 use app\modules\rbac\Module;
-use yii\base\Event;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -134,16 +134,16 @@ class ManagerController extends Controller
             if($this->getAuth()->getAssignment($name,$man->id)){
                 Event::trigger(Module::className(),
                     Module::EVENT_DELETE_ROLE_FAIL,
-                    new DeleteRoleEvent(['role'=>$role ,'error'=>\Yii::t('rbac','This role can not be deleted unless the role of any user is it.')])
+                    new Event(['role'=>$role ,'error'=>\Yii::t('rbac','This role can not be deleted unless the role of any user is it.')])
                 );
                 return $this->redirect(['roles']);
             }
         }
 
         if ($this->getAuth()->remove($role)) {
-            Event::trigger(Module::className(), Module::EVENT_DELETE_ROLE_SUCCESS,new DeleteRoleEvent(['role'=>$role]));
+            Event::trigger(Module::className(), Module::EVENT_DELETE_ROLE_SUCCESS,new Event(['role'=>$role]));
         } else {
-            Event::trigger(Module::className(), Module::EVENT_DELETE_ROLE_FAIL,new DeleteRoleEvent(['role'=>$role]));
+            Event::trigger(Module::className(), Module::EVENT_DELETE_ROLE_FAIL,new Event(['role'=>$role]));
         }
         return $this->redirect(['roles']);
     }
@@ -156,14 +156,4 @@ class ManagerController extends Controller
     {
         return \Yii::$app->authManager;
     }
-}
-
-/**
- * Class DeleteRoleEvent
- * @package app\modules\rbac\controllers
- */
-class DeleteRoleEvent extends Event
-{
-    public $role;
-    public $error =null;
 }
