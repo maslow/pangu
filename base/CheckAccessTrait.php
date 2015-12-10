@@ -2,6 +2,8 @@
 
 namespace app\base;
 
+use app\base\Event;
+
 /**
  * Class CheckAccessTrait
  * @package app\base
@@ -19,7 +21,7 @@ trait CheckAccessTrait
         $manager = \Yii::$app->manager;
 
         if (!$manager->can($permission)) {
-            $e = new \app\base\Event();
+            $e = new Event();
             $e->permission = $permission;
             $e->sender = $this;
             \Yii::$app->trigger('events.backend.access.reject',$e);
