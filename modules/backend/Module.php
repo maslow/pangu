@@ -8,7 +8,7 @@ use yii\base\BootstrapInterface;
 
 /**
  * Class Module
- * @property \app\modules\ModuleManager $moduleManager
+ * @property \app\base\ModuleManager $moduleManager
  * @package app\modules\backend
  */
 class Module extends \yii\base\Module implements BootstrapInterface
