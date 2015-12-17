@@ -8,6 +8,16 @@ $config = [
     'bootstrap' => ['log'],
     'language' => 'zh-CN',
     'components' => [
+        'authClientCollection' => [
+            'class' => 'yii\authclient\Collection',
+            'clients' => [
+                'qq' => [
+                    'class'=>'yii\authclient\clients\QqOAuth',
+                    'clientId'=>'101269915',
+                    'clientSecret'=>'d1555b83c4fbc5aa81be4dab9bd3acf8'
+                ],
+            ],
+        ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'vip-design.net',
@@ -77,6 +87,7 @@ $config = [
         'db' => require(__DIR__ . '/db.php'),
     ],
     'params' => $params,
+
 ];
 
 if (YII_ENV_DEV) {
