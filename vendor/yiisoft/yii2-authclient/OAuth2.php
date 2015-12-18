@@ -88,6 +88,7 @@ class OAuth2 extends BaseOAuth
         ];
         $response = $this->sendRequest('POST', $this->tokenUrl, array_merge($defaultParams, $params));
         $token = $this->createToken(['params' => $response]);
+
         $this->setAccessToken($token);
 
         return $token;
@@ -184,6 +185,7 @@ class OAuth2 extends BaseOAuth
      */
     protected function createToken(array $tokenConfig = [])
     {
+        //createToken(['params' => $response]);
         $tokenConfig['tokenParamKey'] = 'access_token';
 
         return parent::createToken($tokenConfig);

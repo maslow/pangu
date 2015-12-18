@@ -12,9 +12,19 @@ $config = [
             'class' => 'yii\authclient\Collection',
             'clients' => [
                 'qq' => [
-                    'class'=>'yii\authclient\clients\QqOAuth',
+                    'class'=>'app\common\components\QqOAuth',
                     'clientId'=>'101269915',
                     'clientSecret'=>'d1555b83c4fbc5aa81be4dab9bd3acf8'
+                ],
+                'wb' => [
+                    'class'=>'app\common\components\WbOAuth',
+                    'clientId'=>'3673260080',
+                    'clientSecret'=>'e087b7e39d0ae7f1cceb751eb6cf8ce1'
+                ],
+                'wx' => [
+                    'class'=>'app\common\components\WxOAuth',
+                    'clientId'=>'wx03c3c0522401b2b2',
+                    'clientSecret'=>'caf61f62271069eba112302d482b380d'
                 ],
             ],
         ],

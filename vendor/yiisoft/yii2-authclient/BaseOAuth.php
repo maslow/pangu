@@ -368,6 +368,8 @@ abstract class BaseOAuth extends BaseClient implements ClientInterface
      */
     protected function createToken(array $tokenConfig = [])
     {
+        //createToken(['params' => $response]);
+        //$tokenConfig['tokenParamKey'] = 'access_token';
         if (!array_key_exists('class', $tokenConfig)) {
             $tokenConfig['class'] = OAuthToken::className();
         }

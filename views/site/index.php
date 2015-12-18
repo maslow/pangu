@@ -11,7 +11,9 @@ $this->title = Yii::t('app','My Application in Pangu');
 
         <p><a class="btn btn-lg btn-success" href="<?=\yii\helpers\Url::to(['/backend'])?>"><?=Yii::t('app','Getting start!')?></a></p>
 
-        <a href="<?=\yii\helpers\Url::to(['/site/auth','authclient'=>'qq'])?>">使用QQ快速登录</a>
+        <a href="<?=\yii\helpers\Url::to(['/site/auth','authclient'=>'qq'])?>">QQ登录</a>
+        <a href="<?=\yii\helpers\Url::to(['/site/auth','authclient'=>'wx'])?>">微信登录</a>
+        <a href="<?=\yii\helpers\Url::to(['/site/auth','authclient'=>'wb'])?>">微博登录</a>
     </div>
 
     <div class="body-content">
