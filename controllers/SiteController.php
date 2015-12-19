@@ -23,7 +23,7 @@ class SiteController extends Controller
             ],
             'auth' => [
                 'class' => 'yii\authclient\AuthAction',
-                'successCallback' => [$this, 'successCallback'],
+                'successCallback' => [$this, 'onSuccess'],
             ],
         ];
     }
@@ -38,7 +38,7 @@ class SiteController extends Controller
     }
 
 
-    public function successCallback($client)
+    public function onSuccess($client)
     {
         $attributes = $client->getUserAttributes();
         // user login or signup comes here

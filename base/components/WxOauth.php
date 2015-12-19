@@ -1,5 +1,5 @@
 <?php
-namespace app\common\components;
+namespace app\base\components;
 use Yii;
 use yii\authclient\OAuth2;
 use yii\base\Exception;
@@ -33,7 +33,7 @@ class WxOAuth extends OAuth2
     public $authUrl = 'https://open.weixin.qq.com/connect/qrconnect';
     public $tokenUrl = 'https://api.weixin.qq.com/sns/oauth2/access_token';
     public $apiBaseUrl = 'https://api.weixin.qq.com/sns';
-
+    public $openid;
 
     public function buildAuthUrl(array $params = [])
     {
@@ -75,7 +75,7 @@ class WxOAuth extends OAuth2
         }
 
         $params['oauth_token'] = $accessToken->getToken();
-        $params['openid'] =  $GLOBALS['openid'];
+        $params['openid']=$this->openid;
         return $this->sendRequest($method, $url, $params, $headers);
     }
     public function fetchAccessToken($authCode, array $params = [])
@@ -89,9 +89,8 @@ class WxOAuth extends OAuth2
         ];
         $response = $this->sendRequest('POST', $this->tokenUrl, array_merge($defaultParams, $params));
         $token = $this->createToken(['params' => $response]);
-        $GLOBALS["openid"]=$response['openid'];//可能需要把$response转化为数组
+        $this->openid=$response['openid'];
         $this->setAccessToken($token);
-
         return $token;
     }
 
