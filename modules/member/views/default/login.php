@@ -32,5 +32,10 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
     <?php ActiveForm::end(); ?>
+
     <hr/>
+    <a href="<?=\yii\helpers\Url::to(['/site/auth','authclient'=>'qq'])?>"><?=Yii::t('member','QQ')?></a>
+    <a href="<?=\yii\helpers\Url::to(['/site/auth','authclient'=>'wx'])?>"><?=Yii::t('member','WeChat')?></a>
+    <a href="<?=\yii\helpers\Url::to(['/site/auth','authclient'=>'wb'])?>"><?=Yii::t('member','Weibo')?></a>
+
 </div><!-- default-login -->
