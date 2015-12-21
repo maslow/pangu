@@ -21,10 +21,6 @@ class SiteController extends Controller
                 'class' => 'yii\captcha\CaptchaAction',
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
-            'auth' => [
-                'class' => 'yii\authclient\AuthAction',
-                'successCallback' => [$this, 'onSuccess'],
-            ],
         ];
     }
 
@@ -35,12 +31,5 @@ class SiteController extends Controller
     public function actionIndex()
     {
         return $this->render('index');
-    }
-
-
-    public function onSuccess($client)
-    {
-        $attributes = $client->getUserAttributes();
-        // user login or signup comes here
     }
 }

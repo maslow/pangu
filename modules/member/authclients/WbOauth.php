@@ -1,32 +1,11 @@
 <?php
-namespace app\base\components;
+namespace app\modules\member\authclients;
 
 use yii\authclient\OAuth2;
-use yii\base\Exception;
-use yii\helpers\Json;
 
 /**
- *
- * ~~~
- * 'components' => [
- *     'authClientCollection' => [
- *         'class' => 'yii\authclient\Collection',
- *         'clients' => [
- *             'qq' => [
- *                 'class' => 'common\components\QqOAuth',
- *                 'clientId' => 'qq_client_id',
- *                 'clientSecret' => 'qq_client_secret',
- *             ],
- *         ],
- *     ]
- *     ...
- * ]
- * ~~~
- *
- * @see http://connect.qq.com/
- *
- * @author easypao <admin@easypao.com>
- * @since 2.0
+ * Class WbOAuth
+ * @package app\modules\member\authclients
  */
 class WbOAuth extends OAuth2
 {

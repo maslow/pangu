@@ -1,32 +1,12 @@
 <?php
-namespace app\base\components;
+namespace app\modules\member\authclients;
+
 use Yii;
 use yii\authclient\OAuth2;
-use yii\base\Exception;
-use yii\helpers\Json;
 
 /**
- *
- * ~~~
- * 'components' => [
- *     'authClientCollection' => [
- *         'class' => 'yii\authclient\Collection',
- *         'clients' => [
- *             'qq' => [
- *                 'class' => 'common\components\QqOAuth',
- *                 'clientId' => 'qq_client_id',
- *                 'clientSecret' => 'qq_client_secret',
- *             ],
- *         ],
- *     ]
- *     ...
- * ]
- * ~~~
- *
- * @see http://connect.qq.com/
- *
- * @author easypao <admin@easypao.com>
- * @since 2.0
+ * Class WxOAuth
+ * @package app\modules\member\authclients
  */
 class WxOAuth extends OAuth2
 {
@@ -75,9 +55,10 @@ class WxOAuth extends OAuth2
         }
 
         $params['oauth_token'] = $accessToken->getToken();
-        $params['openid']=$this->openid;
+        $params['openid'] = $this->openid;
         return $this->sendRequest($method, $url, $params, $headers);
     }
+
     public function fetchAccessToken($authCode, array $params = [])
     {
         $defaultParams = [
@@ -89,7 +70,7 @@ class WxOAuth extends OAuth2
         ];
         $response = $this->sendRequest('POST', $this->tokenUrl, array_merge($defaultParams, $params));
         $token = $this->createToken(['params' => $response]);
-        $this->openid=$response['openid'];
+        $this->openid = $response['openid'];
         $this->setAccessToken($token);
         return $token;
     }
@@ -103,8 +84,6 @@ class WxOAuth extends OAuth2
     {
         return 'Wx';
     }
-
-
 
 
 }

@@ -185,7 +185,6 @@ class OAuth2 extends BaseOAuth
      */
     protected function createToken(array $tokenConfig = [])
     {
-        //createToken(['params' => $response]);
         $tokenConfig['tokenParamKey'] = 'access_token';
 
         return parent::createToken($tokenConfig);

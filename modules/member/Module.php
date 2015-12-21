@@ -25,14 +25,14 @@ class Module extends \yii\base\Module implements BootstrapInterface
 
     const EVENT_BEFORE_CREATE_USER = 'beforeCreateUser';
     const EVENT_CREATE_USER_SUCCESS = 'createUserSuccess';
-    const EVENT_CREATE_USER_FAIL ='createUserFail';
+    const EVENT_CREATE_USER_FAIL = 'createUserFail';
 
     const EVENT_BEFORE_UPDATE_USER = 'beforeUpdateUser';
     const EVENT_UPDATE_USER_SUCCESS = 'updateUserSuccess';
     const EVENT_UPDATE_USER_FAIL = 'updateUserFail';
 
     const EVENT_BEFORE_DELETE_USER = 'beforeDeleteUser';
-    const EVENT_DELETE_USER_SUCCESS= 'deleteUserSuccess';
+    const EVENT_DELETE_USER_SUCCESS = 'deleteUserSuccess';
     const EVENT_DELETE_USER_FAIL = 'deleteUserFail';
 
     const EVENT_PERMISSION_REQUIRED = 'permissionRequired';
@@ -42,7 +42,8 @@ class Module extends \yii\base\Module implements BootstrapInterface
     public function init()
     {
         parent::init();
-        \Yii::configure($this,require(__DIR__.'/config.php'));
+        \Yii::configure($this, require(__DIR__ . '/config.php'));
+        \Yii::$app->set('authClientCollection', $this->authClientCollection);
         // custom initialization code goes here
     }
 
@@ -52,21 +53,22 @@ class Module extends \yii\base\Module implements BootstrapInterface
      */
     public function bootstrap($app)
     {
-        \Yii::$app->set('user',[
-            'class'=>'\yii\web\User',
+        \Yii::$app->set('user', [
+            'class' => '\yii\web\User',
             'identityClass' => 'app\modules\member\models\User',
             'enableAutoLogin' => true,
             'idParam' => "__{$this->id}__id",
-            'identityCookie' =>[
+            'identityCookie' => [
                 'name' => "__{$this->id}__identity",
-                'httpOnly' =>true
+                'httpOnly' => true
             ],
         ]);
 
         \Yii::$app->urlManager->addRules([
-            'site/login'=>'member/default/login',
-            'site/logout'=>'member/default/logout',
-            'site/signup'=>'member/default/signup',
-        ],false);
+            'site/login' => 'member/default/login',
+            'site/logout' => 'member/default/logout',
+            'site/signup' => 'member/default/signup',
+            'site/auth' => 'member/default/auth',
+        ], false);
     }
 }

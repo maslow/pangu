@@ -6,10 +6,27 @@ use app\modules\member\models\LoginForm;
 use app\modules\member\models\SignupForm;
 use app\modules\member\Module;
 use app\base\Event;
+use yii\authclient\ClientInterface;
 use yii\web\Controller;
 
 class DefaultController extends Controller
 {
+    public function actions()
+    {
+        return [
+            'auth' => [
+                'class' => 'yii\authclient\AuthAction',
+                'successCallback' => [$this, 'onSuccess'],
+            ],
+        ];
+    }
+
+    public function onSuccess(ClientInterface $client)
+    {
+        $attributes = $client->getUserAttributes();
+        // user login or signup comes here
+    }
+
     public function actionIndex()
     {
         return $this->render('index');

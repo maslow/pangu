@@ -1,5 +1,5 @@
 <?php
-namespace app\base\components;
+namespace app\modules\member\authclients;
 
 use yii\authclient\OAuth2;
 use yii\base\Exception;
@@ -46,9 +46,9 @@ class QqOAuth extends OAuth2
 
     protected function initUserAttributes()
     {
-        $openid =  $this->api('oauth2.0/me', 'GET');
-        $qquser = $this->api("user/get_user_info", 'GET', ['oauth_consumer_key'=>$openid['client_id'], 'openid'=>$openid['openid']]);
-        $qquser['openid']=$openid['openid'];
+        $openid = $this->api('oauth2.0/me', 'GET');
+        $qquser = $this->api("user/get_user_info", 'GET', ['oauth_consumer_key' => $openid['client_id'], 'openid' => $openid['openid']]);
+        $qquser['openid'] = $openid['openid'];
         return $qquser;
     }
 
@@ -66,6 +66,10 @@ class QqOAuth extends OAuth2
     /**
      * 该扩展初始的处理方法似乎QQ互联不能用，应此改写了方法
      * @see \yii\authclient\BaseOAuth::processResponse()
+     * @param string $rawResponse
+     * @param string $contentType
+     * @return array|mixed
+     * @throws Exception
      */
     protected function processResponse($rawResponse, $contentType = self::CONTENT_TYPE_AUTO)
     {
@@ -77,10 +81,10 @@ class QqOAuth extends OAuth2
                 $contentType = $this->determineContentTypeByRaw($rawResponse);
                 if ($contentType == self::CONTENT_TYPE_AUTO) {
                     //以下代码是特别针对QQ互联登录的，也是与原方法不一样的地方 
-                    if(strpos($rawResponse, "callback") !== false){
+                    if (strpos($rawResponse, "callback") !== false) {
                         $lpos = strpos($rawResponse, "(");
                         $rpos = strrpos($rawResponse, ")");
-                        $rawResponse = substr($rawResponse, $lpos + 1, $rpos - $lpos -1);
+                        $rawResponse = substr($rawResponse, $lpos + 1, $rpos - $lpos - 1);
                         $response = $this->processResponse($rawResponse, self::CONTENT_TYPE_JSON);
                         break;
                     }
