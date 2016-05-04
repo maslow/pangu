@@ -95,6 +95,8 @@ class ModuleController extends Controller
 
         $this->createModuleBackendFile($id);
 
+        $this->createModuleMigrationsFile($id);
+
     }
 
     protected function getModuleRootPathById($id){
@@ -198,6 +200,12 @@ return [
     'Stuffs' => '东西管理',
     'Stuff List' => '东西列表',
     'Create Stuff' => '创建东西',
+    'Stuff Name' => '东西名称',
+    'Stuff Amount' => '东西数量',
+    'Update' => '更新',
+    'Delete' => '删除',
+    'Create' => '创建',
+    'Update Stuff' => '更新东西',
 ];
 STR;
         $path = $this->getModuleRootPathById($id)."/messages";
@@ -272,7 +280,40 @@ STR;
 
     protected function createModuleMigrationsFile($id)
     {
-        FileHelper::createDirectory($this->getModuleRootPathById($id)."/migrations");
+        $templateString = <<<STR
+<?php
+
+use yii\db\Schema;
+use yii\db\Migration;
+
+class m160504_160205_create_table_stuff extends Migration
+{
+    public function up()
+    {
+        \$tableOptions = null;
+        if (\$this->db->driverName === 'mysql') {
+            // http://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci
+            \$tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
+        }
+
+        \$this->createTable("{{%stuff}}",[
+            'id'=>\$this->primaryKey(),
+            'stuff_name' => \$this->string(32)->notNull(),
+            'stuff_amount' =>\$this->integer()->notNull()
+        ],\$tableOptions);
+    }
+
+    public function down()
+    {
+        \$this->dropTable("{{%stuff}}");
+        return true;
+    }
+}
+STR;
+
+        $path = $this->getModuleRootPathById($id)."/migrations";
+        FileHelper::createDirectory($path);
+        file_put_contents($path."/m160504_160205_create_table_stuff.php",$templateString);
     }
 
 
@@ -380,9 +421,9 @@ STR;
             $path = $this->getModuleManager()->getPath($id);
             if ($this->confirm("Do you want to delete the directory of the module `{$id}`?")) {
                 FileHelper::removeDirectory($path);
-                $this->stdout("The module `{$id}` has been deleted!", Console::FG_GREEN);
+                $this->stdout("\nThe module `{$id}` has been deleted!", Console::FG_GREEN);
             } else {
-                $this->stdout("The directory of the module `{$id}` has been reserved ，you can delete it later! ({$path})\n", Console::FG_YELLOW);
+                $this->stdout("\nThe directory of the module `{$id}` has been reserved ，you can delete it later! ({$path})\n", Console::FG_YELLOW);
             }
         }
     }
