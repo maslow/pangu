@@ -2,6 +2,7 @@
 
 namespace app\commands;
 
+use Faker\Provider\File;
 use yii\base\InvalidConfigException;
 use yii\console\Controller;
 use yii\helpers\Console;
@@ -62,6 +63,220 @@ class ModuleController extends Controller
     }
 
     /**
+     * 创建一个新模块
+     * @param $id string 所创建模块的id
+     */
+    public function actionCreate($id){
+
+        if($this->getModuleManager()->isExist($id)){
+            $this->stderr("ERR: {$id} is already exist!\n");
+            return ;
+        }
+        // Create the root directory of module {$id}
+        FileHelper::createDirectory($this->getModuleRootPathById($id));
+
+        $this->createModuleMetaFile($id);
+
+        $this->createModuleFile($id);
+
+        $this->createModuleI18nFile($id);
+
+        $this->createModuleMessagesFile($id);
+
+        $this->createModuleMigrationsFile($id);
+
+        $this->createModuleReadMeFile($id);
+
+        $this->createModuleModelsFile($id);
+
+        $this->createModuleViewsFile($id);
+
+        $this->createModuleControllersFile($id);
+
+        $this->createModuleBackendFile($id);
+
+    }
+
+    protected function getModuleRootPathById($id){
+        return \Yii::getAlias($this->getModuleManager()->moduleRoot) . "/{$id}";
+    }
+
+    protected function createModuleMetaFile($id){
+        $templateString = <<<STR
+<?php
+
+return [
+    'version' => '1.0',
+    'description' => 'Description of {$id} module.',
+
+    'bootstrap' => false,
+    'backend' => [
+        'menu' => [
+            'label' => Yii::t('{$id}', 'Stuffs'),
+            'url' => ['/{$id}/backend.stuff/index'],
+            'items' => [
+                [
+                    'label' => Yii::t('{$id}', 'Stuff List'),
+                    'url' => ['/{$id}/backend.stuff/index'],
+                    'permission' => [
+                        '{$id}.stuff.list',
+                        '{$id}.stuff.update',
+                        '{$id}.stuff.delete',
+                    ],
+                ],
+                [
+                    'label' => Yii::t('{$id}', 'Create Stuff'),
+                    'url' => ['/{$id}/backend.stuff/create'],
+                    'permission' => '{$id}.stuff.create'
+                ],
+            ],
+        ],
+        'permissions' => [
+            '{$id}.stuff.create' => '添加东西',
+            '{$id}.stuff.list' => '浏览东西',
+            '{$id}.stuff.update' => '更新东西',
+            '{$id}.stuff.delete' => '删除东西',
+            '{$id}.stuff.view' => '查看东西',
+        ],
+    ],
+    'deps' => [
+        'backend',
+    ]
+];
+STR;
+        file_put_contents($this->getModuleRootPathById($id)."/meta.php",$templateString);
+    }
+
+    protected function createModuleFile($id){
+        $templateString = <<<STR
+<?php
+
+namespace app\modules\\{$id};
+
+class Module extends \yii\\base\Module
+{
+    public \$controllerNamespace = 'app\modules\\{$id}\controllers';
+
+    public \$controllerMap = [
+        'backend.stuff' => 'app\modules\\{$id}\\backend\StuffController',
+    ];
+
+    public function init()
+    {
+        parent::init();
+
+        // custom initialization code goes here
+    }
+}
+STR;
+        $moduleFileName = $this->getModuleManager()->defaultClassName.".php";
+        file_put_contents($this->getModuleRootPathById($id)."/{$moduleFileName}",$templateString);
+    }
+
+    protected function createModuleI18nFile($id){
+        $templateString = <<<STR
+<?php
+
+return [
+    '{$id}' => [
+        'class' => 'yii\i18n\PhpMessageSource',
+        'basePath' => '@app/modules/{$id}/messages',
+        'fileMap' => [
+            '{$id}' => '{$id}.php',
+        ],
+    ],
+];
+STR;
+        file_put_contents($this->getModuleRootPathById($id)."/i18n.php",$templateString);
+    }
+
+    protected function createModuleMessagesFile($id){
+        $templateString = <<<STR
+<?php
+
+return [
+    'Stuffs' => '东西管理',
+    'Stuff List' => '东西列表',
+    'Create Stuff' => '创建东西',
+];
+STR;
+        $path = $this->getModuleRootPathById($id)."/messages";
+        FileHelper::createDirectory($path);
+        FileHelper::createDirectory($path."/zh-CN");
+        file_put_contents("{$path}/zh-CN/{$id}.php",$templateString);
+    }
+
+    protected function createModuleReadMeFile($id){
+        $templateString = <<<STR
+{$id} Module for Pangu
+========================
+
+{$id}模块是一个由Pangu自由生成的模块模板。
+
+说明
+====
+
+基础信息
+-------
+    @ 标识 : {$id}
+    @ 全局引导 : 否
+    @ 必要模块 : 否
+    @ 数据迁移 : 是
+
+导出菜单
+-------
+    * 东西管理
+        > 东西列表
+        > 创建东西
+
+导出权限
+-------
+    * {$id}.stuff.create   > 添加东西
+    * {$id}.stuff.list     > 浏览东西
+    * {$id}.stuff.update   > 更新东西
+    * {$id}.stuff.delete   > 删除东西
+    * {$id}.stuff.view     > 查看东西
+
+依赖模块
+-------
+    * backend
+
+安装
+---
+    1. 将模块目录拷贝到@app/modules目录下
+
+    2. 在项目根目录运行指令
+        ```
+            php yii module/update
+        ```
+
+STR;
+        file_put_contents($this->getModuleRootPathById($id)."/README.MD",$templateString);
+    }
+
+    protected function createModuleModelsFile($id){
+        FileHelper::createDirectory($this->getModuleRootPathById($id)."/models");
+    }
+
+     protected function createModuleViewsFile($id){
+         FileHelper::createDirectory($this->getModuleRootPathById($id)."/views");
+    }
+
+     protected function createModuleControllersFile($id){
+         FileHelper::createDirectory($this->getModuleRootPathById($id)."/controllers");
+    }
+
+     protected function createModuleBackendFile($id){
+         FileHelper::createDirectory($this->getModuleRootPathById($id)."/backend");
+    }
+
+    protected function createModuleMigrationsFile($id)
+    {
+        FileHelper::createDirectory($this->getModuleRootPathById($id)."/migrations");
+    }
+
+
+    /**
      * 更新所有模块的权限
      * @throws \yii\base\ErrorException
      */
@@ -107,7 +322,7 @@ class ModuleController extends Controller
             ];
         }
         $content = serialize($modulesArr);
-        $this->stdout("Generating the configuration file of modules : `@app/config/modules.php` ...");
+        $this->stdout("\nGenerating the configuration file of modules : `@app/config/modules.php` ...");
         file_put_contents(\Yii::getAlias('@app/config/modules.php'), $content);
         $this->stdout("done!\n", Console::FG_GREEN);
     }
