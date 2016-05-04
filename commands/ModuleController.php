@@ -10,9 +10,12 @@ use yii\helpers\FileHelper;
 
 /**
  * Class ModuleController
- * ModuleController 提供了3个模块管理的命令：
+ * ModuleController 提供了4个模块管理的命令：
  *
  * ```commands
+ * #创建一个模块
+ * php yii module/create [module_name]
+ *
  * #安装、配置、更新模块
  * php yii module/update
  *
@@ -95,8 +98,22 @@ class ModuleController extends Controller
 
         $this->createModuleBackendFile($id);
 
-        $this->createModuleMigrationsFile($id);
+        if($this->confirm("Do you want to generate models and CRUD files?(This operations will update modules)",true)){
+            $this->createModuleMigrationsFile($id);
+            $this->installModule($id);
+            $this->generateModelsAndCURD($id);
+        }else{
+            $this->stdout("Create module successfully! Please updating modules by yourself later.");
+        }
+    }
 
+    protected function generateModelsAndCURD($id){
+        $prefix = \Yii::$app->db->tablePrefix;
+        $genModel = "php yii gii/model --enableI18N=1 --interactive=0 --messageCategory={$id} --modelClass=Stuff  --ns=app\\\\modules\\\\{$id}\\\\models --tableName={$prefix}stuff --useTablePrefix=1";
+        system($genModel);
+
+        $genCRUD = "php yii gii/crud  --controllerClass=app\\\\modules\\\\{$id}\\\\backend\\\\StuffController  --enableI18N=1 --interactive=0  --messageCategory={$id} --modelClass=app\\\\modules\\\\{$id}\\\\models\\\\Stuff --searchModelClass=app\\\\modules\\\\{$id}\\\\models\\\\StuffSearch  --viewPath=@app/modules/{$id}/views/backend.stuff";
+        system($genCRUD);
     }
 
     protected function getModuleRootPathById($id){
