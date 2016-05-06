@@ -100,7 +100,7 @@ class ModuleController extends Controller
 
         if($this->confirm("Do you want to generate models and CRUD files?(This operations will update modules)",true)){
             $this->createModuleMigrationsFile($id);
-            $this->installModule($id);
+            $this->actionUpdate();
             $this->generateModelsAndCURD($id);
         }else{
             $this->stdout("Create module successfully! Please updating modules by yourself later.");

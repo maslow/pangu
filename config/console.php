@@ -4,7 +4,7 @@ Yii::setAlias('@tests', dirname(__DIR__) . '/tests');
 
 $params = require(__DIR__ . '/params.php');
 $db = null;
-if(file_exists(__DIR__.'/db.php')){
+if (file_exists(__DIR__ . '/db.php')) {
     $db = require(__DIR__ . '/db.php');
 }
 
@@ -17,8 +17,8 @@ $config = [
         'gii' => 'yii\gii\Module',
     ],
     'components' => [
-        'moduleManager'=>[
-            'class'=>'app\base\ModuleManager',
+        'moduleManager' => [
+            'class' => 'app\base\ModuleManager',
         ],
         'authManager' => [
             'class' => 'yii\rbac\DbManager',
@@ -39,16 +39,15 @@ $config = [
     'params' => $params,
 ];
 
-// 加载模块配置，是为了读取模块的i18n配置，module/create命令中运行gii生成crud时，需要读取i18n配置
-$modulesConfig = file_get_contents(__DIR__ . '/modules.php');
-$modules = unserialize($modulesConfig);
-foreach ($modules as $id => $m) {
-    if ($m['bootstrap'] == true) {
-        $config['bootstrap'][] = $id;
-    }
-    $config['modules'][$id]['class'] = $m['class'];
-    foreach($m['i18n'] as $transName => $transConfig){
-        $config['components']['i18n']['translations'][$transName] = $transConfig;
+// Load the i18n configuration of modules for generating CRUD.
+if (file_exists(__DIR__ . '/modules.php')) {
+    $modulesConfig = file_get_contents(__DIR__ . '/modules.php');
+    $modules = unserialize($modulesConfig);
+    foreach ($modules as $id => $m) {
+        $config['modules'][$id]['class'] = $m['class'];
+        foreach ($m['i18n'] as $transName => $transConfig) {
+            $config['components']['i18n']['translations'][$transName] = $transConfig;
+        }
     }
 }
 
